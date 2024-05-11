@@ -1,0 +1,10 @@
+#!/bin/bash -eu
+
+serve() {
+  cd public
+  php -S localhost:4000 router.php
+}
+
+install() {
+  composer install
+}

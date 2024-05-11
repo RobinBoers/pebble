@@ -1,0 +1,4 @@
+vendor
+lib/config.php
+content/*.txt
+public/*.html

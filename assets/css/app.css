@@ -164,12 +164,13 @@ html {
   text-transform: lowercase;
   background: black;
   color: white;
-  padding: 0.7em;
+  padding: 0.7em 1em;
   padding-inline-end: 1em;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--border-color);
+  gap: 15px;
 }
 
 [data-phx-main] > header h1 {
@@ -179,6 +180,11 @@ html {
 
 [data-phx-main] > header .group {
   gap: 1.25em;
+  align-items: center;
+}
+
+[data-phx-main] > header .group a {
+  white-space: nowrap;
 }
 
 .sidebar {

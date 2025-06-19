@@ -207,7 +207,7 @@ html {
 }
 
 .sidebar aside nav a {
-  border-left: 4px solid light-dark(black, white);
+  border-left: 4px solid light-dark(#444, #aaa);
   display: block;
   text-decoration: none;
   padding: 0.4em 0.7em;
@@ -218,8 +218,15 @@ html {
 }
 
 .sidebar aside nav a:hover {
-  opacity: 1;
+  border-left: 4px solid light-dark(black, white);
   background: light-dark(#eee, #222228);
+  opacity: 1;
+}
+
+.sidebar aside nav a.selected {
+  border-left: 4px solid light-dark(black, white);
+  background: light-dark(#eee, #1b1b22);
+  cursor: default;
 }
 
 .sidebar  main {

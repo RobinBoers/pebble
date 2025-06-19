@@ -13,24 +13,24 @@
 
 <div class="sidebar">
   <% menu_items = [
-    %{title: "Dashboard", route: ~p"/", icon: "hero-home"},
-    %{title: "Fragments", route: ~p"/fragments", icon: "hero-square-3-stack-3d"},
-    %{title: "Templates", route: ~p"/templates", icon: "hero-code-bracket"},
-    %{title: "Endpoints", route: ~p"/endpoints", icon: "hero-cloud"},
-    %{title: "Shell", route: ~p"/shell", icon: "hero-command-line"},
-    %{title: "Layouts", route: ~p"/layouts", icon: "hero-swatch"},
-    %{title: "Media", route: ~p"/media", icon: "hero-photo"},
-    %{title: "Contacts", route: ~p"/contacts", icon: "hero-at-symbol"},
-    %{title: "Menu", route: ~p"/menu", icon: "hero-cursor-arrow-rays"},
-    %{title: "Statistics", route: ~p"/stats", icon: "hero-chart-bar"},
-    %{title: "Logs", route: ~p"/logs", icon: "hero-queue-list"},
-    %{title: "Settings", route: ~p"/settings", icon: "hero-cog-6-tooth"},
+    %{view: PebbleWeb.DashboardLive, title: "Dashboard", route: ~p"/", icon: "hero-home"},
+    %{view: PebbleWeb.FragmentsLive, title: "Fragments", route: ~p"/fragments", icon: "hero-square-3-stack-3d"},
+    %{view: PebbleWeb.TemplatesLive, title: "Templates", route: ~p"/templates", icon: "hero-code-bracket"},
+    %{view: PebbleWeb.EndpointsLive, title: "Endpoints", route: ~p"/endpoints", icon: "hero-cloud"},
+    %{view: PebbleWeb.ShellLive, title: "Shell", route: ~p"/shell", icon: "hero-command-line"},
+    %{view: PebbleWeb.LayoutsLive, title: "Layouts", route: ~p"/layouts", icon: "hero-swatch"},
+    %{view: PebbleWeb.MediaLive, title: "Media", route: ~p"/media", icon: "hero-photo"},
+    %{view: PebbleWeb.ContactsLive, title: "Contacts", route: ~p"/contacts", icon: "hero-at-symbol"},
+    %{view: PebbleWeb.MenuLive, title: "Menu", route: ~p"/menu", icon: "hero-cursor-arrow-rays"},
+    %{view: PebbleWeb.StatisticsLive, title: "Statistics", route: ~p"/stats", icon: "hero-chart-bar"},
+    %{view: PebbleWeb.LogLive, title: "Logs", route: ~p"/logs", icon: "hero-queue-list"},
+    %{view: PebbleWeb.SettingsLive, title: "Settings", route: ~p"/settings", icon: "hero-cog-6-tooth"},
   ] %>
 
   <aside>
     <nav>
       <li :for={item <- menu_items}>
-        <.link navigate={item.route}>
+        <.link navigate={item.route} class={@socket.view == item.view && "selected"}>
           <.icon name={item.icon} class="size-6" />
           {}{item.title}
         </.link>

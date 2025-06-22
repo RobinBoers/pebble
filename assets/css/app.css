@@ -204,6 +204,7 @@ html {
 .sidebar aside nav {
   display: flex;
   flex-direction: column;
+  list-style: none;
 }
 
 .sidebar aside nav a {

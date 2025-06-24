@@ -135,6 +135,7 @@ defmodule PebbleWeb.CoreComponents do
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   attr :errors, :list, default: []
+  attr :title, :boolean, default: false, doc: "this is an editable title of the page"
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
@@ -162,7 +163,7 @@ defmodule PebbleWeb.CoreComponents do
       end)
 
     ~H"""
-    <div>
+    <div class="contents">
       <label>
         <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
         <input
@@ -182,8 +183,8 @@ defmodule PebbleWeb.CoreComponents do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div>
-      <.label for={@id}>{@label}</.label>
+    <div class="contents">
+      <.label :if={@label} for={@id}>{@label}</.label>
       <select
         id={@id}
         name={@name}
@@ -200,8 +201,8 @@ defmodule PebbleWeb.CoreComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div>
-      <.label for={@id}>{@label}</.label>
+    <div class="contents">
+      <.label :if={@label} for={@id}>{@label}</.label>
       <textarea
         id={@id}
         name={@name}
@@ -216,14 +217,14 @@ defmodule PebbleWeb.CoreComponents do
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div>
-      <.label for={@id}>{@label}</.label>
+    <div class="contents">
+      <.label :if={@label} for={@id}>{@label}</.label>
       <input
         type={@type}
         name={@name}
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-        class={@errors != [] && "has-error"}
+        class={[@title && "title", @errors != [] && "has-error"]}
         {@rest}
       />
       <.error :for={msg <- @errors}>{msg}</.error>
@@ -235,6 +236,7 @@ defmodule PebbleWeb.CoreComponents do
   Renders a label.
   """
   attr :for, :string, default: nil
+  attr :title, :boolean, doc: "render accessible title"
   slot :inner_block, required: true
 
   def label(assigns) do

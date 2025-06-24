@@ -1,0 +1,164 @@
+/* Flash messages */
+
+.success,
+.error,
+.warn,
+.info {
+  padding: 0.2em 0.4em;
+  margin-top: -5.5em;
+  margin-bottom: 3.5em;
+  border: 1px solid currentColor;
+  cursor: default;
+}
+
+.success {
+  background: #a7f3d0;
+  color: #022c22;
+  border-color: #6ee7b7;
+}
+
+.error {
+  background: #fecdd3;
+  color: #4c0519;
+  border-color: #fda4af;
+}
+
+.info {
+  background: #bfdbfe;
+  color: #172554;
+  border-color: #93c5fd;
+}
+
+.warn {
+  background: #fed7aa;
+  color: #431407;
+  border-color: #fdba74;
+}
+
+/* Grouping of buttons or inputs */
+
+.group {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  gap: 0.25em;
+  margin: 0;
+}
+
+/* Bar */
+
+.bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+  gap: 0.25em;
+}
+
+.bar h2,
+.bar h3 {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* Placeholder text */
+
+.placeholder-text {
+  text-align: center;
+  opacity: 0.65;
+  margin: 8em 0;
+}
+
+/* Split */
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25em;
+}
+
+/* Button group */
+
+.button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+/* Editors */
+
+input.title {
+  font-size: 1.3em;
+}
+
+/* Modal */
+
+.modal {
+  padding: 0.7em;
+  background: var(--sidebar-color);
+  border: 1px solid var(--border-color);
+  margin-bottom: 0.25em;
+}
+
+.modal input {
+  margin-bottom: 0.5em;
+}
+
+.modal button, .modal .button {
+  background: light-dark(#000000, #ffffff);
+  color: light-dark(#ffffff, #000000);
+}
+
+/* Lists */
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul li:has(.actions),
+ul li:not(:has(.actions)) a {
+  display: block;
+  text-decoration: none;
+  padding: 0.7em 1em;
+  margin-bottom: 0.25em;
+  background: var(--pane-color);
+  border: 1px solid var(--border-color);
+}
+
+ul li:has(.actions) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 0.7em;
+}
+
+ul li .actions {
+  display: flex;
+  gap: 0.2em;
+}
+
+ul li .actions a {
+  background: black;
+  color: white;
+  padding: 0.5em 0.75em;
+  margin-left: 0.25em;
+  font-size: 0.8em;
+  line-height: 1.5;
+  text-transform: lowercase;
+  text-decoration: none;
+  cursor: default;
+}
+
+ul li .actions a:hover {
+  opacity: 0.8;
+}
+
+ul li .actions input,
+ul li .actions select {
+  max-width: min-content;
+  flex-shrink: 1;
+}

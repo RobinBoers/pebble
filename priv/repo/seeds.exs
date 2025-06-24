@@ -9,3 +9,15 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+Pebble.Repo.insert!(%Pebble.Site{
+  hostname: "geheimesite.nl"
+})
+
+Pebble.Repo.insert!(%Pebble.Site{
+  hostname: "obliviously.eu"
+})
+
+Pebble.Repo.insert!(%Pebble.Site{
+  hostname: "dupunkto.org"
+})

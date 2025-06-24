@@ -35,7 +35,8 @@ defmodule PebbleWeb.LayoutsLive do
 
   defp get_layout(id, %Site{id: site_id}) do
     Repo.one(from l in Layout,
-      where: l.id == ^id and l.site_id == ^site_id)
+      where: l.id == ^id and l.site_id == ^site_id,
+      preload: :site)
   end
 
   defp fetch_layouts(%Site{id: site_id}) do
@@ -52,7 +53,31 @@ defmodule PebbleWeb.LayoutsLive do
       {:ok, layout} ->
         push_patch(socket, to: ~p"/#{socket.assigns.site}/layouts/#{layout}")
 
-      {:error, changeset} -> 
+      {:error, changeset} ->
+        assign(socket, :changeset, changeset)
+    end
+  end
+
+  @impl true
+  def handle_event("save-layout", %{"layout" => params}, socket) do
+    changeset = Layout.changeset(socket.assigns.slayout, params)
+
+    case Repo.update(changeset) do
+      {:ok, layout} ->
+        push_patch(socket, to: ~p"/#{socket.assigns.site}/layouts/#{layout}")
+
+      {:error, changeset} ->
+        assign(socket, :changeset, changeset)
+    end
+  end
+
+  @impl true
+  def handle_event("delete-layout", _params, socket) do
+    case Repo.delete(socket.assigns.slayout) do
+      {:ok, _layout} -> 
+        push_patch(socket, to: ~p"/#{socket.assigns.site}/layouts")
+
+      {:error, changeset} ->
         assign(socket, :changeset, changeset)
     end
   end
@@ -92,7 +117,14 @@ defmodule PebbleWeb.LayoutsLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <h1>{@slayout.label}</h1>
+    <.form :let={f} for={@changeset} phx-submit="save-layout">
+      <div class="bar">
+        <.input field={f[:label]} title placeholder="Label" />
+        <button>Save</button>
+        <button phx-click="delete-layout" data-confirm="Are you sure? This will permanently and irreversibly delete this layout and render all templates depending on it broken. This action cannot be undone.">Delete</button>
+      </div>
+      <.input field={f[:content]} type="textarea" />
+    </.form>
     """
   end
 end

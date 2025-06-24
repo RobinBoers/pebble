@@ -17,4 +17,12 @@ defmodule Pebble.Layout do
 
     timestamps()
   end
+
+  def changeset(schema \\ %__MODULE__{}, params \\ %{}) do
+    schema
+    |> cast(params, [:label, :content])
+    |> cast_assoc(:extends)
+    |> cast_assoc(:site, required: true)
+    |> validate_required([:label])
+  end
 end

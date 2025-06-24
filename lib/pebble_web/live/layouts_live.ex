@@ -90,19 +90,16 @@ defmodule PebbleWeb.LayoutsLive do
       <.link patch={~p"/#{@site}/layouts/new"} class="button">New layout</.link>
     </header>
 
-    <.form
-      :if={@live_action == :new} 
-      :let={f} for={@changeset}
-      class="modal"
-      phx-submit="create-layout"
-    >
-      <.input field={f[:label]} label="Label" required />
+    <.modal :if={@live_action == :new} on_close={JS.navigate(~p"/#{@site}/layouts")}>
+      <.form :let={f} for={@changeset} phx-submit="create-layout">
+        <.input field={f[:label]} label="Label" required />
 
-      <div class="group">
-        <button>Create</button>
-        <.link patch={~p"/#{@site}/layouts"} class="button">Cancel</.link>
-      </div>
-    </.form>
+        <div class="group">
+          <.link patch={~p"/#{@site}/layouts"} class="button">Cancel</.link>
+          <button>Create</button>
+        </div>
+      </.form>
+    </.modal>
 
     <p :if={@layouts == []} class="placeholder-text">No layouts yet.</p>
 

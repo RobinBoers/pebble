@@ -24,8 +24,10 @@ defmodule PebbleWeb.Router do
       live "/", DashboardLive, :dashboard
       live "/fragments", FragmentsLive, :fragments
       live "/fragments/new", FragmentsLive, :new
+      live "/fragments/:edit", FragmentsLive, :edit
       live "/templates", TemplatesLive, :templates
       live "/templates/new", TemplatesLive, :new
+      live "/templates/:edit", TemplatesLive, :edit
       live "/endpoints", EndpointsLive, :endpoints
       live "/shell", ShellLive, :shell
       live "/layouts", LayoutsLive, :layouts
@@ -35,6 +37,7 @@ defmodule PebbleWeb.Router do
       live "/media/upload", MediaLive, :upload
       live "/contacts", ContactsLive, :contacts
       live "/contacts/new", ContactsLive, :new
+      live "/contacts/:edit", ContactsLive, :edit
       live "/menu", MenuLive, :menu
       live "/logs", LogsLive, :logs
       live "/stats", StatisticsLive, :statistics

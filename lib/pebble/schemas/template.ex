@@ -6,21 +6,26 @@ defmodule Pebble.Template do
 
   alias Pebble.Site
 
+  @types [:heex, :md, :plain]
+
   schema "templates" do
     field :label, :string
     field :route, :string
     field :content, :string
-    field :type, Ecto.Atom # :heex, :md, :plain
+    field :type, Ecto.Atom
 
     many_to_many :sites, Site, join_through: "templates_sites"
 
     timestamps()
   end
 
-  def changeset(template, params \\ %{}) do
+  def changeset(template \\ %__MODULE__{}, params \\ %{}) do
     template
-    |> cast(params, [:label, :route, :content, :type, :site_id])
-    |> validate_required([:label, :route, :type, :site_id])
+    |> cast(params, [:label, :route, :type])
+    |> cast_assoc(:sites, required: true)
+    |> validate_required([:label, :route, :type])
+    |> validate_format(:route, ~r|^/|, message: "must start with '/'")
+    |> validate_inclusion(:type, @types)
     |> unique_constraint(:route)
   end
 end

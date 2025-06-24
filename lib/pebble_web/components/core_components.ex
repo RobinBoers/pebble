@@ -9,6 +9,27 @@ defmodule PebbleWeb.CoreComponents do
   alias Phoenix.LiveView.JS
 
   @doc """
+  Renders a modal.
+  """
+
+  attr :on_close, :string, doc: "event of `Phoenix.LiveView.JS` to fire when the modal closes"
+  slot :inner_block, required: true
+
+  def modal(assigns) do
+    ~H"""
+    <div class="backdrop" />
+    <div
+      class="modal"
+      phx-window-keydown={@on_close}
+      phx-click-away={@on_close}
+      phx-key="Escape"
+    >
+      {render_slot(@inner_block)}
+    </div>
+    """
+  end
+
+  @doc """
   Renders flash notices.
 
   ## Examples

@@ -64,6 +64,10 @@ defmodule PebbleWeb do
       use Phoenix.LiveView,
         layout: {PebbleWeb.Layouts, :app}
 
+      # allows you to return just socket instead of
+      # needing to wrap in {:noreply, socket} tuple.
+      use PebbleWeb.Decorators
+
       unquote(html_helpers())
     end
   end

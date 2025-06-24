@@ -7,7 +7,7 @@ defmodule PebbleWeb.LayoutsLive do
     ~H"""
     <header class="bar">
       <h2>Layouts</h2>
-      <a href={~p"/layouts/new"} class="button">New layout</a>
+      <.link patch={~p"/#{@site}/layouts/new"} class="button">New layout</.link>
     </header>
 
     <p class="placeholder-text">No layouts yet.</p>

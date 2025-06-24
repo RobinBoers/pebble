@@ -7,7 +7,7 @@ defmodule PebbleWeb.TemplatesLive do
     ~H"""
     <header class="bar">
       <h2>Templates</h2>
-      <a href={~p"/templates/new"} class="button">New template</a>
+      <a href={~p"/#{@site}/templates/new"} class="button">New template</a>
     </header>
 
     <p class="placeholder-text">No templates yet.</p>

@@ -7,7 +7,7 @@ defmodule PebbleWeb.FragmentsLive do
     ~H"""
     <header class="bar">
       <h2>Fragments</h2>
-      <a href={~p"/fragments/new"} class="button">New fragments</a>
+      <a href={~p"/#{@site}/fragments/new"} class="button">New fragments</a>
     </header>
 
     <p class="placeholder-text">No fragments yet.</p>

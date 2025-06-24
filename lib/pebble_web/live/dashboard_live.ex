@@ -16,9 +16,9 @@ defmodule PebbleWeb.DashboardLive do
     <h3>Quick actions</h3>
 
     <ul>
-      <li><.link navigate={~p"/fragments/new"}>Write anything. Write everything.</.link></li>
-      <li><.link navigate={~p"/media/upload"}>Upload memories</.link></li>
-      <li><.link href="#" target="_blank">Go to geheimesite.nl →</.link></li>
+      <li><.link navigate={~p"/#{@site}/fragments/new"}>Write anything. Write everything.</.link></li>
+      <li><.link navigate={~p"/#{@site}/media/upload"}>Upload memories</.link></li>
+      <li><.link href={"https://#{@site}"} target="_blank">Go to {@site} →</.link></li>
     </ul>
     """
   end

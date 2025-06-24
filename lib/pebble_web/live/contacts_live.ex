@@ -7,7 +7,7 @@ defmodule PebbleWeb.ContactsLive do
     ~H"""
     <header class="bar">
       <h2>Contacts</h2>
-      <a href={~p"/templates/new"} class="button">New contact</a>
+      <a href={~p"/#{@site}/templates/new"} class="button">New contact</a>
     </header>
 
     <p class="placeholder-text">No contacts yet.</p>

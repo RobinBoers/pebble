@@ -10,21 +10,36 @@ defmodule PebbleWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  scope "/", PebbleWeb do
-    pipe_through :browser
+  live_session :default, on_mount: PebbleWeb.Navigation do
+    scope "/", PebbleWeb do
+      pipe_through :browser
 
-    live "/", DashboardLive, :dashboard
-    live "/fragments", FragmentsLive, :fragments
-    live "/templates", TemplatesLive, :templates
-    live "/endpoints", EndpointsLive, :endpoints
-    live "/shell", ShellLive, :shell
-    live "/layouts", LayoutsLive, :layouts
-    live "/media", MediaLive, :media
-    live "/contacts", ContactsLive, :contacts
-    live "/menu", MenuLive, :menu
-    live "/logs", LogsLive, :logs
-    live "/stats", StatisticsLive, :statistics
-    live "/settings", SettingsLive, :settings
-    live "/schemas", SettingsLive, :schemas
+      # Only here to enable redirect
+      live "/", DashboardLive, :dashboard
+    end
+
+    scope "/:site", PebbleWeb do
+      pipe_through :browser
+
+      live "/", DashboardLive, :dashboard
+      live "/fragments", FragmentsLive, :fragments
+      live "/fragments/new", FragmentsLive, :new
+      live "/templates", TemplatesLive, :templates
+      live "/templates/new", TemplatesLive, :new
+      live "/endpoints", EndpointsLive, :endpoints
+      live "/shell", ShellLive, :shell
+      live "/layouts", LayoutsLive, :layouts
+      live "/layouts/new", LayoutsLive, :new
+      live "/layouts/:id", LayoutsLive, :edit
+      live "/media", MediaLive, :media
+      live "/media/upload", MediaLive, :upload
+      live "/contacts", ContactsLive, :contacts
+      live "/contacts/new", ContactsLive, :new
+      live "/menu", MenuLive, :menu
+      live "/logs", LogsLive, :logs
+      live "/stats", StatisticsLive, :statistics
+      live "/settings", SettingsLive, :settings
+      live "/schemas", SettingsLive, :schemas
+    end
   end
 end

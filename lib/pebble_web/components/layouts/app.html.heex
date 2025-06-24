@@ -1,38 +1,23 @@
 <header>
-  <h1><.link navigate={~p"/"}>pebble</.link></h1>
+  <h1><.link navigate={~p"/#{@site}/"}>pebble</.link></h1>
 
   <div class="group">
-    <a href="#" target="_blank">View site →</a>
-    <select class="hidden sm:block">
-      <option name="geheimesite.nl">geheimesite.nl</option>
-      <option name="obliviously.eu">obliviously.eu</option>
-      <option name="dupunkto.org">dupunkto.org</option>
-    </select>
+    <.link href={"https://#{@site}"} target="_blank">View site →</.link>
+    <form phx-change="choose-site">
+      <select class="hidden sm:block" name="site">
+        <option :for={site <- @sites} selected={site == @site}>{site}</option>
+      </select>
+    </form>
   </div>
 </header>
 
 <div class="sidebar">
-  <% menu_items = [
-    %{view: PebbleWeb.DashboardLive, title: "Dashboard", route: ~p"/", icon: "hero-home"},
-    %{view: PebbleWeb.FragmentsLive, title: "Fragments", route: ~p"/fragments", icon: "hero-square-3-stack-3d"},
-    %{view: PebbleWeb.TemplatesLive, title: "Templates", route: ~p"/templates", icon: "hero-code-bracket"},
-    %{view: PebbleWeb.EndpointsLive, title: "Endpoints", route: ~p"/endpoints", icon: "hero-cloud"},
-    %{view: PebbleWeb.ShellLive, title: "Shell", route: ~p"/shell", icon: "hero-command-line"},
-    %{view: PebbleWeb.LayoutsLive, title: "Layouts", route: ~p"/layouts", icon: "hero-swatch"},
-    %{view: PebbleWeb.MediaLive, title: "Media", route: ~p"/media", icon: "hero-photo"},
-    %{view: PebbleWeb.ContactsLive, title: "Contacts", route: ~p"/contacts", icon: "hero-at-symbol"},
-    %{view: PebbleWeb.MenuLive, title: "Menu", route: ~p"/menu", icon: "hero-cursor-arrow-rays"},
-    %{view: PebbleWeb.StatisticsLive, title: "Statistics", route: ~p"/stats", icon: "hero-chart-bar"},
-    %{view: PebbleWeb.LogLive, title: "Logs", route: ~p"/logs", icon: "hero-queue-list"},
-    %{view: PebbleWeb.SettingsLive, title: "Settings", route: ~p"/settings", icon: "hero-cog-6-tooth"},
-  ] %>
-
   <aside>
     <nav>
-      <li :for={item <- menu_items}>
+      <li :for={item <- @menu_items}>
         <.link navigate={item.route} class={@socket.view == item.view && "selected"}>
           <.icon name={item.icon} class="size-6" />
-          {}{item.title}
+          {item.title}
         </.link>
       </li>
     </nav>

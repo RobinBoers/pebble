@@ -12,7 +12,7 @@ defmodule PebbleWeb.Navigation do
       nil -> redirect_to_fallback(socket, sites)
     end
   end
-  
+
   def on_mount(_, _params, _session, socket) do
     redirect_to_fallback(socket, Pebble.fetch_sites())
   end
@@ -33,13 +33,12 @@ defmodule PebbleWeb.Navigation do
       %{view: PebbleWeb.FragmentsLive, title: "Fragments", route: ~p"/#{site}/fragments", icon: "hero-square-3-stack-3d"},
       %{view: PebbleWeb.TemplatesLive, title: "Templates", route: ~p"/#{site}/templates", icon: "hero-code-bracket"},
       %{view: PebbleWeb.EndpointsLive, title: "Endpoints", route: ~p"/#{site}/endpoints", icon: "hero-cloud"},
-      %{view: PebbleWeb.ShellLive, title: "Shell", route: ~p"/#{site}/shell", icon: "hero-command-line"},
+      %{view: PebbleWeb.ShellLive, title: "Console", route: ~p"/#{site}/console/shell", icon: "hero-command-line"},
       %{view: PebbleWeb.LayoutsLive, title: "Layouts", route: ~p"/#{site}/layouts", icon: "hero-swatch"},
       %{view: PebbleWeb.MediaLive, title: "Media", route: ~p"/#{site}/media", icon: "hero-photo"},
       %{view: PebbleWeb.ContactsLive, title: "Contacts", route: ~p"/#{site}/contacts", icon: "hero-at-symbol"},
       %{view: PebbleWeb.MenuLive, title: "Menu", route: ~p"/#{site}/menu", icon: "hero-cursor-arrow-rays"},
       %{view: PebbleWeb.StatisticsLive, title: "Statistics", route: ~p"/#{site}/stats", icon: "hero-chart-bar"},
-      %{view: PebbleWeb.LogLive, title: "Logs", route: ~p"/#{site}/logs", icon: "hero-queue-list"},
       %{view: PebbleWeb.SettingsLive, title: "Settings", route: ~p"/#{site}/settings", icon: "hero-cog-6-tooth"},
     ])
   end

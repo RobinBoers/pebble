@@ -30,7 +30,8 @@ defmodule PebbleWeb.Router do
       live "/templates/new", TemplatesLive, :new
       live "/templates/:id", TemplatesLive, :edit
       live "/endpoints", EndpointsLive, :endpoints
-      live "/shell", ShellLive, :shell
+      live "/console/shell", ShellLive, :shell
+      live "/console/logs", LogsLive, :logs
       live "/layouts", LayoutsLive, :layouts
       live "/layouts/new", LayoutsLive, :new
       live "/layouts/:id", LayoutsLive, :edit

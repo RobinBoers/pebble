@@ -9,6 +9,19 @@ defmodule PebbleWeb.TemplatesLive do
 
   @decorate_all wrap_noreply()
 
+  @visibility [
+    {"Draft", :draft},
+    {"Hidden", :hidden},
+    {"RSS-only", :rss},
+    {"Public", :public}
+  ]
+
+  @types [
+    {"HEEx", :heex},
+    {"Markdown", :md},
+    {"Plain text", :plain}
+  ]
+
   @impl true
   def handle_params(%{"id" => id}, _url, socket) do
     case get_template(id, socket.assigns.site) do
@@ -18,6 +31,8 @@ defmodule PebbleWeb.TemplatesLive do
         |> assign(:templates, fetch_templates(socket.assigns.site))
         |> assign(:layouts, fetch_layouts(socket.assigns.site))
         |> assign(:changeset, Template.changeset(template))
+        |> assign(:other_sites, other_sites(template, socket.assigns.site))
+        |> assign(visibility: @visibility, types: @types)
 
       nil ->
         push_patch(socket, to: ~p"/#{socket.assigns.site}/templates")
@@ -30,6 +45,11 @@ defmodule PebbleWeb.TemplatesLive do
     |> assign(:templates, fetch_templates(socket.assigns.site))
     |> assign(:layouts, fetch_layouts(socket.assigns.site))
     |> assign(:changeset, Template.changeset_for(socket.assigns.site))
+    |> assign(visibility: @visibility, types: @types)
+  end
+
+  defp other_sites(template, site) do
+    Enum.filter(template.sites, &(&1.id != site.id))
   end
 
   @impl true
@@ -54,7 +74,6 @@ defmodule PebbleWeb.TemplatesLive do
         push_patch(socket, to: ~p"/#{socket.assigns.site}/templates/#{template.id}")
 
       {:error, changeset} ->
-        dbg(changeset)
         assign(socket, :changeset, changeset)
     end
   end
@@ -62,7 +81,7 @@ defmodule PebbleWeb.TemplatesLive do
   @impl true
   def handle_event("delete-template", _params, socket) do
     case Repo.delete(socket.assigns.template) do
-      {:ok, template} -> 
+      {:ok, template} ->
         socket
         |> assign(:template, template)
         |> assign(:changeset, Template.changeset(template))
@@ -100,7 +119,7 @@ defmodule PebbleWeb.TemplatesLive do
                 field={f[:type]}
                 label="Render as:"
                 type="select"
-                options={Template.types()}
+                options={@types}
               />
             </div>
 
@@ -127,42 +146,75 @@ defmodule PebbleWeb.TemplatesLive do
   def render(assigns) do
     ~H"""
     <.form
+      class="editor"
       :let={f} for={@changeset}
       phx-submit="save-template"
       phx-change="save-template"
       phx-debounce="blur"
     >
       <.inputs_for :let={s} field={f[:linked_sites]}>
-        <%= if s[:site_id].value == @site.id do %>
-          <header>
-            <.input field={s[:site_id]} type="hidden" />
-            <.input field={s[:route]} placeholder="Route" class="mb-[0.2em]" />
-            <div class="bar">
-              <.input field={f[:label]} title placeholder="Label" />
-              <button>Save</button>
+        <%= if to_string(s[:site_id].value) == to_string(@site.id) do %>
+          <div class="plane">
+            <header>
+              <.input field={s[:site_id]} type="hidden" />
+              <.input field={s[:route]} placeholder="Route" class="mb-[0.2em]" />
+              <div class="bar">
+                <.input field={f[:label]} title placeholder="Label" />
+                <code class="id">{@template.id}</code>
+              </div>
+            </header>
+
+            <.input field={f[:content]} type="textarea" />
+          </div>
+
+          <aside>
+            <div class="vgroup">
+              <button class="save">
+                <.icon name="hero-server" />
+                Save & deploy
+              </button>
+              <.input
+                field={s[:visibility]}
+                type="select"
+                display="block"
+                class="visibility"
+                options={@visibility}
+              />
             </div>
-          </header>
-          <.input field={f[:content]} type="textarea" />
-          <div class="options">
-            <button phx-click="delete-template" data-confirm="Are you sure? This will permanently and irreversibly delete this template and deactivate its route, which will immediately break all URLs pointing to it. This action cannot be undone.">Delete</button>
-  
+
             <.input
               field={s[:layout_id]}
               type="select"
-              label="Layout:"
+              label="Extends layout"
               prompt="(none)"
+              display="block"
               options={Enum.map(@layouts, &{&1.label, &1.id})}
             />
 
             <.input
               field={s[:type]}
-              label="Render as:"
+              label="Render as"
               type="select"
-              options={Template.types()}
+              display="block"
+              options={@types}
             />
-          </div>
+
+            <section :if={length(@sites) > 1} class="other-sites">
+              <header class="bar">
+                <h3>Other sites</h3>
+                <button :if={length(@template.sites) < length(@sites)}>
+                  <.icon name="hero-plus" class="size-3" />
+                </button>
+              </header>
+
+              <.link :for={site <- @other_sites}>Edit on {site} →</.link>
+            </section>
+
+            <button phx-click="delete-template" data-confirm="Are you sure? This will permanently and irreversibly delete this template and deactivate its route, which will immediately break all URLs pointing to it. This action cannot be undone." class="delete">Delete</button>
+          </aside>
         <% else %>
           <.input field={s[:site_id]} type="hidden" />
+          <.input field={s[:route]} type="hidden" />
           <.input field={s[:layout_id]} type="hidden" />
         <% end %>
       </.inputs_for>

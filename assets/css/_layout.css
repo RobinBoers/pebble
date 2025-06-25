@@ -41,7 +41,7 @@ body, html, [data-phx-main] {
   flex-grow: 1;
 }
 
-.sidebar aside {
+.sidebar > aside {
   height: auto;
   flex-basis: 270px;
   padding: 0.5em;
@@ -49,13 +49,13 @@ body, html, [data-phx-main] {
   background: var(--sidebar-color);
 }
 
-.sidebar aside nav {
+.sidebar > aside nav {
   display: flex;
   flex-direction: column;
   list-style: none;
 }
 
-.sidebar aside nav a {
+.sidebar > aside nav a {
   border-left: 4px solid light-dark(#444, #aaa);
   display: block;
   text-decoration: none;
@@ -66,24 +66,28 @@ body, html, [data-phx-main] {
   gap: 0.5em;
 }
 
-.sidebar aside nav a:hover {
+.sidebar > aside nav a:hover {
   border-left: 4px solid light-dark(black, white);
   background: light-dark(#eee, #222228);
   opacity: 1;
 }
 
-.sidebar aside nav a.selected {
+.sidebar > aside nav a.selected {
   border-left: 4px solid light-dark(black, white);
   background: light-dark(#eee, #1b1b22);
   cursor: default;
 }
 
-.sidebar main {
+.sidebar > main {
   position: relative;
   flex-basis: 630px;
   margin: 0 auto;
   margin-top: clamp(1.5em, 3.5vw, 3em);
   padding: 0 15px;
+}
+
+.sidebar > main:has(.editor) {
+  flex-basis: 1000px;
 }
 
 /* 270 + 630 = 1000px */
@@ -100,4 +104,69 @@ body, html, [data-phx-main] {
 
 .sidebar main > header:not(:first-child) {
   margin-top: 1.5em;
+}
+
+/* Main template editor */
+
+.editor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.editor .plane {
+  flex-basis: 630px;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor textarea {
+  margin-bottom: 0;
+}
+
+.editor aside {
+  flex-basis: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+
+.editor .id {
+  border: 1px solid var(--border-color);
+  background: var(--pane-color);
+  padding: 0.3em 1em;
+}
+
+.editor .id::before {
+  content: "#";
+  color: var(--decoration-color);
+}
+
+.editor .save {
+  font-size: 17px;
+  padding: 0.5em 1em;
+  display: flex;
+  gap: 0.4em;
+  text-transform: none;
+  font-weight: 600;
+}
+
+.editor .visibility {
+  font-size: 14px;
+  text-align: center;
+}
+
+.editor .other-sites {
+  margin-top: 1.5em;
+}
+
+.editor .other-sites a {
+  font-weight: 500;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.25em;
+}
+
+.editor .delete {
+  margin-top: auto;
 }

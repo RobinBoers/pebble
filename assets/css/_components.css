@@ -53,6 +53,11 @@
   margin: 0;
 }
 
+.vgroup {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Bar & lowbar */
 
 .bar, .lowbar {

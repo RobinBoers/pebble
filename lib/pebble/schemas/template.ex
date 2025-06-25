@@ -7,6 +7,7 @@ defmodule Pebble.Template do
   import Ecto.Changeset
 
   def types, do: [:heex, :md, :plain]
+  def visibility, do: [:draft, :hidden, :rss, :public]
 
   typed_schema "templates" do
     field :label, :string

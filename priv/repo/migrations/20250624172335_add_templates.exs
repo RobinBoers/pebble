@@ -4,14 +4,16 @@ defmodule Pebble.Repo.Migrations.AddTemplates do
   def change do
     create table(:templates) do
       add :label,   :string
-      add :route,   :string
       add :content, :string
       add :type,    :string
 
       timestamps()
     end
 
-    create table(:templates_sites, primary_key: false) do
+    # This join table has a primary key because Ecto is annoying.
+    create table(:templates_sites) do
+      add :route, :string
+
       add :layout_id,
           references(:layouts, on_delete: :nilify_all)
 
@@ -24,7 +26,7 @@ defmodule Pebble.Repo.Migrations.AddTemplates do
           null: false
     end
 
-    create unique_index(:templates, [:route])
+    create unique_index(:templates_sites, [:site_id, :route])
     create unique_index(:templates_sites, [:site_id, :template_id])
   end
 end

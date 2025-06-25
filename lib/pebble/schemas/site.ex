@@ -7,6 +7,7 @@ defmodule Pebble.Site do
   alias Pebble.Fragment
   alias Pebble.Menu.Category
   alias Pebble.Menu.Item
+  alias Pebble.Context
 
   @derive {Phoenix.Param, key: :hostname}
 
@@ -19,8 +20,8 @@ defmodule Pebble.Site do
     many_to_many :menu_items, Item, join_through: "items_sites"
     many_to_many :fragments, Fragment, join_through: "fragments_sites"
 
-    has_many :template_sites, Pebble.TemplateSite
-    has_many :templates, through: [:template_sites, :template]
+    has_many :linked_templates, Context
+    has_many :templates, through: [:linked_templates, :template]
 
     timestamps()
   end

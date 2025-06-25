@@ -79,7 +79,7 @@ defmodule PebbleWeb.LayoutsLive do
       <.form :let={f} for={@changeset} phx-submit="create-layout">
         <.input field={f[:label]} label="Label" required />
 
-        <div class="bar">
+        <div class="lowbar">
           <div class="row">
             <.input
               field={f[:extends_id]}
@@ -112,10 +112,10 @@ defmodule PebbleWeb.LayoutsLive do
   def render(assigns) do
     ~H"""
     <.form :let={f} for={@changeset} phx-submit="save-layout">
-      <div class="bar">
+      <header class="bar">
         <.input field={f[:label]} title placeholder="Label" />
         <button>Save</button>
-      </div>
+      </header>
       <.input field={f[:content]} type="textarea" />
       <div class="options">
         <button phx-click="delete-layout" data-confirm="Are you sure? This will permanently and irreversibly delete this layout and render all templates depending on it broken. This action cannot be undone.">Delete</button>

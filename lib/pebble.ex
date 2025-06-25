@@ -7,6 +7,7 @@ defmodule Pebble do
   alias Pebble.Site
   alias Pebble.Layout
   alias Pebble.Template
+  alias Pebble.Context
 
   import Ecto.Query
 
@@ -71,12 +72,12 @@ defmodule Pebble do
 
   defp template_query(site_id) do
     from t in Template,
-      join: ts in assoc(t, :template_sites),
-      where: ts.site_id == ^site_id,
+      join: s in assoc(t, :linked_sites),
+      where: s.site_id == ^site_id,
       preload: [
         :sites,
-        template_sites: ^from(ts in Pebble.TemplateSite,
-          where: ts.site_id == ^site_id,
+        linked_sites: ^from(s in Context,
+          where: s.site_id == ^site_id,
           preload: [:layout]
         )
       ]
@@ -106,11 +107,16 @@ defmodule Pebble do
   end
 
   defp populate_template(template, site_id) do
-    layout =
-      template.template_sites
-      |> Enum.find(&(&1.site_id == site_id))
-      |> Map.get(:layout)
+    %Template{linked_sites: linked} = template
 
-    Map.put(template, :layout, layout)
+    case Enum.find(linked, &(&1.site_id == site_id)) do
+      %Context{} = settings ->
+        settings
+        |> Map.take([:route, :layout])
+        |> Map.merge(template)
+
+      nil ->
+        template
+    end
   end
 end

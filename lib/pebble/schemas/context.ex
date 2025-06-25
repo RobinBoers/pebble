@@ -1,14 +1,15 @@
-defmodule Pebble.TemplateSite do
+defmodule Pebble.Context do
   @moduledoc """
-  This schema is required because Ecto does not support
-  storing data on the edges between many-to-many relations.
+  Stores site-specific data for a template.
 
-  In our case, the layout of a site can differ per site, so
-  we need to store the relation on the join table, which is
-  represented by this schema to work around the Ecto limitation.
+  There are some properties of a template that might change depending
+  on the site the template is being rendered on. Primarily:
 
-  This is an irrelevant implementation detail.
-  Please forget about it.
+  - The layout to use (since layouts cannot be shared across sites)
+  - The route on which the template will be rendered.
+
+  This schema is required because Ecto does not support storing data 
+  on the edges (ie. join tables) between many-to-many relations.
   """
   use Ecto.TypedSchema
   import Ecto.Changeset
@@ -22,19 +23,21 @@ defmodule Pebble.TemplateSite do
   # we have a surrogate key now.
 
   schema "templates_sites" do
+    field :route, :string
+
+    belongs_to :layout, Layout
     belongs_to :site, Site
     belongs_to :template, Template
-    belongs_to :layout, Layout
   end
 
-  def changeset(template_site, attrs) do
+  def changeset(site_settings, attrs) do
     # The `template_id` is of course required in every row, but since
     # these rows are inserted as part of the `Pebble.Template` changeset,
     # we cannot mark it as required here, as that would break inserts.
 
-    template_site
-    |> cast(attrs, [:site_id, :template_id, :layout_id])
-    |> validate_required([:site_id])
+    site_settings
+    |> cast(attrs, [:route, :layout_id, :site_id, :template_id])
+    |> validate_required([:route, :site_id])
     |> assoc_constraint(:site)
     |> assoc_constraint(:layout)
     |> unique_constraint([:site_id, :template_id])

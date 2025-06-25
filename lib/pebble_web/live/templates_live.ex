@@ -192,7 +192,7 @@ defmodule PebbleWeb.TemplatesLive do
             />
 
             <.input
-              field={s[:type]}
+              field={f[:type]}
               label="Render as"
               type="select"
               display="block"

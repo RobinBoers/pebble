@@ -32,7 +32,7 @@ defmodule PebbleWeb.LayoutsLive do
 
   @impl true
   def handle_event("create-layout", %{"layout" => params}, socket) do
-    changeset = Layout.changeset_for(socket.assigns.site, params)
+    changeset = Layout.changeset(%Layout{}, params)
 
     case Repo.insert(changeset) do
       {:ok, layout} ->
@@ -45,11 +45,13 @@ defmodule PebbleWeb.LayoutsLive do
 
   @impl true
   def handle_event("save-layout", %{"layout" => params}, socket) do
-    changeset = Layout.changeset(%Layout{}, params)
+    changeset = Layout.changeset(socket.assigns.layout, params)
 
     case Repo.update(changeset) do
       {:ok, layout} ->
-        push_patch(socket, to: ~p"/#{socket.assigns.site}/layouts/#{layout}")
+        socket
+        |> assign(:slayout, layout)
+        |> assign(:changeset, Layout.changeset(layout))
 
       {:error, changeset} ->
         assign(socket, :changeset, changeset)
@@ -59,7 +61,7 @@ defmodule PebbleWeb.LayoutsLive do
   @impl true
   def handle_event("delete-layout", _params, socket) do
     case Repo.delete(socket.assigns.slayout) do
-      {:ok, _layout} -> 
+      {:ok, _layout} ->
         push_patch(socket, to: ~p"/#{socket.assigns.site}/layouts")
 
       {:error, changeset} ->
@@ -111,7 +113,12 @@ defmodule PebbleWeb.LayoutsLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <.form :let={f} for={@changeset} phx-submit="save-layout">
+    <.form
+      :let={f} for={@changeset}
+      phx-submit="save-layout"
+      phx-change="save-layout"
+      phx-debounce="blur"
+    >
       <header class="bar">
         <.input field={f[:label]} title placeholder="Label" />
         <button>Save</button>

@@ -5,6 +5,7 @@ defmodule Pebble do
 
   alias Pebble.Repo
   alias Pebble.Site
+  alias Pebble.Schema
   alias Pebble.Layout
   alias Pebble.Template
   alias Pebble.Context
@@ -14,10 +15,28 @@ defmodule Pebble do
   @doc """
   Lists all available sites.
   """
-  @spec fetch_sites() :: [Pebble.Site.t()]
+  @spec fetch_sites() :: [Site.t()]
 
   def fetch_sites do
     Repo.all(Site)
+  end
+
+  @doc """
+  Lists all available schemas.
+  """
+  @spec fetch_schemas() :: [Schema.t()]
+
+  def fetch_schemas do
+    Repo.all(Schema)
+  end
+
+  @doc """
+  Gets a `Pebble.Schema` by `id`.
+  """
+  @spec get_schema(integer()) :: Schema.t() | nil
+
+  def get_schema(id) do
+    Repo.get(Schema, id)
   end
 
   @doc """

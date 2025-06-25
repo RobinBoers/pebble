@@ -40,10 +40,11 @@ defmodule PebbleWeb.Router do
       live "/contacts/new", ContactsLive, :new
       live "/contacts/:id", ContactsLive, :edit
       live "/menu", MenuLive, :menu
-      live "/logs", LogsLive, :logs
       live "/stats", StatisticsLive, :statistics
       live "/settings", SettingsLive, :settings
-      live "/schemas", SettingsLive, :schemas
+      live "/schemas", SchemasLive, :schemas
+      live "/schemas/new", SchemasLive, :new
+      live "/schemas/:id", SchemasLive, :edit
     end
   end
 end

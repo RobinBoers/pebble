@@ -83,3 +83,29 @@ params = %{
 %Pebble.Template{}
 |> Pebble.Template.changeset(params)
 |> Pebble.Repo.insert!()
+
+params = %{
+  label: "Jongeren lezen niet meer - so what?",
+  type: :plain,
+  visibility: :draft,
+  content: """
+    Onlangs schreef iemand in NRC dat de taalvaardigheid van de jongere generaties achteruit holt doordat er minder gelezen wordt. Maar waarom zouden we daar tegenwoordig nog om malen? De jongeren van tegenwoordig hebben wel wat beters te doen dan met hun neus in de papieren gedoken te zitten. Wereldproblemen als uitstervende pandabeertjes, de verkeerde versie van een regenboogvlag en het kolonialisme in een theepot worden niet opgelost door te lezen. Ze worden opgelost door activisme. De jongste generatie weet dat die problemen juist opgelost worden door níet te lezen. Lezen is namelijk een van de grootste vijanden van modern activisme.
+
+    Lezen kan je gevoelens kwetsen, je de nuance van een probleem laten inzien, vraagtekens zetten bij de meningen waar je je het hardst aan vastklampt. Comfortabeler en impactvoller is het, om te denken wat je altijd al hebt gedacht, en om je mening zo hard mogelijk te schreeuwen naar iedereen die in je buurt is. Want lezen kan je ook nog eens doen beseffen, dat je heel veel helemaal niet weet en dat je veel deugdelijkheid kan leren van boekenpersonages en auteurs. En nederigheid is de enige deugd die de jongere generatie als de pest moet mijden, als zij zich à la Tim Hofman ‘de tyfus willen deugen’.
+
+    De sociale media worden er ook niet mee geholpen als jongeren veel lezen. De tijd die jongeren zouden verdoen aan het doorbladeren van stapels papier, zetten ze nu efficiënt in door rond te struinen op sociale media. Ze bevorderen er hun zelfvertrouwen, hun kritische zelfblik en Chinese gezichtsherkenningssoftware mee, door een oneindige hoeveelheid selfies te maken; ze amuseren zichzelf door licht verteerbare nieuwtjes op te zuigen; en als klap op de vuurpijl vechten zij voor rechtvaardigheid.
+
+    Er is geen beter oefenterrein voor de rechtvaardigheidsstrijd dan de stormbaan van de sociale media. Het is goed om anderen keihard en genadeloos te veroordelen en om hen te doen struikelen over argeloos uitgesproken woorden. Op deze manier dragen jongeren een omvangrijk steentje bij aan het Twitterdebat. In een Twitterdebat heeft niemand immers behoefte aan rationele, weloverwogen, genuanceerde deelnemers. Er is niets dat zo vermakelijk is als een Twitterinferno. En hoe minder mensen lezen, hoe meer geneigd ze zijn om vurigheid de plek van informatie in te laten nemen.
+
+    Behalve de potentiële problemen die een lezende jonge generatie met zich meebrengt, hebben we ook nog te kampen met de actualiteit. We hebben te weinig bouwvakkers, en, zoals iedereen die weleens een krant openslaat kan weten, in het algemeen flinke arbeidstekorten. Tegelijkertijd begint de hoeveelheid academici, en dan vooral (de hemel beware ons) de hoeveelheid vrouwelijke academici, dramatisch toe te nemen. Dit probleem is begonnen bij de jongeren. Als ze minder lezen, zullen ze vanzelf de universiteiten gaan verlaten en komen er meer jeugdige handen vrij voor fysieke arbeid.
+
+    Dus: hoe minder jongeren lezen, hoe meer problemen er verholpen worden. Vergeet daarom het kleine meisje dat in de Tweede Wereldoorlog de boekrecensies van de buren als enige leesvoer had en ze opslurpte als honing voor haar ziel. Vergeet de boekenwijsheid die de ouderen van nu vroeger op hebben gedaan. In het boek Fahrenheit 451 is het de bevolking verboden om boeken te lezen en wordt men volgestopt met betaalbare vormen van amusement. Met de ontlezing werken we daarnaar toe. Want dit is de toekomst. Dit is pas echte progressie.
+  """,
+  linked_sites: [
+    %{route: "/lezen", site_id: 2, layout_id: nil}
+  ]
+}
+
+%Pebble.Template{}
+|> Pebble.Template.changeset(params)
+|> Pebble.Repo.insert!()

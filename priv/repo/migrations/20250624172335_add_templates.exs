@@ -24,6 +24,7 @@ defmodule Pebble.Repo.Migrations.AddTemplates do
           null: false
     end
 
+    create unique_index(:templates, [:route])
     create unique_index(:templates_sites, [:site_id, :template_id])
   end
 end

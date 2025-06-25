@@ -11,6 +11,6 @@ defmodule Pebble.Repo.Migrations.AddSettings do
       timestamps()
     end
 
-    create index(:settings, [:site_id])
+    create unique_index(:settings, [:site_id])
   end
 end

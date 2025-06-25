@@ -9,5 +9,7 @@ defmodule Pebble.Repo.Migrations.AddSites do
 
       timestamps()
     end
+
+    create unique_index(:sites, [:hostname])
   end
 end

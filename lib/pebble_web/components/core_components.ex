@@ -275,7 +275,7 @@ defmodule PebbleWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <p>
+    <p class="form-error">
       <.icon name="hero-exclamation-circle-mini" />
       {render_slot(@inner_block)}
     </p>

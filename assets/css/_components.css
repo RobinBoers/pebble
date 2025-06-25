@@ -53,19 +53,22 @@
   margin: 0;
 }
 
-/* Bar */
+/* Bar & lowbar */
 
-.bar {
+.bar, .lowbar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1em;
   gap: 0.25em;
 }
 
-.bar:last-child {
-  margin-bottom: 0;
+.bar {
+  margin-bottom: 1em;
+}
+
+.lowbar label {
+  white-space: nowrap;
 }
 
 .bar h2,
@@ -97,7 +100,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.8em;
 }
 
 /* Editors */
@@ -136,6 +139,10 @@ input.title {
 .modal button, .modal .button {
   background: light-dark(#000000, #ffffff);
   color: light-dark(#ffffff, #000000);
+}
+
+.modal > :last-child {
+  margin-bottom: 0;
 }
 
 /* Lists */

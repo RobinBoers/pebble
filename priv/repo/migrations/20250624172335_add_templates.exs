@@ -3,9 +3,10 @@ defmodule Pebble.Repo.Migrations.AddTemplates do
 
   def change do
     create table(:templates) do
-      add :label,   :text
-      add :content, :text
-      add :type,    :text
+      add :label,      :text
+      add :content,    :text
+      add :type,       :text
+      add :visibility, :text
 
       timestamps()
     end

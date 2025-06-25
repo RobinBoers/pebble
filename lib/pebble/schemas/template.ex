@@ -13,6 +13,7 @@ defmodule Pebble.Template do
     field :label, :string
     field :content, :string
     field :type, Ecto.Atom
+    field :visibility, Ecto.Atom
 
     # Will contain %Layout{} and route for the current site if populated.
     field :route, :string, virtual: true
@@ -31,11 +32,12 @@ defmodule Pebble.Template do
 
   def changeset(template \\ %__MODULE__{}, params \\ %{}) do
     template
-    |> cast(params, [:label, :content, :type])
+    |> cast(params, [:label, :content, :type, :visibility])
     |> cast_assoc(:linked_sites, required: true)
     |> validate_required([:label, :type])
     |> validate_format(:route, ~r|^/|, message: "must start with '/'")
     |> validate_inclusion(:type, types())
+    |> validate_inclusion(:visibility, visibility())
     |> unique_constraint(:route)
   end
 end

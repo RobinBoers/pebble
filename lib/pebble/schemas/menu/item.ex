@@ -1,6 +1,6 @@
 defmodule Pebble.Menu.Item do
   @moduledoc false
-  use Ecto.Schema
+  use Ecto.TypedSchema
 
   # TODO(robin): we need validation on routes. aka i should
   # check if the specified route matches anything in the
@@ -10,7 +10,7 @@ defmodule Pebble.Menu.Item do
   alias Pebble.Menu.Category
   alias Pebble.Site
 
-  schema "menu_items" do
+  typed_schema "menu_items" do
     field :label, :string
     field :route, :string # either path or URL
     field :order, :integer

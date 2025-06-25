@@ -1,11 +1,11 @@
 defmodule Pebble.Menu.Category do
   @moduledoc false
-  use Ecto.Schema
+  use Ecto.TypedSchema
 
   alias Pebble.Menu.Item
   alias Pebble.Site
 
-  schema "menu_categories" do
+  typed_schema "menu_categories" do
     field :label, :string
 
     has_many :items, Item

@@ -1,8 +1,8 @@
 defmodule Pebble.Asset do
   @moduledoc false
-  use Ecto.Schema
+  use Ecto.TypedSchema
 
-  schema "assets" do
+  typed_schema "assets" do
     field :url, :string
     field :alt, :string
     field :filename, :string

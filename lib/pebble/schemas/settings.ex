@@ -1,10 +1,10 @@
 defmodule Pebble.Settings do
   @moduledoc false
-  use Ecto.Schema
+  use Ecto.TypedSchema
 
   alias Pebble.Site
 
-  schema "settings" do
+  typed_schema "settings" do
     field :data, :string
     field :defintions, :string
     belongs_to :site, Site

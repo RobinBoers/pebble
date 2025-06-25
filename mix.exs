@@ -47,7 +47,8 @@ defmodule Pebble.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
-      {:decorator, "~> 1.3"}
+      {:decorator, "~> 1.3"},
+      {:typed_ecto_schema, "~> 0.4.2"}
     ]
   end
 

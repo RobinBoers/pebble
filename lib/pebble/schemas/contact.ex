@@ -1,8 +1,8 @@
 defmodule Pebble.Contact do
   @moduledoc false
-  use Ecto.Schema
+  use Ecto.TypedSchema
 
-  schema "contacts" do
+  typed_schema "contacts" do
     field :handle, :string
     field :url, :string
     field :email, :string

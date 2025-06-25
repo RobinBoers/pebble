@@ -1,11 +1,11 @@
 defmodule Pebble.Fragment do
   @moduledoc false
-  use Ecto.Schema
+  use Ecto.TypedSchema
 
   alias Pebble.Schema
   alias Pebble.Site
 
-  schema "fragments" do
+  typed_schema "fragments" do
     field :data, :string
 
     belongs_to :schema, Schema

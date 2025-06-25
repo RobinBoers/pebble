@@ -1,17 +1,16 @@
 defmodule Pebble.Site do
   @moduledoc false
-  use Ecto.Schema
+  use Ecto.TypedSchema
 
   import Ecto.Changeset
 
   alias Pebble.Fragment
-  alias Pebble.Template
   alias Pebble.Menu.Category
   alias Pebble.Menu.Item
 
   @derive {Phoenix.Param, key: :hostname}
 
-  schema "sites" do
+  typed_schema "sites" do
     field :hostname, :string
     field :vik_hostname, :string
     field :scry_hostname, :string
@@ -19,7 +18,9 @@ defmodule Pebble.Site do
     many_to_many :menu_categories, Category, join_through: "categories_sites"
     many_to_many :menu_items, Item, join_through: "items_sites"
     many_to_many :fragments, Fragment, join_through: "fragments_sites"
-    many_to_many :templates, Template, join_through: "templates_sites"
+
+    has_many :template_sites, Pebble.TemplateSite
+    has_many :templates, through: [:template_sites, :template]
 
     timestamps()
   end

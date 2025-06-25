@@ -1,8 +1,8 @@
 defmodule Pebble.Schema do
   @moduledoc false
-  use Ecto.Schema
+  use Ecto.TypedSchema
 
-  schema "schemas" do
+  typed_schema "schemas" do
     field :label, :string
     field :definition, :string
 

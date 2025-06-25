@@ -1,20 +1,19 @@
 defmodule Pebble.Template do
   @moduledoc false
-  use Ecto.Schema
+  use Ecto.TypedSchema
 
   import Ecto.Changeset
 
-  alias Pebble.Site
-
   @types [:heex, :md, :plain]
 
-  schema "templates" do
+  typed_schema "templates" do
     field :label, :string
     field :route, :string
     field :content, :string
     field :type, Ecto.Atom
 
-    many_to_many :sites, Site, join_through: "templates_sites"
+    has_many :template_sites, Pebble.TemplateSite
+    has_many :sites, through: [:template_sites, :site]
 
     timestamps()
   end

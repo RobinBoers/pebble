@@ -1,12 +1,12 @@
 defmodule Pebble.Layout do
   @moduledoc false
-  use Ecto.Schema
+  use Ecto.TypedSchema
 
   import Ecto.Changeset
 
   alias Pebble.Site
 
-  schema "layouts" do
+  typed_schema "layouts" do
     field :label, :string
     field :content, :string
 

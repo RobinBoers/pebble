@@ -26,34 +26,28 @@ Pebble.Repo.insert!(%Pebble.Site{
 })
 
 params = %{
-  label: "A",
+  label: "E",
   type: :plain,
   visibility: :draft,
   content: """
-  Jan, makkaar fan data, zat aan z’n taflank. Dagtaak: maakbaar CMS aframmala. SaaS? Ja! Maar laat: Jan had plan A. Plan A was raar. Kladraat, maar gaaf.
+  Ergens, ver weg, werkt Bert. Bert werkt met netwerken. Bert zet steeds gekke tekens, trekt stekkers, test, en... erge stress!
 
-  "Maak kaal CMS," blaart Jan. "Laat maat Graag Hans, maar laat Bart."
-  Hans, met baard, blaast: "Aah? SaaS? Naar Amazon? Bah!"
-  Bart, daarentegen, blaast aan: "Graag, maar waar dan?"
+  "'k Meen: werk met kernregels!" zegt Evert.
+  "Vergeet het!" zegt Bert, "Lekker rebels, 'k leef slechts met de E!"
 
-  Jan gaat aan’t werk. Start: bash. Maak maar plan van aanraakbaar panel, graag krasbaar, maar gaaf. Alles dragbaar, schaalbaar, adaptable aan taal naar aard.
+  Evert leest Bert z'n werk. Eerst: 'grep', 'sed', 'perl'.
+  "Help! De hel zelf leest sneller!"
+  "Welnee," zegt Bert, "deze regels representeren perfect het net!"
 
-  "Wat taal?" vraagt Hans.
-  "Java? Nah. Maar Bash? Hah! Maar wacht: daar ga ik naar Laravel."
-
-  Bart lacht hard. "Laravel? SaaS? Data naar Canada?"
-
-  Jan, kwaad, raast: "Bart, afgaan daar gaat aan, maar wacht: maakbaar! Aantrekkelijk! SaaS-aanpak!"
-  Bart, dramatisch, gaat af. Hans, daarentegen, gaat aan’t kladblad.
-
-  Daarna: databank. MariaDB? Ja! Maar data-arm. Waar data? SaaS-backup aan Kanaal-Braak?
-
-  Jan blaast alarm. "Bart had data! Maar Bart had drama!"
-  Hans gaat naar Bart. Bart slaapt. Jan slaat.
-
-  Laat: data-zaak gaat af. Maar Jan had backup. Haha! Bart baalt. Jan lacht.
+  Een week verder. Server gek.
+  Evert belt Bert. Bert rent. Server lekt.
+  Evert zet de zet: "Verzet werk!"
+  Bert keert, beseft het: "Echt, te veel pret met slechts de E..."
   """,
-  linked_sites: [%{route: "/a", site_id: 1, layout_id: nil}]
+  linked_sites: [
+    %{route: "/e", site_id: 1, layout_id: nil},
+    %{route: "/e", site_id: 2, layout_id: nil}
+  ]
 }
 
 %Pebble.Template{}

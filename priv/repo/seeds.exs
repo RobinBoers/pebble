@@ -53,3 +53,33 @@ params = %{
 %Pebble.Template{}
 |> Pebble.Template.changeset(params)
 |> Pebble.Repo.insert!()
+
+params = %{
+  label: "Robiño",
+  type: :plain,
+  visibility: :draft,
+  content: """
+  Er was eens un chico llamado Robiño. Hij woonde in een klein pueblo net buiten Almere, waar de koeien zeggen "moo" y de mensen zeggen "waar is mijn fiets?"
+
+  Op een dag besloot Robiño: "Hoy ga ik mijn dromen volgen en word ik een tortilla-bakker."
+  Zijn moeder zei: "Pero Robiño, je kan niet eens een ei breken zonder huilen!"
+  Waarop Robiño zei: "Maar madre, huilen maakt de omelet extra salty."
+
+  Hij begon zijn eigen zaakje: Tortillas y Bitterballen Robiño S.A.
+  Iedereen in het dorp was confused. Een klant vroeg: "Heeft u ook kroketten?"
+  En Robiño antwoordde trots: "No, maar ik heb tortilla met frikandel en een beetje olijf."
+
+  Op de opening kwam zelfs de burgemeester. Die nam een hap, keek drie seconden omhoog en zei:
+  "Dios mío... dit is... ongelofelijk verwarrend."
+  En Robiño riep: "Gracias! Wil je er ook satésaus bij?"
+
+  Sindsdien is Robiño bekend als de eerste tortilla-chef die permanent is verbannen uit Tex-Mex restaurants, maar wel een Michelin-ster kreeg van zijn eigen oma, handgeschreven met een Bic-pen op een servetje.
+  """,
+  linked_sites: [
+    %{route: "/robino", site_id: 2, layout_id: nil}
+  ]
+}
+
+%Pebble.Template{}
+|> Pebble.Template.changeset(params)
+|> Pebble.Repo.insert!()

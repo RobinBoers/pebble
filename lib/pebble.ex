@@ -95,10 +95,7 @@ defmodule Pebble do
       where: s.site_id == ^site_id,
       preload: [
         :sites,
-        linked_sites: ^from(s in Context,
-          where: s.site_id == ^site_id,
-          preload: [:layout]
-        )
+        linked_sites: ^from(s in Context, preload: [:layout])
       ]
   end
 
@@ -127,6 +124,7 @@ defmodule Pebble do
 
   defp populate_template(template, site_id) do
     %Template{linked_sites: linked} = template
+    dbg(template.sites)
 
     case Enum.find(linked, &(&1.site_id == site_id)) do
       %Context{} = settings ->

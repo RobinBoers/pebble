@@ -46,7 +46,7 @@ defmodule PebbleWeb.Navigation do
   end
 
   defp redirect_to_fallback(socket, [fallback | _]) do
-    {:halt, push_navigate(socket, to: ~p"/#{fallback.hostname}")}
+    {:halt, push_navigate(socket, to: ~p"/#{fallback}")}
   end
 
   defp redirect_to_fallback(_socket, []) do

@@ -1,10 +1,18 @@
 <header>
-  <h1><.link navigate={~p"/#{@site}/"}>pebble</.link></h1>
+  <div class="row">
+    <h1 class="relative">
+      <span
+        class="min-[1000px]:hidden absolute inset-0 z-10"
+        phx-click={JS.toggle_class("open", to: ".sidebar aside")}
+      />
+      <.link navigate={~p"/#{@site}"}>pebble</.link>
+    </h1>
+  </div>
 
   <div class="group">
     <.link href={"https://#{@site}"} target="_blank">View site →</.link>
-    <form phx-change="choose-site">
-      <select class="hidden sm:block" name="site">
+    <form phx-change="choose-site" class="hidden sm:block">
+      <select name="site">
         <option :for={site <- @sites} selected={site == @site}>{site}</option>
       </select>
     </form>

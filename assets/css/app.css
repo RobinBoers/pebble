@@ -6,9 +6,3 @@
 @import "_forms.css";
 @import "_components.css";
 @import "_layout.css";
-
-/* Utilities -- yes I am suitably ashamed :| */
-
-.contents {
-  display: contents;
-}

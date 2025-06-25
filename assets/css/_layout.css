@@ -82,8 +82,20 @@ body, html, [data-phx-main] {
   position: relative;
   flex-basis: 630px;
   margin: 0 auto;
-  margin-top: 3em;
+  margin-top: clamp(1.5em, 3.5vw, 3em);
   padding: 0 15px;
+}
+
+/* 270 + 630 = 1000px */
+@media (max-width: 1000px) {
+  .sidebar aside {
+    display: none;
+    flex-grow: 1;
+  }
+
+  .sidebar aside.open {
+    display: unset;
+  }
 }
 
 .sidebar main > header:not(:first-child) {

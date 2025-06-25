@@ -18,6 +18,10 @@ defmodule Pebble.Layout do
     timestamps()
   end
 
+  def changeset_for(%Site{} = site, params \\ %{}) do
+    changeset(%__MODULE__{site: site}, params)
+  end
+
   def changeset(schema \\ %__MODULE__{}, params \\ %{}) do
     schema
     |> cast(params, [:label, :content, :extends_id])

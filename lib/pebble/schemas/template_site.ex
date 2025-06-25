@@ -1,4 +1,4 @@
-defmodule Pebble.SiteTemplate do
+defmodule Pebble.TemplateSite do
   @moduledoc """
   This schema is required because Ecto does not support
   storing data on the edges between many-to-many relations.
@@ -10,7 +10,6 @@ defmodule Pebble.SiteTemplate do
   This is an irrelevant implementation detail.
   Please forget about it.
   """
-
   use Ecto.TypedSchema
   import Ecto.Changeset
 
@@ -18,7 +17,10 @@ defmodule Pebble.SiteTemplate do
   alias Pebble.Template
   alias Pebble.Layout
 
-  @primary_key false
+  # Usually, you'd have `@primary_key false` on these kind of
+  # edge tables, but since Ecto is being a crybaby otherwise,
+  # we have a surrogate key now.
+
   schema "templates_sites" do
     belongs_to :site, Site
     belongs_to :template, Template
@@ -26,11 +28,14 @@ defmodule Pebble.SiteTemplate do
   end
 
   def changeset(template_site, attrs) do
+    # The `template_id` is of course required in every row, but since
+    # these rows are inserted as part of the `Pebble.Template` changeset,
+    # we cannot mark it as required here, as that would break inserts.
+
     template_site
     |> cast(attrs, [:site_id, :template_id, :layout_id])
-    |> validate_required([:site_id, :template_id])
+    |> validate_required([:site_id])
     |> assoc_constraint(:site)
-    |> assoc_constraint(:template)
     |> assoc_constraint(:layout)
     |> unique_constraint([:site_id, :template_id])
   end

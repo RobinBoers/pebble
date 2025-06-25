@@ -2,11 +2,10 @@ defmodule PebbleWeb.Navigation do
   @moduledoc false
   use PebbleWeb, :live_hook
 
-  alias Pebble.Repo
   alias Pebble.Site
 
   def on_mount(_, %{"site" => hostname}, _session, socket) do
-    sites = Repo.all(Site)
+    sites = Pebble.fetch_sites()
 
     case Enum.find(sites, &(&1.hostname == hostname)) do
       %Site{} = site -> mount_site(socket, sites, site)
@@ -15,7 +14,7 @@ defmodule PebbleWeb.Navigation do
   end
   
   def on_mount(_, _params, _session, socket) do
-    redirect_to_fallback(socket, Repo.all(Site))
+    redirect_to_fallback(socket, Pebble.fetch_sites())
   end
 
   defp mount_site(socket, sites, site) do

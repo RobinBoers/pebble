@@ -3,17 +3,11 @@ defmodule PebbleWeb.LayoutsLive do
   use PebbleWeb, :live_view
 
   alias Pebble.Repo
-  alias Pebble.Site
   alias Pebble.Layout
 
-  import Ecto.Query
+  import Pebble, only: [fetch_layouts: 1, get_layout: 2]
 
   @decorate_all wrap_noreply()
-
-  @impl true
-  def mount(_params, _session, socket) do
-    assign(socket, :layouts, fetch_layouts(socket.assigns.site))
-  end
 
   @impl true
   def handle_params(%{"id" => id}, _url, socket) do
@@ -21,6 +15,7 @@ defmodule PebbleWeb.LayoutsLive do
       %Layout{} = layout ->
         socket
         |> assign(:slayout, layout) # because layout is apparently a reserved key
+        |> assign(:layouts, fetch_layouts(socket.assigns.site))
         |> assign(:changeset, Layout.changeset(layout))
 
       nil ->
@@ -30,27 +25,14 @@ defmodule PebbleWeb.LayoutsLive do
 
   @impl true
   def handle_params(_params, _url, socket) do
-    assign(socket, :changeset, Layout.changeset())
-  end
-
-  # TODO(robin): wrap these in another module/public API?
-  # because doing raw queries in the LiveView seems dirty...
-
-  defp get_layout(id, %Site{id: site_id}) do
-    Repo.one(from l in Layout,
-      where: l.id == ^id and l.site_id == ^site_id,
-      preload: :site)
-  end
-
-  defp fetch_layouts(%Site{id: site_id}) do
-    Repo.all(from l in Layout,
-      where: l.site_id == ^site_id,
-      order_by: [desc: l.updated_at])
+    socket
+    |> assign(:layouts, fetch_layouts(socket.assigns.site))
+    |> assign(:changeset, Layout.changeset_for(socket.assigns.site))
   end
 
   @impl true
   def handle_event("create-layout", %{"layout" => params}, socket) do
-    changeset = Layout.changeset(%Layout{site: socket.assigns.site}, params)
+    changeset = Layout.changeset_for(socket.assigns.site, params)
 
     case Repo.insert(changeset) do
       {:ok, layout} ->
@@ -63,7 +45,7 @@ defmodule PebbleWeb.LayoutsLive do
 
   @impl true
   def handle_event("save-layout", %{"layout" => params}, socket) do
-    changeset = Layout.changeset(socket.assigns.slayout, params)
+    changeset = Layout.changeset(%Layout{}, params)
 
     case Repo.update(changeset) do
       {:ok, layout} ->
@@ -103,7 +85,7 @@ defmodule PebbleWeb.LayoutsLive do
               field={f[:extends_id]}
               label="Extends:"
               type="select"
-              prompt="(nothing)"
+              prompt="(none)"
               options={Enum.map(@layouts, &{&1.label, &1.id})}
             />
           </div>

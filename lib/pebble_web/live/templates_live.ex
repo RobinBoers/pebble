@@ -31,7 +31,6 @@ defmodule PebbleWeb.TemplatesLive do
         |> assign(:templates, fetch_templates(socket.assigns.site))
         |> assign(:layouts, fetch_layouts(socket.assigns.site))
         |> assign(:changeset, Template.changeset(template))
-        |> assign(:other_sites, other_sites(template, socket.assigns.site))
         |> assign(visibility: @visibility, types: @types)
 
       nil ->
@@ -199,18 +198,35 @@ defmodule PebbleWeb.TemplatesLive do
               options={@types}
             />
 
-            <section :if={length(@sites) > 1} class="other-sites">
+            <section :if={length(@template.sites) > 1} class="other-sites">
               <header class="bar">
-                <h3>Other sites</h3>
-                <button :if={length(@template.sites) < length(@sites)}>
+                <h3>Available sites</h3>
+                <button
+                  :if={length(@template.sites) < length(@sites)}
+                  phx-click={JS.navigate(~p"/#{@site}/templates/#{@template}/add")}
+                >
                   <.icon name="hero-plus" class="size-3" />
                 </button>
               </header>
 
-              <.link :for={site <- @other_sites}>Edit on {site} →</.link>
+              <.link
+                :for={site <- @template.sites}
+                navigate={~p"/#{site}/templates/#{@template}"}
+                class={site.id == @site.id && "selected"}
+              >
+                {site}
+              </.link>
             </section>
 
-            <button phx-click="delete-template" data-confirm="Are you sure? This will permanently and irreversibly delete this template and deactivate its route, which will immediately break all URLs pointing to it. This action cannot be undone." class="delete">Delete</button>
+            <div class="actions">
+              <button
+                :if={length(@sites) > 1 and length(@template.sites) == 1}
+                phx-click={JS.navigate(~p"/#{@site}/templates/#{@template}/add")}>
+                Add to another site
+              </button>
+
+              <button phx-click="delete-template" data-confirm="Are you sure? This will permanently and irreversibly delete this template and deactivate its route, which will immediately break all URLs pointing to it. This action cannot be undone." class="delete">Delete</button>
+            </div>
           </aside>
         <% else %>
           <.input field={s[:site_id]} type="hidden" />

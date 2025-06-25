@@ -227,7 +227,7 @@ defmodule PebbleWeb.CoreComponents do
       <textarea
         id={@id}
         name={@name}
-        class={@errors != [] && "has-error"}
+        class={[@rest[:class], @errors != [] && "has-error"]}
         {@rest}
       >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
       <.error :for={msg <- @errors}>{msg}</.error>
@@ -245,7 +245,7 @@ defmodule PebbleWeb.CoreComponents do
         name={@name}
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-        class={[@title && "title", @errors != [] && "has-error"]}
+        class={[@rest[:class], @title && "title", @errors != [] && "has-error"]}
         {@rest}
       />
       <.error :for={msg <- @errors}>{msg}</.error>

@@ -1,5 +1,10 @@
 defmodule Pebble.Asset do
-  @moduledoc false
+  @moduledoc """
+  Represents an URL to an image or video.
+
+  An asset can optionally be annotated with a filename
+  (given during uploading) and alt text (for screenreaders).
+  """
   use Ecto.TypedSchema
 
   typed_schema "assets" do

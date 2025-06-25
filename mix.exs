@@ -1,70 +1,95 @@
 defmodule Pebble.MixProject do
   use Mix.Project
 
+  @documentation "https://hexdocs.pm/signo"
+  @git_repository "https://git.dupunkto.org/~axcelott/signo"
+
   def project do
     [
+      name: "pebble",
       app: :pebble,
       version: "0.1.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+
+      # Docs
+      source_url: @git_repository,
+      homepage_url: @documentation,
+      description: description(),
+      package: package(),
+      docs: docs()
     ]
   end
 
-  def application do
-    [
-      mod: {Pebble.Application, []},
-      extra_applications: [:logger, :runtime_tools]
-    ]
-  end
+  def description, do: 
+    "Pebble is the best CMS in the multiverse"
+
+  defp package, do: [
+    licenses: ["Unlicense"],
+    links: %{"Sources" => @git_repository}
+  ]
+
+  def application, do: [
+    mod: {Pebble.Application, []},
+    extra_applications: [:logger, :runtime_tools]
+  ]
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
-  defp deps do
-    [
-      {:phoenix, "~> 1.7.18"},
-      {:phoenix_ecto, "~> 4.5"},
-      {:ecto_sql, "~> 3.10"},
-      {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 4.1"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 1.0.0"},
-      {:floki, ">= 0.30.0", only: :test},
-      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
-      {:heroicons,
-       github: "tailwindlabs/heroicons",
-       tag: "v2.1.1",
-       sparse: "optimized",
-       app: false,
-       compile: false,
-       depth: 1},
-      {:telemetry_metrics, "~> 1.0"},
-      {:telemetry_poller, "~> 1.0"},
-      {:jason, "~> 1.2"},
-      {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"},
-      {:decorator, "~> 1.3"},
-      {:typed_ecto_schema, "~> 0.4.2"}
-    ]
-  end
+  defp deps, do: [
+    {:phoenix, "~> 1.7.18"},
+    {:phoenix_ecto, "~> 4.5"},
+    {:ecto_sql, "~> 3.10"},
+    {:postgrex, ">= 0.0.0"},
+    {:phoenix_html, "~> 4.1"},
+    {:phoenix_live_reload, "~> 1.2", only: :dev},
+    {:phoenix_live_view, "~> 1.0.0"},
+    {:floki, ">= 0.30.0", only: :test},
+    {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
+    {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
+    {:ex_doc, "~> 0.38", only: :dev, runtime: false},
+    {:heroicons,
+      github: "tailwindlabs/heroicons",
+      tag: "v2.1.1",
+      sparse: "optimized",
+      app: false,
+      compile: false,
+      depth: 1},
+    {:telemetry_metrics, "~> 1.0"},
+    {:telemetry_poller, "~> 1.0"},
+    {:jason, "~> 1.2"},
+    {:dns_cluster, "~> 0.1.1"},
+    {:bandit, "~> 1.5"},
+    {:decorator, "~> 1.3"},
+    {:typed_ecto_schema, "~> 0.4.2"}
+  ]
 
-  defp aliases do
-    [
-      setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind pebble", "esbuild pebble"],
-      "assets.deploy": [
-        "tailwind pebble --minify",
-        "esbuild pebble --minify",
-        "phx.digest"
-      ]
+  defp aliases, do: [
+    setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
+    "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+    "ecto.reset": ["ecto.drop", "ecto.setup"],
+    test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+    "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
+    "assets.build": ["tailwind pebble", "esbuild pebble"],
+    "assets.deploy": [
+      "tailwind pebble --minify",
+      "esbuild pebble --minify",
+      "phx.digest"
     ]
-  end
+  ]
+
+  defp docs, do: [
+    main: "Pebble",
+    api_reference: false,
+    authors: ["Robijntje"],
+    formatters: ["html"],
+    groups_for_modules: [
+      "Entities": [Pebble.Asset, Pebble.Contact, Pebble.Context, Pebble.Fragment, ~r/Pebble.Menu/, Pebble.Schema, Pebble.Template, Pebble.Settings],
+      "Web layer": [~r/PebbleWeb/]
+    ]
+  ]
 end

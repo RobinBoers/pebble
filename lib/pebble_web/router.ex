@@ -1,4 +1,5 @@
 defmodule PebbleWeb.Router do
+  @moduledoc false
   use PebbleWeb, :router
 
   pipeline :browser do

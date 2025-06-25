@@ -1,5 +1,11 @@
 defmodule Pebble.Menu.Category do
-  @moduledoc false
+  @moduledoc """
+  Represents a category in the menu for a site.
+
+  A category can contain one or more menu items. If the
+  category has no menu items, it will not be rendered on
+  the site.
+  """
   use Ecto.TypedSchema
 
   alias Pebble.Menu.Item

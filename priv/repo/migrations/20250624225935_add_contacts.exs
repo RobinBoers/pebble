@@ -3,9 +3,9 @@ defmodule Pebble.Repo.Migrations.AddContacts do
 
   def change do
     create table(:contacts) do
-      add :handle, :string
-      add :url, :string
-      add :email, :string
+      add :handle, :text
+      add :url,    :text
+      add :email,  :text
       add :notify, :boolean
     end
 

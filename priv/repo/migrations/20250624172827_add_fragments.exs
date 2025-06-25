@@ -3,7 +3,7 @@ defmodule Pebble.Repo.Migrations.AddFragments do
 
   def change do
     create table(:fragments) do
-      add :data, :string
+      add :data, :text
 
       add :schema_id, references(:schemas, on_delete: :delete_all), null: false
 

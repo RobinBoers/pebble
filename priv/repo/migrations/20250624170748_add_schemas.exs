@@ -3,8 +3,8 @@ defmodule Pebble.Repo.Migrations.AddSchemas do
 
   def change do
     create table(:schemas) do
-      add :label,      :string
-      add :definition, :string
+      add :label,      :text
+      add :definition, :text
 
       timestamps()
     end

@@ -3,8 +3,8 @@ defmodule Pebble.Repo.Migrations.AddSettings do
 
   def change do
     create table(:settings) do
-      add :data,       :string
-      add :defintions, :string
+      add :data,       :text
+      add :defintion,  :text
 
       add :site_id, references(:sites, on_delete: :delete_all), null: false
 

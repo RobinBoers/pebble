@@ -3,8 +3,8 @@ defmodule Pebble.Repo.Migrations.AddMenuItems do
 
   def change do
     create table(:menu_items) do
-      add :label, :string
-      add :route, :string
+      add :label, :text
+      add :route, :text
       add :order, :integer
 
       add :category_id, references(:menu_categories, on_delete: :delete_all)

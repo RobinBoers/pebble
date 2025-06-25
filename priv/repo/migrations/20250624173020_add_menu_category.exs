@@ -3,7 +3,7 @@ defmodule Pebble.Repo.Migrations.AddMenuCategory do
 
   def change do
     create table(:menu_categories) do
-      add :label, :string
+      add :label, :text
 
       timestamps()
     end

@@ -6,7 +6,7 @@ defmodule Pebble.Settings do
 
   typed_schema "settings" do
     field :data, :string
-    field :defintions, :string
+    field :defintion, :string
     belongs_to :site, Site
 
     timestamps()

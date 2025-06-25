@@ -3,16 +3,16 @@ defmodule Pebble.Repo.Migrations.AddTemplates do
 
   def change do
     create table(:templates) do
-      add :label,   :string
-      add :content, :string
-      add :type,    :string
+      add :label,   :text
+      add :content, :text
+      add :type,    :text
 
       timestamps()
     end
 
     # This join table has a primary key because Ecto is annoying.
     create table(:templates_sites) do
-      add :route, :string
+      add :route, :text
 
       add :layout_id,
           references(:layouts, on_delete: :nilify_all)

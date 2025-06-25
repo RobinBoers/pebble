@@ -3,9 +3,9 @@ defmodule Pebble.Repo.Migrations.AddSites do
 
   def change do
     create table(:sites) do
-      add :hostname, :string
-      add :vik_hostname,    :string
-      add :scry_hostname,   :string
+      add :hostname,        :text
+      add :vik_hostname,    :text
+      add :scry_hostname,   :text
 
       timestamps()
     end

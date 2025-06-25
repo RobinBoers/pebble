@@ -3,9 +3,9 @@ defmodule Pebble.Repo.Migrations.AddLayouts do
 
   def change do
     create table(:layouts) do
-      add :label,   :string
-      add :content, :string
-      add :extends, :string
+      add :label,   :text
+      add :content, :text
+      add :extends, :text
 
       add :extends_id, references(:layouts, on_delete: :nilify_all)
       add :site_id, references(:sites, on_delete: :delete_all), null: false

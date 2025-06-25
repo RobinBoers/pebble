@@ -3,9 +3,9 @@ defmodule Pebble.Repo.Migrations.AddAssets do
 
   def change do
     create table(:assets) do
-      add :url,      :string
-      add :alt,      :string
-      add :filename, :string
+      add :url,      :text
+      add :alt,      :text
+      add :filename, :text
 
       timestamps()
     end

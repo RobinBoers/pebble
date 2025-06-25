@@ -55,9 +55,17 @@ body, html, [data-phx-main] {
   list-style: none;
 }
 
+.editor .other-sites a {
+  border: 1px solid transparent;
+}
+
+.editor .other-sites a.selected {
+  border-color: var(--border-color);
+}
+
 .sidebar > aside nav a,
 .editor .other-sites a {
-  border-left: 4px solid light-dark(#777, #aaa);
+  border-left: 4px solid light-dark(#999, #aaa);
   display: block;
   text-decoration: none;
   padding: 0.4em 0.7em;
@@ -69,7 +77,7 @@ body, html, [data-phx-main] {
 
 .sidebar > aside nav a:hover,
 .editor .other-sites a:hover  {
-  border-color: light-dark(black, white);
+  border-left-color: light-dark(black, white);
   background: light-dark(#eee, #222228);
   opacity: 1;
 }
@@ -80,13 +88,13 @@ body, html, [data-phx-main] {
 
 .sidebar > aside nav a.selected,
 .editor .other-sites a.selected {
-  border-color: light-dark(black, white);
+  border-left-color: light-dark(black, white);
   background: light-dark(#eee, #1b1b22);
   cursor: default;
 }
 
 .editor .other-sites a.selected {
-  background: light-dark(#eee, #222228);
+  background: light-dark(white, #222228);
 }
 
 .sidebar > main {

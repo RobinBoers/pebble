@@ -91,8 +91,8 @@ defmodule Pebble.Schema do
     validate_schema(changeset, field, get_field(changeset, field))
   end
 
-  defp validate_schema(changeset, field, d) when d in [nil, ""] do
-    add_error(changeset, field, "can't be blank")
+  defp validate_schema(changeset, _, d) when d in [nil, ""] do
+    changeset
   end
 
   defp validate_schema(changeset, field, definition) do

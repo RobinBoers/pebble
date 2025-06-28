@@ -4,6 +4,7 @@ defmodule PebbleWeb.TemplatesLive do
 
   alias Pebble.Repo
   alias Pebble.Template
+  alias Pebble.Context
 
   import Pebble, only: [fetch_templates: 1, fetch_layouts: 1, get_template: 2]
 
@@ -32,6 +33,7 @@ defmodule PebbleWeb.TemplatesLive do
         |> assign(:layouts, fetch_layouts(socket.assigns.site))
         |> assign(:changeset, Template.changeset(template))
         |> assign(visibility: @visibility, types: @types)
+        |> assign_add_changeset(Context.changeset_for(template))
 
       nil ->
         push_patch(socket, to: ~p"/#{socket.assigns.site}/templates")
@@ -49,6 +51,13 @@ defmodule PebbleWeb.TemplatesLive do
 
   defp other_sites(template, site) do
     Enum.filter(template.sites, &(&1.id != site.id))
+  end
+
+  defp assign_add_changeset(socket, changeset) do
+    socket
+    |> assign(:add_changeset, changeset)
+    |> assign(:add_form, to_form(changeset))
+    |> assign_new(:add_layouts, fn -> [] end)
   end
 
   @impl true
@@ -91,6 +100,28 @@ defmodule PebbleWeb.TemplatesLive do
   end
 
   @impl true
+  def handle_event("choose-site", %{"context" => params}, socket) do
+    changeset = Context.changeset_for(socket.assigns.template, params)
+
+    socket
+    |> assign(:add_layouts, fetch_layouts(params["site_id"]))
+    |> assign_add_changeset(changeset)
+  end
+
+  @impl true
+  def handle_event("add-site", %{"context" => params}, socket) do
+    changeset = Context.changeset_for(socket.assigns.template, params)
+
+    case Repo.insert(changeset) do
+      {:ok, context} ->
+        push_patch(socket, to: ~p"/#{context.site_id}/templates/#{socket.assigns.template}")
+
+      {:error, changeset} ->
+        assign_add_changeset(socket, changeset)
+    end
+  end
+
+  @impl true
   def render(assigns) when assigns.live_action in [:templates, :new] do
     ~H"""
     <header class="bar">
@@ -114,12 +145,7 @@ defmodule PebbleWeb.TemplatesLive do
                 prompt="(none)"
                 options={Enum.map(@layouts, &{&1.label, &1.id})}
               />
-              <.input
-                field={f[:type]}
-                label="Render as:"
-                type="select"
-                options={@types}
-              />
+              <.input field={f[:type]} label="Render as:" type="select" options={@types} />
             </div>
 
             <div class="group">
@@ -145,8 +171,9 @@ defmodule PebbleWeb.TemplatesLive do
   def render(assigns) do
     ~H"""
     <.form
+      :let={f}
       class="editor"
-      :let={f} for={@changeset}
+      for={@changeset}
       phx-submit="save-template"
       phx-change="save-template"
       phx-debounce="blur"
@@ -163,14 +190,22 @@ defmodule PebbleWeb.TemplatesLive do
               </div>
             </header>
 
+            <.add_modal
+              :if={@live_action == :add && length(@template.sites) == 1}
+              site={@site}
+              template={@template}
+              form={@add_form}
+              layouts={@add_layouts}
+              sites={@sites}
+            />
+
             <.input field={f[:content]} type="textarea" />
           </div>
 
           <aside>
             <div class="vgroup">
               <button class="save">
-                <.icon name="hero-server" />
-                Save & deploy
+                <.icon name="hero-server" /> Save & deploy
               </button>
               <.input
                 field={f[:visibility]}
@@ -190,13 +225,7 @@ defmodule PebbleWeb.TemplatesLive do
               options={Enum.map(@layouts, &{&1.label, &1.id})}
             />
 
-            <.input
-              field={f[:type]}
-              label="Render as"
-              type="select"
-              display="block"
-              options={@types}
-            />
+            <.input field={f[:type]} label="Render as" type="select" display="block" options={@types} />
 
             <section :if={length(@template.sites) > 1} class="other-sites">
               <header>
@@ -209,23 +238,42 @@ defmodule PebbleWeb.TemplatesLive do
                 </button>
               </header>
 
-              <.link
-                :for={site <- @template.sites}
-                navigate={~p"/#{site}/templates/#{@template}"}
-                class={site.id == @site.id && "selected"}
-              >
-                {site}
-              </.link>
+              <.add_modal
+                :if={@live_action == :add}
+                site={@site}
+                template={@template}
+                form={@add_form}
+                layouts={@add_layouts}
+                sites={@sites}
+              />
+
+              <ul>
+                <li :for={site <- @template.sites}>
+                  <.link
+                    navigate={~p"/#{site}/templates/#{@template}"}
+                    class={site.id == @site.id && "selected"}
+                  >
+                    {site}
+                  </.link>
+                </li>
+              </ul>
             </section>
 
             <div class="actions">
               <button
                 :if={length(@sites) > 1 and length(@template.sites) == 1}
-                phx-click={JS.navigate(~p"/#{@site}/templates/#{@template}/add")}>
+                phx-click={JS.navigate(~p"/#{@site}/templates/#{@template}/add")}
+              >
                 Add to another site
               </button>
 
-              <button phx-click="delete-template" data-confirm="Are you sure? This will permanently and irreversibly delete this template and deactivate its route, which will immediately break all URLs pointing to it. This action cannot be undone." class="delete">Delete</button>
+              <button
+                phx-click="delete-template"
+                data-confirm="Are you sure? This will permanently and irreversibly delete this template and deactivate its route, which will immediately break all URLs pointing to it. This action cannot be undone."
+                class="delete"
+              >
+                Delete
+              </button>
             </div>
           </aside>
         <% else %>
@@ -235,6 +283,53 @@ defmodule PebbleWeb.TemplatesLive do
         <% end %>
       </.inputs_for>
     </.form>
+
+    <.form
+      id="add-form"
+      for={@add_form}
+      phx-change="choose-site"
+      phx-submit="add-site"
+      phx-debounce="blur"
+    >
+    </.form>
+    """
+  end
+
+  attr :site, :string, required: true
+  attr :template, :string, required: true
+  attr :form, :string, required: true
+  attr :layouts, :string, required: true
+  attr :sites, :string, required: true
+
+  defp add_modal(assigns) do
+    ~H"""
+    <.modal on_close={JS.navigate(~p"/#{@site}/templates/#{@template}")}>
+      <.input
+        form="add-form"
+        field={@form[:site_id]}
+        type="select"
+        label="Make this template available to:"
+        prompt="(select site)"
+        options={Enum.map(@sites -- @template.sites, &{&1.hostname, &1.id})}
+      />
+
+      <%= if @form[:site_id].value not in [nil, ""] do %>
+        <.input form="add-form" field={@form[:route]} type="text" label="Route" />
+        <.input
+          form="add-form"
+          field={@form[:layout_id]}
+          type="select"
+          label="Extends layout"
+          prompt="(none)"
+          options={Enum.map(@layouts, &{&1.label, &1.id})}
+        />
+      <% end %>
+
+      <div class="group">
+        <.link patch={~p"/#{@site}/templates/#{@template}"} class="button">Cancel</.link>
+        <button :if={@form[:site_id].value not in [nil, ""]} form="add-form">Add</button>
+      </div>
+    </.modal>
     """
   end
 end

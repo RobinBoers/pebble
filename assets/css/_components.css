@@ -129,7 +129,8 @@ input.title {
 
 .modal {
   position: absolute;
-  width: 95.5%; /* don't ask questions */
+  width: 100%;
+  right: 0;
   z-index: 200;
   padding: 0.7em;
   background: var(--sidebar-color);
@@ -137,8 +138,14 @@ input.title {
   margin-bottom: 0.25em;
 }
 
-.modal input {
+.modal input,
+.modal select {
   margin-bottom: 0.5em;
+}
+
+.modal .lowbar input,
+.modal .lowbar select {
+  margin-bottom: 0;
 }
 
 .modal button, .modal .button {

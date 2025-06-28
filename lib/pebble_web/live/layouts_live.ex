@@ -32,7 +32,7 @@ defmodule PebbleWeb.LayoutsLive do
 
   @impl true
   def handle_event("create-layout", %{"layout" => params}, socket) do
-    changeset = Layout.changeset(%Layout{}, params)
+    changeset = Layout.changeset_for(socket.assigns.site, params)
 
     case Repo.insert(changeset) do
       {:ok, layout} ->
@@ -45,7 +45,7 @@ defmodule PebbleWeb.LayoutsLive do
 
   @impl true
   def handle_event("save-layout", %{"layout" => params}, socket) do
-    changeset = Layout.changeset(socket.assigns.layout, params)
+    changeset = Layout.changeset(socket.assigns.slayout, params)
 
     case Repo.update(changeset) do
       {:ok, layout} ->

@@ -8,15 +8,16 @@ defmodule Pebble.Context do
   - The layout to use (since layouts cannot be shared across sites)
   - The route on which the template will be rendered.
 
-  This schema is required because Ecto does not support storing data 
+  This schema is required because Ecto does not support storing data
   on the edges (ie. join tables) between many-to-many relations.
   """
   use Ecto.TypedSchema
-  import Ecto.Changeset
 
   alias Pebble.Site
   alias Pebble.Template
   alias Pebble.Layout
+
+  import Ecto.Changeset
 
   # Usually, you'd have `@primary_key false` on these kind of
   # edge tables, but since Ecto is being a crybaby otherwise,
@@ -30,16 +31,19 @@ defmodule Pebble.Context do
     belongs_to :template, Template
   end
 
-  def changeset(site_settings, attrs) do
+  def changeset_for(%Template{id: template_id}, params \\ %{}) do
+    changeset(%__MODULE__{template_id: template_id}, params)
+  end
+
+  def changeset(settings \\ %__MODULE__{}, params \\ %{}) do
     # The `template_id` is of course required in every row, but since
     # these rows are inserted as part of the `Pebble.Template` changeset,
     # we cannot mark it as required here, as that would break inserts.
 
-    site_settings
-    |> cast(attrs, [:route, :layout_id, :site_id, :template_id])
+    settings
+    |> cast(params, [:route, :site_id, :layout_id])
     |> validate_required([:route, :site_id])
-    |> assoc_constraint(:site)
-    |> assoc_constraint(:layout)
+    |> unique_constraint(:route)
     |> unique_constraint([:site_id, :template_id])
   end
 end

@@ -175,8 +175,26 @@ body, html, [data-phx-main] {
   text-align: center;
 }
 
+.editor label {
+  display: block;
+  margin-bottom: 0.25em;
+}
+
 .editor .other-sites {
   margin-top: 1.5em;
+}
+
+.editor .other-sites header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.25em;
+  margin-bottom: 0.4em;
+}
+
+.editor .other-sites header h3 {
+  margin: 0;
 }
 
 .editor .actions {

@@ -7,6 +7,9 @@ defmodule Ecto.TypedSchema do
   defmacro __using__(_) do
     quote do
       use TypedEctoSchema
+
+      @primary_key {:id, :string, autogenerate: {Ecto.HumID, :generate_id, []}}
+      @foreign_key_type :string
     end
   end
 end

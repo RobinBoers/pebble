@@ -2,7 +2,8 @@ defmodule Pebble.Repo.Migrations.AddMenuCategory do
   use Ecto.Migration
 
   def change do
-    create table(:menu_categories) do
+    create table(:menu_categories, primary_key: false) do
+      add :id, :string, primary_key: true
       add :label, :text
 
       timestamps()
@@ -10,11 +11,11 @@ defmodule Pebble.Repo.Migrations.AddMenuCategory do
 
     create table(:categories_sites, primary_key: false) do
       add :site_id,
-          references(:sites, on_delete: :delete_all),
+          references(:sites, type: :string, on_delete: :delete_all),
           null: false
 
       add :category_id,
-          references(:menu_categories, on_delete: :delete_all),
+          references(:menu_categories, type: :string, on_delete: :delete_all),
           null: false
     end
 

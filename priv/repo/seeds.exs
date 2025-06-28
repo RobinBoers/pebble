@@ -10,18 +10,15 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-Pebble.Repo.insert!(%Pebble.Site{
-  id: 1,
+site0 = Pebble.Repo.insert!(%Pebble.Site{
   hostname: "geheimesite.nl"
 })
 
-Pebble.Repo.insert!(%Pebble.Site{
-  id: 2,
+site1 = Pebble.Repo.insert!(%Pebble.Site{
   hostname: "obliviously.eu"
 })
 
-Pebble.Repo.insert!(%Pebble.Site{
-  id: 3,
+site2 = Pebble.Repo.insert!(%Pebble.Site{
   hostname: "dupunkto.org"
 })
 
@@ -45,8 +42,8 @@ params = %{
   Bert keert, beseft het: "Echt, te veel pret met slechts de E..."
   """,
   linked_sites: [
-    %{route: "/e", site_id: 1, layout_id: nil},
-    %{route: "/e", site_id: 2, layout_id: nil}
+    %{route: "/e", site_id: site0.id, layout_id: nil},
+    %{route: "/e", site_id: site1.id, layout_id: nil}
   ]
 }
 
@@ -76,7 +73,7 @@ params = %{
   Sindsdien is Robiño bekend als de eerste tortilla-chef die permanent is verbannen uit Tex-Mex restaurants, maar wel een Michelin-ster kreeg van zijn eigen oma, handgeschreven met een Bic-pen op een servetje.
   """,
   linked_sites: [
-    %{route: "/robino", site_id: 2, layout_id: nil}
+    %{route: "/robino", site_id: site1.id, layout_id: nil}
   ]
 }
 
@@ -102,7 +99,7 @@ params = %{
     Dus: hoe minder jongeren lezen, hoe meer problemen er verholpen worden. Vergeet daarom het kleine meisje dat in de Tweede Wereldoorlog de boekrecensies van de buren als enige leesvoer had en ze opslurpte als honing voor haar ziel. Vergeet de boekenwijsheid die de ouderen van nu vroeger op hebben gedaan. In het boek Fahrenheit 451 is het de bevolking verboden om boeken te lezen en wordt men volgestopt met betaalbare vormen van amusement. Met de ontlezing werken we daarnaar toe. Want dit is de toekomst. Dit is pas echte progressie.
   """,
   linked_sites: [
-    %{route: "/lezen", site_id: 2, layout_id: nil}
+    %{route: "/lezen", site_id: site1.id, layout_id: nil}
   ]
 }
 

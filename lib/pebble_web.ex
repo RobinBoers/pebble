@@ -47,7 +47,7 @@ defmodule PebbleWeb do
       unquote(verified_routes())
     end
   end
-  
+
   def live_hook do
     quote do
       import Phoenix.LiveView

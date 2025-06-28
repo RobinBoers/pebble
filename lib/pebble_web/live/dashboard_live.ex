@@ -11,7 +11,7 @@ defmodule PebbleWeb.DashboardLive do
 
     <p>Welcome to pebble, a simple but powerful tool to publish words on the Web.</p>
 
-    <p><br></p>
+    <p><br /></p>
 
     <h3>Quick actions</h3>
 

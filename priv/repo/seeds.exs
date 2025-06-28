@@ -10,17 +10,20 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-site0 = Pebble.Repo.insert!(%Pebble.Site{
-  hostname: "geheimesite.nl"
-})
+site0 =
+  Pebble.Repo.insert!(%Pebble.Site{
+    hostname: "geheimesite.nl"
+  })
 
-site1 = Pebble.Repo.insert!(%Pebble.Site{
-  hostname: "obliviously.eu"
-})
+site1 =
+  Pebble.Repo.insert!(%Pebble.Site{
+    hostname: "obliviously.eu"
+  })
 
-site2 = Pebble.Repo.insert!(%Pebble.Site{
-  hostname: "dupunkto.org"
-})
+site2 =
+  Pebble.Repo.insert!(%Pebble.Site{
+    hostname: "dupunkto.org"
+  })
 
 params = %{
   label: "E",

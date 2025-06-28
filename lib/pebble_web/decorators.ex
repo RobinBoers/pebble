@@ -16,14 +16,14 @@ defmodule PebbleWeb.Decorators do
   only the second line is required.
 
   ## Circumvention
-  
+
   If you still wanna return tuples that is fine, and should keep working
   while using this decorator, because for some LiveView behaviour
   (eg. `Phoenix.LiveView.handle_info/2`) returning `{:reply, socket, details}`
   tuples is still desired.
   """
 
-  use Decorator.Define, [wrap_noreply: 0]
+  use Decorator.Define, wrap_noreply: 0
 
   def wrap_noreply(body, context) do
     quote do

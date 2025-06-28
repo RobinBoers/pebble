@@ -6,7 +6,7 @@ defmodule PebbleWeb.SchemasLive do
   alias Pebble.Schema
 
   import Pebble, only: [fetch_schemas: 0, get_schema: 1]
-  
+
   @decorate_all wrap_noreply()
 
   @impl true
@@ -61,7 +61,7 @@ defmodule PebbleWeb.SchemasLive do
   @impl true
   def handle_event("delete-schema", _params, socket) do
     case Repo.delete(socket.assigns.schema) do
-      {:ok, schema} -> 
+      {:ok, schema} ->
         socket
         |> assign(:schema, schema)
         |> assign(:changeset, Schema.changeset(schema))
@@ -115,7 +115,12 @@ defmodule PebbleWeb.SchemasLive do
       </header>
       <.input field={f[:definition]} type="textarea" />
       <div class="options">
-        <button phx-click="delete-schema" data-confirm="Are you sure? This will permanently and irreversibly delete this schema and all fragments using it. This action cannot be undone.">Delete</button>
+        <button
+          phx-click="delete-schema"
+          data-confirm="Are you sure? This will permanently and irreversibly delete this schema and all fragments using it. This action cannot be undone."
+        >
+          Delete
+        </button>
       </div>
     </.form>
     """

@@ -7,8 +7,8 @@ defmodule Pebble.Menu.Item do
   path.
 
   Internal paths will be validated to exists for one or more
-  `Pebble.Template` instances. If their routes change, a 
-  warning will be shown on the dashboard to indicate that a 
+  `Pebble.Template` instances. If their routes change, a
+  warning will be shown on the dashboard to indicate that a
   menu item is now linking to a non-existing path.
   """
   use Ecto.TypedSchema

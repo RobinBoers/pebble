@@ -28,6 +28,7 @@ defmodule PebbleWeb.Navigation do
 
   defp assign_menu(socket) do
     site = socket.assigns.site
+
     assign(socket, :menu_items, [
       %{view: PebbleWeb.DashboardLive, title: "Dashboard", route: ~p"/#{site}", icon: "hero-home"},
       %{view: PebbleWeb.FragmentsLive, title: "Fragments", route: ~p"/#{site}/fragments", icon: "hero-square-3-stack-3d"},

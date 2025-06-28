@@ -70,7 +70,8 @@ defmodule Pebble.Schema do
   def properties, do: ~w(type label required default min max)
 
   @doc "Supported field types"
-  def field_types, do: ~w(text textarea number boolean date time datetime color asset url email heex)
+  def field_types,
+    do: ~w(text textarea number boolean date time datetime color asset url email heex)
 
   typed_schema "schemas" do
     field :label, :string
@@ -83,6 +84,7 @@ defmodule Pebble.Schema do
     schema
     |> cast(params, [:label, :definition])
     |> validate_required([:label])
+
     # |> validate_schema(:definition)
   end
 
@@ -102,9 +104,10 @@ defmodule Pebble.Schema do
   def validate(definition) do
     with {:ok, data} <- Toml.decode(definition) do
       # TODO(robin): the error from toml should also be a list w one string then.
-      errors = Enum.flat_map(data, fn {key, defn} ->
-        key |> validate_field(defn) |> List.wrap()
-      end)
+      errors =
+        Enum.flat_map(data, fn {key, defn} ->
+          key |> validate_field(defn) |> List.wrap()
+        end)
 
       if errors == [], do: :ok, else: {:error, errors}
     end

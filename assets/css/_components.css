@@ -238,3 +238,46 @@ ul li .actions select {
   width: auto;
   flex-grow: 1;
 }
+
+/* Overflow menus */
+
+.overflow-menu {
+  display: none;
+  --border-width: 1px;
+  background: var(--sidebar-color);
+  border: var(--border-width) solid var(--border-color);
+  flex-direction: column;
+  position: absolute;
+  right: calc(-1 * var(--border-width));
+}
+
+.overflow-menu a {
+  text-decoration: none;
+  padding: 0.35em 0.6em;
+  min-width: 130px;
+  margin: 0;
+}
+
+.overflow-menu a:hover {
+  background: light-dark(#eee, #222228);
+}
+
+/* Schema forms */
+
+.schema-input {
+  display: flex;
+  gap: 0.25em 0.75em;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+.schema-input input,
+.schema-input select,
+.schema-input textarea {
+  margin-bottom: 0;
+}
+
+.schema-input textarea {
+  height: initial;
+}

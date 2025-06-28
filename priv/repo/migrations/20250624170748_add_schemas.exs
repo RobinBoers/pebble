@@ -5,6 +5,7 @@ defmodule Pebble.Repo.Migrations.AddSchemas do
     create table(:schemas, primary_key: false) do
       add :id, :string, primary_key: true
       add :label,      :text
+      add :listing,    :text
       add :definition, :text
 
       timestamps()

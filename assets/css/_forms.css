@@ -16,6 +16,7 @@ input[type="button"],
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 0.3em;
 }
 
 button:hover,
@@ -81,10 +82,6 @@ input[type="file"] {
 
 label:not(:has(input)) {
   font-weight: bold;
-}
-
-input[type="date"] {
-  margin-left: 1em;
 }
 
 textarea {

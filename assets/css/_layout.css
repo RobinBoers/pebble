@@ -66,7 +66,6 @@ body, html, [data-phx-main] {
 .sidebar > aside nav a,
 .editor .other-sites li a {
   border-left: 4px solid light-dark(#999, #aaa);
-  display: block;
   text-decoration: none;
   padding: 0.4em 0.7em;
   margin-bottom: 0.25em;
@@ -216,4 +215,9 @@ body, html, [data-phx-main] {
   flex-direction: column;
   gap: 0.2em;
   margin-top: auto;
+}
+
+/* Small fix for buttons in bars next to titles in editors */
+.bar:has(.title) {
+  align-items: stretch;
 }

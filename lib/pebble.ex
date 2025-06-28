@@ -36,7 +36,14 @@ defmodule Pebble do
   @spec get_schema(integer()) :: Schema.t() | nil
 
   def get_schema(id) do
-    Repo.get(Schema, id)
+    with %Schema{} = s <- Repo.get(Schema, id) do
+      Map.put(s, :fields, decode_toml(s.definition))
+    end
+  end
+
+  defp decode_toml(nil), do: []
+  defp decode_toml(definition) do
+    Toml.decode!(definition, keys: :atoms)
   end
 
   @doc """

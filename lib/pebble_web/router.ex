@@ -23,8 +23,9 @@ defmodule PebbleWeb.Router do
       pipe_through :browser
 
       live "/", DashboardLive, :dashboard
-      live "/fragments", FragmentsLive, :fragments
-      live "/fragments/new", FragmentsLive, :new
+      live "/fragments", FragmentsLive, :schemas
+      live "/fragments/:schema", FragmentsLive, :listing
+      live "/fragments/:schema/new", FragmentsLive, :new
       live "/fragments/:id", FragmentsLive, :edit
       live "/templates", TemplatesLive, :templates
       live "/templates/new", TemplatesLive, :new

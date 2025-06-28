@@ -9,6 +9,11 @@ defmodule PebbleWeb.SchemasLive do
 
   @decorate_all wrap_noreply()
 
+  @listings [
+    {"Table", :table},
+    {"Inline", :inline}
+  ]
+
   @impl true
   def handle_params(%{"id" => id}, _url, socket) do
     case get_schema(id) do
@@ -16,6 +21,7 @@ defmodule PebbleWeb.SchemasLive do
         socket
         |> assign(:schema, schema)
         |> assign(:schemas, fetch_schemas())
+        |> assign(:listings, @listings)
         |> assign(:changeset, Schema.changeset(schema))
 
       nil ->
@@ -113,7 +119,7 @@ defmodule PebbleWeb.SchemasLive do
         <.input field={f[:label]} title placeholder="Label" />
         <button>Save</button>
       </header>
-      <.input field={f[:definition]} type="textarea" />
+      <.input field={f[:definition]} type="textarea" phx-debounce="blur" />
       <div class="options">
         <button
           phx-click="delete-schema"
@@ -121,6 +127,8 @@ defmodule PebbleWeb.SchemasLive do
         >
           Delete
         </button>
+
+        <.input field={f[:listing]} type="select" label="Rendering:" options={@listings} />
       </div>
     </.form>
     """

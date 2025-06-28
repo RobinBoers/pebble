@@ -38,26 +38,27 @@ defmodule Pebble.Schema do
   ## Appendix 1: Example (`"post"`)
 
       [title]
-      type = text
+      type = "text"
       label = "Title"
       required = true
+      max = 45
 
       [published]
-      type = datetime
+      type = "datetime"
       label = "Published on"
       required = true
 
       [content]
-      type = textarea
+      type = "textarea"
       label = "Content"
       required = true
 
       [photo]
-      type = asset
+      type = "asset"
       label = "Attach a photo"
 
       [index]
-      type = boolean
+      type = "boolean"
       label = "Visible to search engines?"
       default = false
 
@@ -66,12 +67,11 @@ defmodule Pebble.Schema do
 
   import Ecto.Changeset
 
-  @doc "Supported field properties"
+  @doc "Supported field properties."
   def properties, do: ~w(type label required default min max)
 
-  @doc "Supported field types"
-  def field_types,
-    do: ~w(text textarea number boolean date time datetime color asset url email heex)
+  @doc "Supported field types."
+  def field_types, do: ~w(text textarea number boolean date time datetime color asset url email heex)
 
   typed_schema "schemas" do
     field :label, :string
@@ -84,88 +84,102 @@ defmodule Pebble.Schema do
     schema
     |> cast(params, [:label, :definition])
     |> validate_required([:label])
-
-    # |> validate_schema(:definition)
+    |> validate_schema(:definition)
   end
 
-  # defp validate_schema(changeset, field) do
-  #   changeset
-  #   |> get_field(field)
-  #   |> validate()
-  #   |> case do
-  #     :ok ->
-  #       changeset
+  defp validate_schema(changeset, field) when is_atom(field) do
+    validate_schema(changeset, field, get_field(changeset, field))
+  end
 
-  #     {:error, errors} ->
-  #       Enum.reduce
-  #   end
-  # end
+  defp validate_schema(changeset, field, d) when d in [nil, ""] do
+    add_error(changeset, field, "can't be blank")
+  end
 
-  def validate(definition) do
-    with {:ok, data} <- Toml.decode(definition) do
-      # TODO(robin): the error from toml should also be a list w one string then.
-      errors =
-        Enum.flat_map(data, fn {key, defn} ->
-          key |> validate_field(defn) |> List.wrap()
-        end)
-
-      if errors == [], do: :ok, else: {:error, errors}
+  defp validate_schema(changeset, field, definition) do
+    case Toml.decode(definition) do
+      {:ok, data} ->
+        data
+        |> collect_errors()
+        |> Enum.reduce(changeset, &add_error(&2, field, &1))
+      
+      _ ->
+        add_error(changeset, field, "invalid toml")
     end
   end
 
+  @doc """
+  Validates whether the given TOML definition is a valid `Pebble.Schema`.
+
+  Returns either a single error or a list of errors.
+  """
+  @spec validate(String.t()) :: :ok | {:error, String.t() | [String.t()]}
+  def validate(definition) when is_binary(definition) do
+    case Toml.decode(definition) do
+      {:ok, data} -> validate_data(data)
+      _ -> {:error, "invalid toml"}
+    end
+  end
+
+  defp validate_data(data) do
+    case collect_errors(data) do
+      [] -> :ok
+      e -> {:error, e}
+    end
+  end
+
+  defp collect_errors(data) do
+    Enum.flat_map(data, fn {key, defn} ->
+      key
+      |> validate_field(defn)
+      |> List.wrap()
+      |> Enum.reject(&is_nil/1)
+      |> List.flatten()
+    end)
+  end
+
   defp validate_field(key, defn) when not is_map(defn) do
-    "top-level key #{key} will be ignored"
+    "top-level key '#{key}' not supported"
   end
 
   defp validate_field(key, defn) do
-    {known, unknown} = Map.split(defn, properties())
-
-    unknown_keys =
-      for {prop, _} <- unknown do
-        "property #{prop} on field #{key} does not exist; typo?"
-      end
-
-    type_errors =
-      for {prop, val} <- known do
-        validate_property(key, prop, val)
-      end
-
-    unknown_keys ++ type_errors
+    for {prop, val} <- defn do
+      validate_property(key, prop, val)
+    end
   end
 
   defp validate_property(key, "type", val) do
     unless val in field_types() do
-      "unsupported field type #{val} for field #{key}"
+      "unsupported field type '#{val}' for field '#{key}'"
     end
   end
 
   defp validate_property(key, "label", val) do
     unless is_binary(val) do
-      "unsupported label value for field #{key}"
+      "unsupported label value for field '#{key}'"
     end
   end
 
   defp validate_property(key, "required", val) do
     unless val in [true, false] do
-      "required property should be a boolean for field #{key}"
+      "'required' property on field '#{key}' should be a boolean "
     end
   end
 
   defp validate_property(_key, "default", _val), do: []
 
   defp validate_property(key, "min", val) do
-    unless is_number(val) do
-      "unsupported min value for field #{key}"
+    unless is_number(val) and val >= 0 do
+      "unsupported min value for field '#{key}'"
     end
   end
 
   defp validate_property(key, "max", val) do
-    unless is_number(val) do
-      "unsupported max value for field #{key}"
+    unless is_number(val) and val >= 0 do
+      "unsupported max value for field '#{key}'"
     end
   end
 
   defp validate_property(key, prop, _val) do
-    "unknown property #{prop} on field #{key}"
+    "unknown property '#{prop}' on field '#{key}'"
   end
 end

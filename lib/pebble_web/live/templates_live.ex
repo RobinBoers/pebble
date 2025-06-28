@@ -173,7 +173,7 @@ defmodule PebbleWeb.TemplatesLive do
                 Save & deploy
               </button>
               <.input
-                field={s[:visibility]}
+                field={f[:visibility]}
                 type="select"
                 display="block"
                 class="visibility"
@@ -199,7 +199,7 @@ defmodule PebbleWeb.TemplatesLive do
             />
 
             <section :if={length(@template.sites) > 1} class="other-sites">
-              <header class="bar">
+              <header>
                 <h3>Available sites</h3>
                 <button
                   :if={length(@template.sites) < length(@sites)}

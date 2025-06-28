@@ -179,7 +179,7 @@ defmodule PebbleWeb.TemplatesLive do
       phx-debounce="blur"
     >
       <.inputs_for :let={s} field={f[:linked_sites]}>
-        <%= if to_string(s[:site_id].value) == to_string(@site.id) do %>
+        <%= if current_site?(s, @site) do %>
           <div class="plane">
             <header>
               <.input field={s[:site_id]} type="hidden" />
@@ -190,13 +190,14 @@ defmodule PebbleWeb.TemplatesLive do
               </div>
             </header>
 
+            <!-- Render modal across page if there are no other sites yet -->
             <.add_modal
               :if={@live_action == :add && length(@template.sites) == 1}
               site={@site}
               template={@template}
               form={@add_form}
               layouts={@add_layouts}
-              sites={@sites}
+              sites={@sites -- @template.sites}
             />
 
             <.input field={f[:content]} type="textarea" />
@@ -238,13 +239,14 @@ defmodule PebbleWeb.TemplatesLive do
                 </button>
               </header>
 
+              <!-- Render modal in sidebar section if there áre multiple sites already. -->
               <.add_modal
                 :if={@live_action == :add}
                 site={@site}
                 template={@template}
                 form={@add_form}
                 layouts={@add_layouts}
-                sites={@sites}
+                sites={@sites -- @template.sites}
               />
 
               <ul>
@@ -310,10 +312,10 @@ defmodule PebbleWeb.TemplatesLive do
         type="select"
         label="Make this template available to:"
         prompt="(select site)"
-        options={Enum.map(@sites -- @template.sites, &{&1.hostname, &1.id})}
+        options={Enum.map(@sites, &{&1.hostname, &1.id})}
       />
 
-      <%= if @form[:site_id].value not in [nil, ""] do %>
+      <%= if selected_site?(@form) do %>
         <.input form="add-form" field={@form[:route]} type="text" label="Route" />
         <.input
           form="add-form"
@@ -327,9 +329,17 @@ defmodule PebbleWeb.TemplatesLive do
 
       <div class="group">
         <.link patch={~p"/#{@site}/templates/#{@template}"} class="button">Cancel</.link>
-        <button :if={@form[:site_id].value not in [nil, ""]} form="add-form">Add</button>
+        <button :if={selected_site?(@form)} form="add-form">Add</button>
       </div>
     </.modal>
     """
+  end
+
+  defp current_site?(form, site) do
+    form[:site_id].value == site.id
+  end
+
+  defp selected_site?(form) do
+    form[:site_id].value not in [nil, ""]
   end
 end

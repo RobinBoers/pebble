@@ -19,7 +19,7 @@ defmodule PebbleWeb.Decorators do
 
   If you still wanna return tuples that is fine, and should keep working
   while using this decorator, because for some LiveView behaviour
-  (eg. `Phoenix.LiveView.handle_info/2`) returning `{:reply, socket, details}`
+  (eg. `c:Phoenix.LiveView.handle_info/2`) returning `{:reply, socket, details}`
   tuples is still desired.
   """
 

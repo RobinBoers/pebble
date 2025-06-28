@@ -23,7 +23,7 @@ defmodule Pebble.Context do
   # edge tables, but since Ecto is being a crybaby otherwise,
   # we have a surrogate key now.
 
-  schema "templates_sites" do
+  typed_schema "templates_sites" do
     field :route, :string
 
     belongs_to :layout, Layout

@@ -1,7 +1,6 @@
 defmodule Pebble.Fragment do
   @moduledoc """
-  Blobs of well-defined JSON data, as outlined by
-  a `Pebble.Schema`.
+  Blobs of well-defined JSON data, as outlined by a `Pebble.Schema`.
   """
   use Ecto.TypedSchema
 

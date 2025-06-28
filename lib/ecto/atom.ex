@@ -1,6 +1,10 @@
 defmodule Ecto.Atom do
-  @moduledoc false
+  @moduledoc """
+  `Ecto.Type` for storing Elixir atoms as SQL strings.
+  """
   use Ecto.Type
+
+  @type t :: atom()
 
   def type, do: :string
 

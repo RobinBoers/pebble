@@ -1,5 +1,8 @@
 defmodule Pebble.Template do
-  @moduledoc false
+  @moduledoc """
+  A template defines the dynamically generated HTML to be
+  rendered on a specified route.
+  """
   use Ecto.TypedSchema
 
   alias Pebble.Site

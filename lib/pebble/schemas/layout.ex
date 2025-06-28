@@ -1,10 +1,15 @@
 defmodule Pebble.Layout do
-  @moduledoc false
+  @moduledoc """
+  A layout is a template that can embed other templates that is
+  usually used for shared site code, like the header, menu and footer.
+  """
   use Ecto.TypedSchema
+
+  alias Pebble.Site
 
   import Ecto.Changeset
 
-  alias Pebble.Site
+  # TODO(robin): prevent self- and circular extends.
 
   typed_schema "layouts" do
     field :label, :string

@@ -1,5 +1,7 @@
 defmodule Pebble.Site do
-  @moduledoc false
+  @moduledoc """
+  A site is the parent entity of all content.
+  """
   use Ecto.TypedSchema
 
   import Ecto.Changeset

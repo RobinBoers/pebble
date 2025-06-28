@@ -1,5 +1,9 @@
 defmodule Pebble.Settings do
-  @moduledoc false
+  @moduledoc """
+  The settings are a object of globally available variables
+  within all templating in a `Pebble.Site`, along with a schema
+  well-defining it.
+  """
   use Ecto.TypedSchema
 
   alias Pebble.Site

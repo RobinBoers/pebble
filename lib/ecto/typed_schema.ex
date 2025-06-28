@@ -1,8 +1,9 @@
 defmodule Ecto.TypedSchema do
-  @moduledoc false
-
-  # This module provides a very thin wrapped around the `TypedEctoSchema`
-  # library in case we might want to extends the schemas further.
+  @moduledoc """
+  Provides a very thin wrapped around the `TypedEctoSchema` library
+  with sane-defaults. Additionally, it configures the use of
+  `Ecto.HumID` as default primary key.
+  """
 
   defmacro __using__(_) do
     quote do

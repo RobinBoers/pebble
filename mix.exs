@@ -1,8 +1,8 @@
 defmodule Pebble.MixProject do
   use Mix.Project
 
-  @documentation "https://hexdocs.pm/signo"
-  @git_repository "https://git.dupunkto.org/~axcelott/signo"
+  @documentation "https://hexdocs.pm/pebble"
+  @git_repository "https://git.dupunkto.org/~axcelott/pebble"
 
   def project do
     [
@@ -89,8 +89,9 @@ defmodule Pebble.MixProject do
     authors: ["Robijntje"],
     formatters: ["html"],
     groups_for_modules: [
-      "Entities": [Pebble.Asset, Pebble.Contact, Pebble.Context, Pebble.Fragment, ~r/Pebble.Menu/, Pebble.Schema, Pebble.Template, Pebble.Settings],
-      "Web layer": [~r/PebbleWeb/]
+      "Entities": [Pebble.Site, Pebble.Layout, Pebble.Asset, Pebble.Contact, Pebble.Context, Pebble.Fragment, ~r/Pebble.Menu/, Pebble.Schema, Pebble.Template, Pebble.Settings],
+      "Web Layer": [~r/PebbleWeb/],
+      Ecto: [~r/Ecto./]
     ]
   ]
 end

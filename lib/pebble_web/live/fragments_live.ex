@@ -32,7 +32,7 @@ defmodule PebbleWeb.FragmentsLive do
     <%= if @live_action == :schemas do %>
       <header class="bar">
         <h2>Fragments</h2>
-        <.overflow_menu id="new">
+        <.overflow_menu :if={@schemas != []} id="new">
           <:button>
             New
             <.icon name="hero-chevron-down-mini" />
@@ -91,6 +91,7 @@ defmodule PebbleWeb.FragmentsLive do
   end
 
   attr :name, :string, required: true
+  attr :type, :string, required: true
   attr :props, :map, required: true
 
   defp schema_input(%{type: t} = assigns) when t in ~w(textarea template) do
@@ -131,7 +132,7 @@ defmodule PebbleWeb.FragmentsLive do
     </div>
     """
   end
-  
+
   attr :name, :string, required: true
   attr :props, :map, required: true
 

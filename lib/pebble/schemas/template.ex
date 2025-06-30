@@ -41,9 +41,7 @@ defmodule Pebble.Template do
     |> cast(params, [:label, :content, :type, :visibility])
     |> cast_assoc(:linked_sites, required: true)
     |> validate_required([:label, :type])
-    |> validate_format(:route, ~r|^/|, message: "must start with '/'")
     |> validate_inclusion(:type, types())
     |> validate_inclusion(:visibility, visibility())
-    |> unique_constraint(:route)
   end
 end

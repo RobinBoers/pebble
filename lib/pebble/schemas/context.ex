@@ -43,6 +43,7 @@ defmodule Pebble.Context do
     settings
     |> cast(params, [:route, :site_id, :layout_id])
     |> validate_required([:route, :site_id])
+    |> validate_format(:route, ~r|^/|, message: "must start with '/'")
     |> unique_constraint(:route)
     |> unique_constraint([:site_id, :template_id])
   end

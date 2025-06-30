@@ -281,3 +281,14 @@ ul li .actions select {
 .schema-input textarea {
   height: initial;
 }
+
+/* Basic forms */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.form .contents {
+  display: block;
+}

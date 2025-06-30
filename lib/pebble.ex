@@ -9,6 +9,7 @@ defmodule Pebble do
   alias Pebble.Layout
   alias Pebble.Template
   alias Pebble.Context
+  alias Pebble.Contact
 
   import Ecto.Query
 
@@ -141,5 +142,23 @@ defmodule Pebble do
       nil ->
         template
     end
+  end
+
+  @doc """
+  Gets a `Pebble.Contact` by `id`.
+  """
+  @spec get_contact(integer()) :: Contact.t() | nil
+
+  def get_contact(id) do
+    Repo.get(Contact, id)
+  end
+
+  @doc """
+  Lists all available contacts.
+  """
+  @spec fetch_contacts() :: [Contact.t()]
+
+  def fetch_contacts do
+    Repo.all(Contact)
   end
 end

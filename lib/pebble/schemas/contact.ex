@@ -12,6 +12,8 @@ defmodule Pebble.Contact do
   """
   use Ecto.TypedSchema
 
+  import Ecto.Changeset
+
   typed_schema "contacts" do
     field :handle, :string
     field :url, :string
@@ -20,4 +22,20 @@ defmodule Pebble.Contact do
 
     timestamps()
   end
+
+  def changeset(contact \\ %__MODULE__{}, params \\ %{}) do
+    contact
+    |> cast(params, [:handle, :url, :email, :notify])
+    |> validate_required([:handle, :url, :email, :notify])
+    |> validate_format(:email, ~r[@], message: "must contain @")
+    |> validate_format(:url, ~r[://], message: "must contain ://")
+    |> validate_format(:handle, ~r/^@?[A-Za-z0-9_]+$/, message: "must be alphanumeric")
+    |> update_change(:handle, &strip_at/1)
+  end
+
+  defp strip_at(value) when is_binary(value) do
+    String.replace_prefix(value, "@", "")
+  end
+
+  defp strip_at(value, _prefix), do: value
 end

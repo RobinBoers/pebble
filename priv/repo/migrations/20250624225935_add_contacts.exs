@@ -8,6 +8,8 @@ defmodule Pebble.Repo.Migrations.AddContacts do
       add :url,    :text
       add :email,  :text
       add :notify, :boolean
+
+      timestamps()
     end
 
     create unique_index(:contacts, [:handle])

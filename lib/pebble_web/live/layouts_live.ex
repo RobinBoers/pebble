@@ -49,9 +49,7 @@ defmodule PebbleWeb.LayoutsLive do
 
     case Repo.update(changeset) do
       {:ok, layout} ->
-        socket
-        |> assign(:slayout, layout)
-        |> assign(:changeset, Layout.changeset(layout))
+        push_patch(socket, to: ~p"/#{socket.assigns.site}/layouts/#{layout}")
 
       {:error, changeset} ->
         assign(socket, :changeset, changeset)

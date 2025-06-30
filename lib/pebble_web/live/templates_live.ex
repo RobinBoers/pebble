@@ -66,7 +66,7 @@ defmodule PebbleWeb.TemplatesLive do
 
     case Repo.insert(changeset) do
       {:ok, template} ->
-        push_patch(socket, to: ~p"/#{socket.assigns.site}/templates/#{template.id}")
+        push_patch(socket, to: ~p"/#{socket.assigns.site}/templates/#{template}")
 
       {:error, changeset} ->
         assign(socket, :changeset, changeset)
@@ -79,7 +79,7 @@ defmodule PebbleWeb.TemplatesLive do
 
     case Repo.update(changeset) do
       {:ok, template} ->
-        push_patch(socket, to: ~p"/#{socket.assigns.site}/templates/#{template.id}")
+        push_patch(socket, to: ~p"/#{socket.assigns.site}/templates/#{template}")
 
       {:error, changeset} ->
         assign(socket, :changeset, changeset)
@@ -90,9 +90,7 @@ defmodule PebbleWeb.TemplatesLive do
   def handle_event("delete-template", _params, socket) do
     case Repo.delete(socket.assigns.template) do
       {:ok, template} ->
-        socket
-        |> assign(:template, template)
-        |> assign(:changeset, Template.changeset(template))
+        push_patch(socket, to: ~p"/#{socket.assigns.site}/templates")
 
       {:error, changeset} ->
         assign(socket, :changeset, changeset)

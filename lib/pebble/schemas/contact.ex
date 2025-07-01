@@ -37,5 +37,5 @@ defmodule Pebble.Contact do
     String.replace_prefix(value, "@", "")
   end
 
-  defp strip_at(value, _prefix), do: value
+  defp strip_at(value), do: value
 end

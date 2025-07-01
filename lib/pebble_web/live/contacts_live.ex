@@ -36,7 +36,7 @@ defmodule PebbleWeb.ContactsLive do
 
     case Repo.insert(changeset) do
       {:ok, contact} ->
-        push_patch(socket, to: ~p"/#{socket.assigns.site}/contacts/#{contact}")
+        push_patch(socket, to: ~p"/#{socket.assigns.site}/contacts/#{contact}", replace: true)
 
       {:error, changeset} ->
         assign(socket, :changeset, changeset)
@@ -48,7 +48,7 @@ defmodule PebbleWeb.ContactsLive do
     changeset = Contact.changeset(socket.assigns.contact, params)
 
     case Repo.update(changeset) do
-      {:ok, contact} ->
+      {:ok, _contact} ->
         push_patch(socket, to: ~p"/#{socket.assigns.site}/contacts")
 
       {:error, changeset} ->
@@ -59,7 +59,7 @@ defmodule PebbleWeb.ContactsLive do
   @impl true
   def handle_event("delete-contact", _params, socket) do
     case Repo.delete(socket.assigns.contact) do
-      {:ok, contact} ->
+      {:ok, _contact} ->
         push_patch(socket, to: ~p"/#{socket.assigns.site}/contacts")
 
       {:error, changeset} ->
@@ -99,6 +99,14 @@ defmodule PebbleWeb.ContactsLive do
     <ul>
       <li :for={contact <- @contacts}>
         <.link patch={~p"/#{@site}/contacts/#{contact}"}>@{contact.handle}</.link>
+        <span class="actions">
+          <.link href={"mailto:#{contact.email}"}>
+            Message
+          </.link>
+          <.link href={contact.url}>
+            visit →
+          </.link>
+        </span>
       </li>
     </ul>
     """
@@ -107,13 +115,17 @@ defmodule PebbleWeb.ContactsLive do
   @impl true
   def render(assigns) do
     ~H"""
+    <header class="bar">
+      <h2>Edit contact</h2>
+    </header>
+
     <.form
       class="form"
       :let={f} for={@changeset}
       phx-submit="save-contact"
     >
       <.input field={f[:handle]} label="Handle" placeholder="@dreamwastaken" required />
-      <.input field={f[:url]} type="url" label="URL" placeholder="https://example.com" required />
+      <.input field={f[:url]} type="url" label="Domain" placeholder="https://example.com" required />
       <.input field={f[:email]} type="email" label="Email" placeholder="dream@example.com" required />
 
       <.input

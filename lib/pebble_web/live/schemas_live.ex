@@ -42,7 +42,7 @@ defmodule PebbleWeb.SchemasLive do
 
     case Repo.insert(changeset) do
       {:ok, schema} ->
-        push_patch(socket, to: ~p"/#{socket.assigns.site}/schemas/#{schema}")
+        push_patch(socket, to: ~p"/#{socket.assigns.site}/schemas/#{schema}", replace: true)
 
       {:error, changeset} ->
         assign(socket, :changeset, changeset)
@@ -65,7 +65,7 @@ defmodule PebbleWeb.SchemasLive do
   @impl true
   def handle_event("delete-schema", _params, socket) do
     case Repo.delete(socket.assigns.schema) do
-      {:ok, schema} ->
+      {:ok, _schema} ->
         push_patch(socket, to: ~p"/#{socket.assigns.site}/schemas")
 
       {:error, changeset} ->

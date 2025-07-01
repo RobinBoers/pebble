@@ -36,7 +36,7 @@ defmodule PebbleWeb.LayoutsLive do
 
     case Repo.insert(changeset) do
       {:ok, layout} ->
-        push_patch(socket, to: ~p"/#{socket.assigns.site}/layouts/#{layout}")
+        push_patch(socket, to: ~p"/#{socket.assigns.site}/layouts/#{layout}", replace: true)
 
       {:error, changeset} ->
         assign(socket, :changeset, changeset)

@@ -79,15 +79,9 @@ defmodule PebbleWeb.FragmentsLive do
   defp schema_form(assigns) do
     ~H"""
     <.schema_input
-      :for={{name, props} <- sorted_fields(@schema.fields)}
+      :for={{name, props} <- @schema.fields}
       name={name} type={props.type} props={props} />
     """
-  end
-
-  defp sorted_fields(fields) do
-    Enum.sort_by(fields, fn {_name, props} ->
-      Map.get(props, :order, 0)
-    end)
   end
 
   attr :name, :string, required: true

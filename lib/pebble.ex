@@ -38,13 +38,42 @@ defmodule Pebble do
 
   def get_schema(id) do
     with %Schema{} = s <- Repo.get(Schema, id) do
-      Map.put(s, :fields, decode_toml(s.definition))
+      Map.put(s, :fields, sorted_fields(s.definition))
+    end
+  end
+
+  def sorted_fields(definition) do
+    fields = decode_toml(definition)
+    order = field_order(definition)
+
+    for name <- order do
+      {name, Map.get(fields, name)}
     end
   end
 
   defp decode_toml(nil), do: []
   defp decode_toml(definition) do
     Toml.decode!(definition, keys: :atoms)
+  end
+
+  def field_order(nil), do: []
+  def field_order(definition) do
+    definition
+    |> String.split("\n")
+    |> Enum.map(&String.trim/1)
+    |> Enum.filter(&table_header?/1)
+    |> Enum.map(&extract_name/1)
+  end
+
+  defp table_header?(line) do
+    String.starts_with?(line, "[") and String.ends_with?(line, "]")
+  end
+
+  defp extract_name(line) do
+    line
+    |> String.trim_leading("[")
+    |> String.trim_trailing("]")
+    |> String.to_atom()
   end
 
   @doc """

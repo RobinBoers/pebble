@@ -71,7 +71,7 @@ defmodule Pebble.Schema do
       visibility = "column"
 
       [content]
-      type = "prose"
+      type = "textarea"
       label = "Prose"
       visibility = "none"
 
@@ -108,7 +108,7 @@ defmodule Pebble.Schema do
   import Ecto.Changeset
 
   @listings ~w(table inline)a
-  @properties ~w(type label required default min max visibility options order)
+  @properties ~w(type label required default min max visibility options)
   @types ~w(text textarea number boolean select date time datetime color asset url email template)
 
   @doc "Supported render types."

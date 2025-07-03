@@ -169,22 +169,49 @@ ul li:has(.actions),
 ul li:not(:has(.actions)) a {
   display: block;
   text-decoration: none;
-  padding: 0.7em 1em;
   margin-bottom: 0.25em;
   background: var(--pane-color);
   border: 1px solid var(--border-color);
 }
 
 ul li:has(.actions) {
+  padding: 0.5em 1em;
+}
+
+ul li:not(:has(.actions)) a {
+  padding: 0.7em 1em;
+}
+
+ul li:has(.actions) {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding-right: 0.7em;
+  justify-content: flex-end;
+  padding-right: 0.5em;
+}
+
+ul li:has(.actions) > a {
+  text-decoration: none;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 1em;
+  width: 80%;
+}
+
+ul li:has(.actions) > a:hover {
+  opacity: 1;
+}
+
+ul li:has(.actions):has(> a:hover) {
+  opacity: 0.8;
 }
 
 ul li .actions {
   display: flex;
   gap: 0.2em;
+  position: relative;
 }
 
 ul li .actions a {

@@ -45,7 +45,7 @@ h6 a {
 
 h2 {
   border-bottom: 1px solid;
-  border-color: inherit;
+  border-color: var(--border-color);
   padding-bottom: 5px;
 }
 
@@ -106,5 +106,5 @@ th {
 
 tr {
   border-bottom: 1px solid;
-  border-color: inherit;
+  border-color: var(--border-color);
 }

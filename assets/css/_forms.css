@@ -71,8 +71,7 @@ input[type="file"] {
   border: none;
   padding: 110px 1em;
   background: light-dark(#f1f1f1, #2b2b33);
-  border: 2px dashed var(--border-color);
-  border-color: inherit;
+  border: 2px dashed light-dark(#ccc, #444);
   border-radius: 7px;
   text-align: center;
   width: 100%;

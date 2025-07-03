@@ -6,15 +6,33 @@ let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
 
+function containsFiles(e) {
+  return [ ...e.dataTransfer.types ?? [] ].some(t => t == "Files");
+}
+
+const Uploads = {
+  mounted() {
+    this.el.querySelectorAll("input[type='file']").forEach(dropZone => {
+      const showDropZone = () => dropZone.style.filter = "brightness(0.95)";
+      const hideDropZone = () => dropZone.style.filter = "";
+
+      dropZone.ondragover = e => e.preventDefault();
+      dropZone.ondragenter = e => {
+        if(containsFiles(e)) showDropZone();
+      };
+
+      dropZone.ondragleave = e => hideDropZone();
+      dropZone.ondrop = e => hideDropZone();
+    });
+  }
+}
+
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
+  hooks: { Uploads },
   metadata: { keydown: (e, _) => ({ ctrl: e.ctrlKey || e.metaKey }) }
 });
-
-// topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" });
-// window.addEventListener("phx:page-loading-start", (_info) => topbar.show(300));
-// window.addEventListener("phx:page-loading-stop", (_info) => topbar.hide());
 
 liveSocket.connect();
 

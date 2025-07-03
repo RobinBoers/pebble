@@ -26,7 +26,7 @@ defmodule PebbleWeb.Router do
       live "/fragments", FragmentsLive, :schemas
       live "/fragments/:schema", FragmentsLive, :listing
       live "/fragments/:schema/new", FragmentsLive, :new
-      live "/fragments/:id", FragmentsLive, :edit
+      live "/fragments/:schema/:id", FragmentsLive, :edit
       live "/templates", TemplatesLive, :templates
       live "/templates/new", TemplatesLive, :new
       live "/templates/:id", TemplatesLive, :edit

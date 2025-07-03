@@ -40,8 +40,7 @@ defmodule PebbleWeb.Navigation do
       %{view: PebbleWeb.ContactsLive, title: "Contacts", route: ~p"/#{site}/contacts", icon: "hero-at-symbol"},
       %{view: PebbleWeb.MenuLive, title: "Menu", route: ~p"/#{site}/menu", icon: "hero-cursor-arrow-rays"},
       %{view: PebbleWeb.StatisticsLive, title: "Statistics", route: ~p"/#{site}/stats", icon: "hero-chart-bar"},
-      %{view: PebbleWeb.SettingsLive, title: "Settings", route: ~p"/#{site}/settings", icon: "hero-cog-6-tooth"},
-      %{view: PebbleWeb.SchemasLive, title: "Schemas", route: ~p"/#{site}/schemas", icon: "hero-puzzle-piece"}
+      %{view: PebbleWeb.SettingsLive, title: "Settings", route: ~p"/#{site}/settings", icon: "hero-cog-6-tooth"}
     ])
   end
 

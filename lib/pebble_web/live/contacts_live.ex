@@ -77,7 +77,7 @@ defmodule PebbleWeb.ContactsLive do
 
     <.modal :if={@live_action == :new} on_close={JS.navigate(~p"/#{@site}/contacts")}>
       <.form :let={f} for={@changeset} phx-submit="create-contact">
-        <.input field={f[:handle]} label="Handle" placeholder="@dreamwastaken" required />
+        <.input field={f[:handle]} type="text" label="Handle" placeholder="@dreamwastaken" required />
         <.input field={f[:url]} type="url" label="URL" placeholder="https://example.com" required />
         <.input field={f[:email]} type="email" label="Email" placeholder="dream@example.com" required />
 
@@ -104,7 +104,7 @@ defmodule PebbleWeb.ContactsLive do
             Message
           </.link>
           <.link href={contact.url}>
-            visit →
+            Visit →
           </.link>
         </span>
       </li>
@@ -124,7 +124,7 @@ defmodule PebbleWeb.ContactsLive do
       :let={f} for={@changeset}
       phx-submit="save-contact"
     >
-      <.input field={f[:handle]} label="Handle" placeholder="@dreamwastaken" required />
+      <.input field={f[:handle]} type="text" label="Handle" placeholder="@dreamwastaken" required />
       <.input field={f[:url]} type="url" label="Domain" placeholder="https://example.com" required />
       <.input field={f[:email]} type="email" label="Email" placeholder="dream@example.com" required />
 

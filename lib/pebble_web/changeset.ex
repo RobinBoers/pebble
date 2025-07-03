@@ -1,44 +1,48 @@
-defmodule PebbleWeb.Changeset do
+defmodule Pebble.Changeset do
   @moduledoc false
   use TypedStruct
 
   alias Pebble.Fragment
   alias Pebble.Schema
+  alias Pebble.Site
 
   typedstruct do
     field :data, %{}
     field :schema, Schema.t()
     field :params, map()
+    field :site, Site.t()
   end
 
-  @spec new(Schema.t(), %{String.t() => term()}) :: t()
-  @spec new(Fragment.t(), %{String.t() => term()}) :: t()
+  @spec new(Schema.t(), Site.t(), %{String.t() => term()}) :: t()
+  @spec new(Fragment.t(), Site.t(), %{String.t() => term()}) :: t()
 
-  def new(schema_or_fragment, params \\ %{})
+  def new(schema_or_fragment, site, params \\ %{})
 
-  def new(%Schema{} = schema, params) do
+  def new(%Schema{} = schema, site, params) do
     %__MODULE__{
       data: %{},
       schema: schema,
-      params: params
+      params: params,
+      site: site
     }
   end
 
-  def new(%Fragment{} = fragment, params) do
+  def new(%Fragment{} = fragment, site, params) do
     %__MODULE__{
-      data: fragment.data,
+      data: JSON.decode!(fragment.data),
       schema: fragment.schema,
-      params: params
+      params: params,
+      site: site
     }
   end
 end
 
-defimpl Phoenix.HTML.FormData, for: PebbleWeb.Changeset do
+defimpl Phoenix.HTML.FormData, for: Pebble.Changeset do
   @moduledoc false
 
   alias Phoenix.HTML.Form
   alias Pebble.Schema
-  alias PebbleWeb.Changeset
+  alias Pebble.Changeset
 
   import Pebble.Map, only: [naive_get: 2]
 

@@ -6,6 +6,7 @@ defmodule Pebble do
   alias Pebble.Repo
   alias Pebble.Site
   alias Pebble.Schema
+  alias Pebble.Fragment
   alias Pebble.Layout
   alias Pebble.Template
   alias Pebble.Context
@@ -42,7 +43,7 @@ defmodule Pebble do
     end
   end
 
-  def sorted_fields(definition) do
+  defp sorted_fields(definition) do
     fields = decode_toml(definition)
     order = field_order(definition)
 
@@ -74,6 +75,62 @@ defmodule Pebble do
     |> String.trim_leading("[")
     |> String.trim_trailing("]")
     |> String.to_atom()
+  end
+
+  @doc """
+  Lists all fragments with the given `Pebble.Schema` for the given `Pebble.Site`.
+  """
+  @spec fetch_fragments(Schema.t(), Site.t()) :: [Layout.t()]
+  @spec fetch_fragments(integer(), Site.t()) :: [Layout.t()]
+  @spec fetch_fragments(Schema.t(), integer()) :: [Layout.t()]
+  @spec fetch_fragments(integer(), integer()) :: [Layout.t()]
+
+  def fetch_fragments(%Schema{id: schema_id}, %Site{id: site_id}) do
+    fetch_fragments(schema_id, site_id)
+  end
+
+  def fetch_fragments(schema_id, %Site{id: site_id}) do
+    fetch_fragments(schema_id, site_id)
+  end
+
+  def fetch_fragments(%Schema{id: schema_id}, site_id) do
+    fetch_fragments(schema_id, site_id)
+  end
+
+  def fetch_fragments(schema_id, site_id) do
+    schema_id
+    |> fragment_query(site_id)
+    |> Repo.all()
+    |> Repo.preload([:schema])
+    |> maybe_populate_schemas()
+  end
+
+  defp fragment_query(schema_id, site_id) do
+    from f in Fragment,
+      join: s in assoc(f, :sites),
+      where: f.schema_id == ^schema_id and s.id == ^site_id,
+      order_by: [desc: f.updated_at]
+  end
+
+  defp maybe_populate_schemas(fragments) do
+    Enum.map(fragments, &maybe_populate_schema/1)
+  end
+
+  @doc """
+  Gets a `Pebble.Fragment` by `id`.
+  """
+  @spec get_fragment(integer()) :: Fragment.t() | nil
+
+  def get_fragment(id) do
+    Fragment
+    |> Repo.get(id)
+    |> Repo.preload([:schema])
+    |> maybe_populate_schema()
+  end
+
+  defp maybe_populate_schema(nil), do: nil
+  defp maybe_populate_schema(%Fragment{schema: %Schema{} = s} = f) do
+    Map.put(f, :schema, Map.put(s, :fields, sorted_fields(s.definition)))
   end
 
   @doc """

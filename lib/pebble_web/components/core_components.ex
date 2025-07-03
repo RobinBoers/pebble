@@ -201,13 +201,13 @@ defmodule PebbleWeb.CoreComponents do
       if function_exported?(field.form.impl, :input_type, 3) do
         field.form.impl.input_type(field.form.source, field.form, field.field)
       else
-        "text"
+        :text_input
       end
 
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
     |> assign(:errors, Enum.map(errors, &translate_error(&1)))
-    |> assign_new(:type, fn -> type end)
+    |> assign_new(:type, fn -> if type == :text_input, do: "text", else: type end)
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
     |> input()

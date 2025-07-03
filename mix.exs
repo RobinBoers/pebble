@@ -67,7 +67,8 @@ defmodule Pebble.MixProject do
     {:decorator, "~> 1.3"},
     {:typed_ecto_schema, "~> 0.4.2"},
     {:typedstruct, "~> 0.5.3"},
-    {:toml, "~> 0.7"}
+    {:toml, "~> 0.7"},
+    {:structo, "~> 0.1.4"}
   ]
 
   defp aliases, do: [

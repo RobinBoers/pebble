@@ -66,6 +66,7 @@ defmodule PebbleWeb.FragmentsLive do
         <.form :let={f} for={@changeset}>
           <.input
             :for={{name, d} <- @changeset.schema.fields}
+            :if={d[:required]}
             field={f[name]}
             label={d[:label] || labelify(name)}
             class="schema-input"

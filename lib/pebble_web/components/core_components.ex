@@ -175,7 +175,6 @@ defmodule PebbleWeb.CoreComponents do
   attr :value, :any
 
   attr :type, :string,
-    default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
                range search select tel text textarea time url week hidden)
 
@@ -183,6 +182,7 @@ defmodule PebbleWeb.CoreComponents do
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   attr :errors, :list, default: []
+  attr :class, :string, default: nil
   attr :display, :string, default: "contents"
   attr :title, :boolean, default: false, doc: "this is an editable title of the page"
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
@@ -197,9 +197,17 @@ defmodule PebbleWeb.CoreComponents do
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
 
+    type =
+      if function_exported?(field.form.impl, :input_type, 3) do
+        field.form.impl.input_type(field.form.source, field.form, field.field)
+      else
+        "text"
+      end
+
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
     |> assign(:errors, Enum.map(errors, &translate_error(&1)))
+    |> assign_new(:type, fn -> type end)
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
     |> input()
@@ -212,7 +220,7 @@ defmodule PebbleWeb.CoreComponents do
       end)
 
     ~H"""
-    <div class={@display}>
+    <div class={[@class, @display]}>
       <label>
         <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
         <input
@@ -232,7 +240,7 @@ defmodule PebbleWeb.CoreComponents do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div class={@display}>
+    <div class={[@class, @display]}>
       <.label :if={@label} for={@id}>{@label}</.label>
       <select
         id={@id}
@@ -250,7 +258,7 @@ defmodule PebbleWeb.CoreComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class={@display}>
+    <div class={[@class, @display]}>
       <.label :if={@label} for={@id}>{@label}</.label>
       <textarea
         id={@id}
@@ -266,7 +274,7 @@ defmodule PebbleWeb.CoreComponents do
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div class={@display}>
+    <div class={[@class, @display]}>
       <.label :if={@label} for={@id}>{@label}</.label>
       <input
         type={@type}

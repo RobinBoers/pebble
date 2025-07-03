@@ -66,6 +66,7 @@ defmodule Pebble.MixProject do
     {:bandit, "~> 1.5"},
     {:decorator, "~> 1.3"},
     {:typed_ecto_schema, "~> 0.4.2"},
+    {:typedstruct, "~> 0.5.3"},
     {:toml, "~> 0.7"}
   ]
 

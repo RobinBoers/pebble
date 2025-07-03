@@ -3,6 +3,7 @@ defmodule PebbleWeb.FragmentsLive do
   use PebbleWeb, :live_view
 
   alias Pebble.Schema
+  alias PebbleWeb.Changeset
 
   import Pebble, only: [get_schema: 1, fetch_schemas: 0]
 
@@ -15,6 +16,7 @@ defmodule PebbleWeb.FragmentsLive do
         socket
         |> assign(:schema, schema)
         |> assign(:schemas, fetch_schemas())
+        |> assign(:changeset, Changeset.new(schema))
 
       nil ->
         push_patch(socket, to: ~p"/#{socket.assigns.site}/fragments")
@@ -61,7 +63,15 @@ defmodule PebbleWeb.FragmentsLive do
       </header>
 
       <.modal :if={@live_action == :new} on_close={JS.navigate(~p"/#{@site}/fragments/#{@schema}")}>
-        <.schema_form schema={@schema} />
+        <.form :let={f} for={@changeset}>
+          <.input
+            :for={{name, d} <- @changeset.schema.fields}
+            field={f[name]}
+            label={d[:label] || labelify(name)}
+            class="schema-input"
+          />
+        </.form>
+
         <div class="group">
           <.link patch={~p"/#{@site}/fragments/#{@schema}"} class="button">Cancel</.link>
           <button>Create</button>
@@ -73,69 +83,7 @@ defmodule PebbleWeb.FragmentsLive do
     """
   end
 
-  attr :schema, Schema, required: true
-  attr :rest, :global
-
-  defp schema_form(assigns) do
-    ~H"""
-    <.schema_input
-      :for={{name, props} <- @schema.fields}
-      name={name} type={props.type} props={props} />
-    """
-  end
-
-  attr :name, :string, required: true
-  attr :type, :string, required: true
-  attr :props, :map, required: true
-
-  defp schema_input(%{type: t} = assigns) when t in ~w(textarea template) do
-    ~H"""
-    <div class="schema-input">
-      <.schema_label name={@name} props={@props} />
-      <textarea id={@name} name={@name}></textarea>
-    </div>
-    """
-  end
-
-  defp schema_input(%{type: "boolean"} = assigns) do
-    ~H"""
-    <div class="schema-input">
-      <input name={@name} type="hidden" value="">
-      <input id={@name} name={@name} type="checkbox">
-      <.schema_label name={@name} props={@props} />
-    </div>
-    """
-  end
-
-  defp schema_input(%{type: "select"} = assigns) do
-    ~H"""
-    <div class="schema-input">
-      <.schema_label name={@name} props={@props} />
-      <select id={@name} name={@name}>
-        <option :for={opt <- Map.get(@props, :options, [])}>{opt}</option>
-      </select>
-    </div>
-    """
-  end
-
-  defp schema_input(assigns) do
-    ~H"""
-    <div class="schema-input">
-      <.schema_label name={@name} props={@props} />
-      <input id={@name} name={@name} type={@type}>
-    </div>
-    """
-  end
-
-  attr :name, :string, required: true
-  attr :props, :map, required: true
-
-  defp schema_label(%{name: name} = assigns) do
-    fallback = name |> Atom.to_string() |> String.capitalize()
-    assigns = assign(assigns, :fallback, fallback)
-
-    ~H"""
-    <label for={@name}>{Map.get(@props, :label, @fallback)}</label>
-    """
+  defp labelify(name) do
+    name |> to_string() |> String.capitalize()
   end
 end

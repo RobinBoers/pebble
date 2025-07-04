@@ -7,6 +7,7 @@ defmodule Pebble.Changeset do
   alias Pebble.Site
 
   typedstruct do
+    field :id, String.t() | nil
     field :data, %{}
     field :schema, Schema.t()
     field :params, map()
@@ -20,6 +21,7 @@ defmodule Pebble.Changeset do
 
   def new(%Schema{} = schema, params) do
     %__MODULE__{
+      id: nil,
       data: %{},
       params: params,
       schema: schema,
@@ -29,6 +31,7 @@ defmodule Pebble.Changeset do
 
   def new(%Fragment{} = fragment, params) do
     %__MODULE__{
+      id: fragment.id,
       data: JSON.decode!(fragment.data),
       params: params,
       schema: fragment.schema,

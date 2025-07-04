@@ -20,7 +20,7 @@ defmodule Pebble.Fragment do
   end
 
   def changeset_for(%Changeset{} = changeset, params \\ %{}) do
-    %__MODULE__{schema: changeset.schema, sites: [changeset.site]}
+    %__MODULE__{schema: changeset.schema, sites: changeset.sites}
     |> changeset(%{"data" => JSON.encode!(params)})
   end
 

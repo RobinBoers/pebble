@@ -105,6 +105,8 @@ defmodule Pebble.Schema do
   """
   use Ecto.TypedSchema
 
+  alias Pebble.Site
+
   import Ecto.Changeset
 
   @listings ~w(table inline)a
@@ -128,12 +130,19 @@ defmodule Pebble.Schema do
     # Contains the parsed TOML data if populated.
     field :fields, {:array, :map}, virtual: true
 
+    many_to_many :sites, Site, join_through: "schemas_sites"
+
     timestamps()
+  end
+
+  def changeset_for(%Site{} = site, params \\ %{}) do
+    changeset(%__MODULE__{sites: [site]}, params)
   end
 
   def changeset(schema \\ %__MODULE__{}, params \\ %{}) do
     schema
     |> cast(params, [:label, :listing, :definition])
+    |> cast_assoc(:sites, required: true)
     |> validate_required([:label])
     |> validate_schema(:definition)
   end

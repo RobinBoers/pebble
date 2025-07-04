@@ -10,29 +10,29 @@ defmodule Pebble.Changeset do
     field :data, %{}
     field :schema, Schema.t()
     field :params, map()
-    field :site, Site.t()
+    field :sites, [Site.t()]
   end
 
-  @spec new(Schema.t(), Site.t(), %{String.t() => term()}) :: t()
-  @spec new(Fragment.t(), Site.t(), %{String.t() => term()}) :: t()
+  @spec new(Fragment.t(), %{String.t() => term()}) :: t()
+  @spec new(Schema.t(), %{String.t() => term()}) :: t()
 
-  def new(schema_or_fragment, site, params \\ %{})
+  def new(schema_or_fragment, params \\ %{})
 
-  def new(%Schema{} = schema, site, params) do
+  def new(%Schema{} = schema, params) do
     %__MODULE__{
       data: %{},
-      schema: schema,
       params: params,
-      site: site
+      schema: schema,
+      sites: schema.sites
     }
   end
 
-  def new(%Fragment{} = fragment, site, params) do
+  def new(%Fragment{} = fragment, params) do
     %__MODULE__{
       data: JSON.decode!(fragment.data),
-      schema: fragment.schema,
       params: params,
-      site: site
+      schema: fragment.schema,
+      sites: fragment.sites,
     }
   end
 end

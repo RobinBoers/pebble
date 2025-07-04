@@ -8,9 +8,9 @@ defmodule PebbleWeb.FragmentsLive do
   alias Pebble.Changeset
 
   import Pebble, only: [
-        get_schema: 1,
-        fetch_schemas: 0,
-        get_fragment: 1,
+        get_schema: 2,
+        fetch_schemas: 1,
+        get_fragment: 3,
         fetch_fragments: 2
       ]
     
@@ -18,19 +18,14 @@ defmodule PebbleWeb.FragmentsLive do
 
   @decorate_all wrap_noreply()
 
-  @listings [
-    {"Table", :table},
-    {"Inline", :inline}
-  ]
-
   @impl true
   def handle_params(%{"schema" => schema_id, "id" => id}, _url, socket) do
-    case get_fragment(id) do
+    case get_fragment(id, schema_id, socket.assigns.site) do
       %Fragment{} = fragment ->
         socket
         |> assign(:fragment, fragment)
         |> assign(:schema, fragment.schema)
-        |> assign(:changeset, Changeset.new(fragment, socket.assigns.site))
+        |> assign(:changeset, Changeset.new(fragment))
 
       nil ->
         push_patch(socket, to: ~p"/#{socket.assigns.site}/fragments/#{schema_id}")
@@ -39,12 +34,12 @@ defmodule PebbleWeb.FragmentsLive do
 
   @impl true
   def handle_params(%{"schema" => id}, _url, socket) do
-    case get_schema(id) do
+    case get_schema(id, socket.assigns.site) do
       %Schema{} = schema ->
         socket
         |> assign(:schema, schema)
         |> assign(:fragments, fetch_fragments(id, socket.assigns.site))
-        |> assign(:changeset, Changeset.new(schema, socket.assigns.site))
+        |> assign(:changeset, Changeset.new(schema))
 
       nil ->
         push_patch(socket, to: ~p"/#{socket.assigns.site}/fragments")
@@ -56,7 +51,7 @@ defmodule PebbleWeb.FragmentsLive do
 
   @impl true
   def handle_params(_params, _url, socket) do
-    assign(socket, :schemas, fetch_schemas())
+    assign(socket, :schemas, fetch_schemas(socket.assigns.site))
   end
 
   @impl true
@@ -81,6 +76,17 @@ defmodule PebbleWeb.FragmentsLive do
       {:ok, fragment} ->
         ~m{site, schema} = socket.assigns
         push_patch(socket, to: ~p"/#{site}/fragments/#{schema}/#{fragment}", replace: true)
+
+      {:error, changeset} ->
+        assign(socket, :changeset, changeset)
+    end
+  end
+
+  @impl true
+  def handle_event("delete-fragment", _params, socket) do
+    case Repo.delete(socket.assigns.fragment) do
+      {:ok, _fragment} ->
+        push_patch(socket, to: ~p"/#{socket.assigns.site}/fragments/#{socket.assigns.schema}")
 
       {:error, changeset} ->
         assign(socket, :changeset, changeset)
@@ -160,6 +166,15 @@ defmodule PebbleWeb.FragmentsLive do
         options={d[:options]}
         class="schema-input"
       />
+
+      <div class="lowbar">
+        <button phx-click="delete-fragment" data-confirm="Are you sure? This will permanently and irreversibly delete this fragment. This action cannot be undone.">Delete</button>
+
+        <div class="group">
+          <.link patch={~p"/#{@site}/fragments/#{@schema}"} class="button">Cancel</.link>
+          <button>Save</button>
+        </div>
+      </div>
     </.form>
     """
   end

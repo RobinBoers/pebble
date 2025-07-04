@@ -5,7 +5,7 @@ defmodule PebbleWeb.SchemasLive do
   alias Pebble.Repo
   alias Pebble.Schema
 
-  import Pebble, only: [fetch_schemas: 0, get_schema: 1]
+  import Pebble, only: [fetch_schemas: 1, get_schema: 2]
 
   @decorate_all wrap_noreply()
 
@@ -16,11 +16,10 @@ defmodule PebbleWeb.SchemasLive do
 
   @impl true
   def handle_params(%{"id" => id}, _url, socket) do
-    case get_schema(id) do
+    case get_schema(id, socket.assigns.site) do
       %Schema{} = schema ->
         socket
         |> assign(:schema, schema)
-        |> assign(:schemas, fetch_schemas())
         |> assign(:listings, @listings)
         |> assign(:changeset, Schema.changeset(schema))
 
@@ -32,13 +31,13 @@ defmodule PebbleWeb.SchemasLive do
   @impl true
   def handle_params(_params, _url, socket) do
     socket
-    |> assign(:schemas, fetch_schemas())
-    |> assign(:changeset, Schema.changeset())
+    |> assign(:schemas, fetch_schemas(socket.assigns.site))
+    |> assign(:changeset, Schema.changeset_for(socket.assigns.site))
   end
 
   @impl true
   def handle_event("create-schema", %{"schema" => params}, socket) do
-    changeset = Schema.changeset(%Schema{}, params)
+    changeset = Schema.changeset_for(socket.assigns.site, params)
 
     case Repo.insert(changeset) do
       {:ok, schema} ->

@@ -26,21 +26,42 @@ defmodule Pebble do
   @doc """
   Lists all available schemas.
   """
-  @spec fetch_schemas() :: [Schema.t()]
+  @spec fetch_schemas(Site.t()) :: [Schema.t()]
 
-  def fetch_schemas do
-    Repo.all(Schema)
+  def fetch_schemas(%Site{id: site_id}) do
+    fetch_schemas(site_id)
+  end
+
+  def fetch_schemas(site_id) do
+    site_id
+    |> schema_query()
+    |> Repo.all()
   end
 
   @doc """
-  Gets a `Pebble.Schema` by `id`.
+  Gets a `Pebble.Layout` for the given `Pebble.Site`.
   """
-  @spec get_schema(integer()) :: Schema.t() | nil
+  @spec get_schema(integer(), Site.t()) :: Schema.t() | nil
+  @spec get_schema(integer(), integer()) :: Schema.t() | nil
 
-  def get_schema(id) do
-    with %Schema{} = s <- Repo.get(Schema, id) do
-      Map.put(s, :fields, sorted_fields(s.definition))
-    end
+  def get_schema(id, %Site{id: site_id}) do
+    get_schema(id, site_id)
+  end
+
+  def get_schema(id, site_id) do
+    site_id
+    |> schema_query()
+    |> where([s], s.id == ^id)
+    |> Repo.one()
+    |> maybe_populate_schema()
+  end
+
+  defp schema_query(site_id) do
+    from sc in Schema,
+      join: s in assoc(sc, :sites),
+      where: s.id == ^site_id,
+      preload: :sites,
+      order_by: [desc: sc.updated_at]
   end
 
   defp sorted_fields(definition) do
@@ -117,20 +138,41 @@ defmodule Pebble do
   end
 
   @doc """
-  Gets a `Pebble.Fragment` by `id`.
+  Gets a `Pebble.Fragment` for the given `Pebble.Site`.
   """
-  @spec get_fragment(integer()) :: Fragment.t() | nil
+  @spec get_fragment(integer(), Schema.t(), Site.t()) :: Fragment.t() | nil
+  @spec get_fragment(integer(), integer(), Site.t()) :: Fragment.t() | nil
+  @spec get_fragment(integer(), Schema.t(), integer()) :: Fragment.t() | nil
+  @spec get_fragment(integer(), integer(), integer()) :: Fragment.t() | nil
 
-  def get_fragment(id) do
-    Fragment
-    |> Repo.get(id)
+  def get_fragment(id, %Schema{id: schema_id}, %Site{id: site_id}) do
+    get_fragment(id, schema_id, site_id)
+  end
+
+  def get_fragment(id, schema_id, %Site{id: site_id}) do
+    get_fragment(id, schema_id, site_id)
+  end
+
+  def get_fragment(id, %Schema{id: schema_id}, site_id) do
+    get_fragment(id, schema_id, site_id)
+  end
+
+  def get_fragment(id, schema_id, site_id) do
+    schema_id
+    |> fragment_query(site_id)
+    |> where([f], f.id == ^id)
+    |> Repo.one()
     |> Repo.preload([:schema])
     |> maybe_populate_schema()
   end
 
   defp maybe_populate_schema(nil), do: nil
-  defp maybe_populate_schema(%Fragment{schema: %Schema{} = s} = f) do
-    Map.put(f, :schema, Map.put(s, :fields, sorted_fields(s.definition)))
+
+  defp maybe_populate_schema(%Fragment{} = f) do
+    Map.put(f, :schema, maybe_populate_schema(f.schema))
+  end
+  defp maybe_populate_schema(%Schema{} = s) do
+    Map.put(s, :fields, sorted_fields(s.definition))
   end
 
   @doc """
@@ -146,7 +188,7 @@ defmodule Pebble do
   def get_layout(id, site_id) do
     Repo.one(from l in Layout,
       where: l.id == ^id and l.site_id == ^site_id,
-      preload: :site)
+      preload: :sites)
   end
 
   @doc """

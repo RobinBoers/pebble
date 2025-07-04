@@ -10,5 +10,17 @@ defmodule Pebble.Repo.Migrations.AddSchemas do
 
       timestamps()
     end
+
+    create table(:schemas_sites, primary_key: false) do
+      add :site_id,
+          references(:sites, type: :string, on_delete: :delete_all),
+          null: false
+
+      add :schema_id,
+          references(:schemas, type: :string, on_delete: :delete_all),
+          null: false
+    end
+
+    create unique_index(:schemas_sites, [:site_id, :schema_id])
   end
 end

@@ -6,6 +6,7 @@ defmodule Pebble.Site do
 
   import Ecto.Changeset
 
+  alias Pebble.Schema
   alias Pebble.Fragment
   alias Pebble.Menu.Category
   alias Pebble.Menu.Item
@@ -20,6 +21,7 @@ defmodule Pebble.Site do
 
     many_to_many :menu_categories, Category, join_through: "categories_sites"
     many_to_many :menu_items, Item, join_through: "items_sites"
+    many_to_many :schemas, Schema, join_through: "schemas_sites"
     many_to_many :fragments, Fragment, join_through: "fragments_sites"
 
     has_many :linked_templates, Context

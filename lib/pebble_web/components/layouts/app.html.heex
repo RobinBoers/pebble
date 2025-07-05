@@ -1,37 +1,39 @@
-<header>
-  <div class="row">
-    <h1 class="relative">
-      <span
-        class="min-[1000px]:hidden absolute inset-0 z-10"
-        phx-click={JS.toggle_class("open", to: ".sidebar aside")}
-      />
-      <.link navigate={~p"/#{@site}"}>pebble</.link>
-    </h1>
+<header class="pebble-header">
+  <div class="pebble-header-lint-container">
+    <aside class="pebble-header-lint">
+      Hello, <b>Robin</b> / <a href="#">Uitloggen</a> / <a href="#" target="_blank">View site →</a>
+    </aside>
+
+    <div class="pebble-header-title-container">
+      <h1 class="pebble-header-title">pebble</h1>
+
+      <form class="pebble-header-site-form">
+        <select class="pebble-header-site-form-dropdown" name="site">
+          <option :for={site <- ["dupunkto.org", "viko.nl"]}>{site}</option>
+        </select>
+      </form>
+    </div>
   </div>
 
-  <div class="group">
-    <.link href={"https://#{@site}"} target="_blank">View site →</.link>
-    <form phx-change="choose-site" class="hidden sm:block">
-      <select name="site">
-        <option :for={site <- @sites} selected={site == @site}>{site}</option>
-      </select>
-    </form>
-  </div>
+  <nav class="pebble-header-menu-container">
+    <menu class="pebble-header-menu">
+      <li class="pebble-header-menu-item dashboard selected"><a>Dashboard</a></li>
+      <li class="pebble-header-menu-item writing"><a>Writing</a></li>
+      <li class="pebble-header-menu-item design"><a>Design</a></li>
+      <li class="pebble-header-menu-item console"><a>Console</a></li>
+      <li class="pebble-header-menu-item settings"><a>Settings</a></li>
+    </menu>
+  </nav>
+
+  <script>
+    function unselect() {
+      document.querySelectorAll(".pebble-header-menu-item").forEach(n => n.classList.remove("selected"));
+    }
+
+    document.querySelectorAll(".pebble-header-menu-item").forEach(n => n.querySelector("a").onclick = () => {
+      unselect(); n.classList.add("selected");
+    });
+  </script>
 </header>
 
-<div class="sidebar">
-  <aside>
-    <nav>
-      <li :for={item <- @menu_items}>
-        <.link navigate={item.route} class={@socket.view == item.view && "selected"}>
-          <.icon name={item.icon} class="size-6" />
-          {item.title}
-        </.link>
-      </li>
-    </nav>
-  </aside>
-
-  <main>
-    {@inner_content}
-  </main>
-</div>
+{@inner_content}

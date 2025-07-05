@@ -1,8 +1,89 @@
-@import url("https://cdn.geheimesite.nl/reset.css");
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+html {
+  font-family: sans-serif;
+}
 
-@import "_base.css";
-@import "_forms.css";
-@import "_components.css";
-@import "_layout.css";
+body {
+  margin: 2em;
+}
+
+.pebble-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin-bottom: 2em;
+}
+
+.pebble-header-title {
+  margin: 0;
+}
+
+.pebble-header-lint-container {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pebble-header-title-container {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.pebble-header-lint {
+  background: #f1f3f5;
+  padding: 0.7em 1em;
+  border-radius: 100px;
+}
+
+.pebble-header-menu {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  margin: 0;
+}
+
+.pebble-header-menu-item a {
+  display: block;
+  padding: 0.7em 1em;
+  border-radius: 100px;
+  background: #e9e9ed;
+  border: 2px solid #9595a2;
+  margin-right: 1em;
+}
+
+.pebble-header-menu-item a:hover {
+  background: #d0d0d7;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dashboard.selected a {
+  background: #f06595;
+  border-color: #d6336c;
+  color: white;
+}
+
+.writing.selected a {
+  background: #4c6ef5;
+  border-color: #364fc7;
+  color: white;
+}
+
+.design.selected a {
+  background: #15aabf;
+  border-color: #0c8599;
+  color: white;
+}
+
+.console.selected a {
+  background: #fbbf24;
+  border-color: #f59e0b;
+  color: #ffffff;
+}
+
+.settings.selected a {
+  background: #fa5252;
+  border-color: #c92a2a;
+  color: white;
+}

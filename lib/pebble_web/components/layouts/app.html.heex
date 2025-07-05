@@ -17,11 +17,15 @@
 
   <nav class="pebble-header-menu-container">
     <menu class="pebble-header-menu">
-      <li class="pebble-header-menu-item dashboard selected"><a>Dashboard</a></li>
-      <li class="pebble-header-menu-item writing"><a>Writing</a></li>
-      <li class="pebble-header-menu-item design"><a>Design</a></li>
-      <li class="pebble-header-menu-item console"><a>Console</a></li>
-      <li class="pebble-header-menu-item settings"><a>Settings</a></li>
+      <li class="pebble-header-menu-item" data-tab="dashboard"><a>Dashboard</a></li>
+      <li class="pebble-header-menu-item" data-tab="writing"><a>Writing</a></li>
+      <li class="pebble-header-menu-item" data-tab="design"><a>Design</a></li>
+      <li class="pebble-header-menu-item" data-tab="console"><a>Console</a></li>
+      <li class="pebble-header-menu-item" data-tab="settings"><a>Settings</a></li>
+    </menu>
+    <menu class="pebble-header-submenu">
+      <li class="pebble-header-submenu-item selected"><a>Fragments</a></li>
+      <li class="pebble-header-submenu-item"><a>Templates</a></li>
     </menu>
   </nav>
 
@@ -31,7 +35,7 @@
     }
 
     document.querySelectorAll(".pebble-header-menu-item").forEach(n => n.querySelector("a").onclick = () => {
-      unselect(); n.classList.add("selected");
+      unselect(); n.classList.add("selected"); document.body.className = n.dataset.tab;
     });
   </script>
 </header>

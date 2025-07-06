@@ -9,49 +9,15 @@ defmodule PebbleWeb.CoreComponents do
   alias Phoenix.LiveView.JS
 
   @doc """
-  Renders an overflow-menu.
-  """
-
-  attr :id, :string, required: true
-
-  slot :button, required: true
-  slot :inner_block, required: true
-
-  def overflow_menu(assigns) do
-    ~H"""
-    <div class="relative">
-      <button phx-click={JS.toggle(to: "#" <> @id, display: "flex")}>
-        {render_slot(@button)}
-      </button>
-      <div
-        id={@id}
-        class="overflow-menu"
-        phx-window-keydown={JS.hide(to: "#" <> @id)}
-        phx-click-away={JS.hide(to: "#" <> @id)}
-        phx-key="Escape"
-      >
-        {render_slot(@inner_block)}
-      </div>
-    </div>
-    """
-  end
-
-  @doc """
   Renders a modal.
   """
 
-  attr :on_close, :string, doc: "event of `Phoenix.LiveView.JS` to fire when the modal closes"
+  attr :id, :string, required: true
   slot :inner_block, required: true
 
   def modal(assigns) do
     ~H"""
-    <div class="backdrop" />
-    <div
-      class="modal"
-      phx-window-keydown={@on_close}
-      phx-click-away={@on_close}
-      phx-key="Escape"
-    >
+    <div id={@id} class="modal">
       {render_slot(@inner_block)}
     </div>
     """

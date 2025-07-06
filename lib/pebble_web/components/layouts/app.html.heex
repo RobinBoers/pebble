@@ -1,43 +1,38 @@
-<header class="pebble-header">
-  <div class="pebble-header-lint-container">
-    <aside class="pebble-header-lint">
-      Hello, <b>Robin</b> / <a href="#">Uitloggen</a> / <a href="#" target="_blank">View site →</a>
-    </aside>
+<div class={["pebble-app", @current_tab.key]}>
+  <header class="pebble-header">
+    <div class="pebble-header-lint-container">
+      <aside class="pebble-header-lint">
+        Hello, <b>Robin</b> / <a href="#">Uitloggen</a> / <a href="#" target="_blank">View site →</a>
+      </aside>
 
-    <div class="pebble-header-title-container">
-      <h1 class="pebble-header-title">pebble</h1>
+      <div class="pebble-header-title-container">
+        <img src="/pebble2.png" width="45">
+        <h1 class="pebble-header-title">pebble</h1>
 
-      <form class="pebble-header-site-form">
-        <select class="pebble-header-site-form-dropdown" name="site">
-          <option :for={site <- ["dupunkto.org", "viko.nl"]}>{site}</option>
+        <select
+          class="pebble-header-site-form-dropdown"
+          onchange="switch_site(this.value)"
+        >
+          <option :for={site <- @sites} selected={site == @site}>{site}</option>
         </select>
-      </form>
+      </div>
     </div>
-  </div>
 
-  <nav class="pebble-header-menu-container">
-    <menu class="pebble-header-menu">
-      <li class="pebble-header-menu-item" data-tab="dashboard"><a>Dashboard</a></li>
-      <li class="pebble-header-menu-item" data-tab="writing"><a>Writing</a></li>
-      <li class="pebble-header-menu-item" data-tab="design"><a>Design</a></li>
-      <li class="pebble-header-menu-item" data-tab="console"><a>Console</a></li>
-      <li class="pebble-header-menu-item" data-tab="settings"><a>Settings</a></li>
-    </menu>
-    <menu class="pebble-header-submenu">
-      <li class="pebble-header-submenu-item selected"><a>Fragments</a></li>
-      <li class="pebble-header-submenu-item"><a>Templates</a></li>
-    </menu>
-  </nav>
+    <nav class="pebble-header-menu-container">
+      <menu class="pebble-header-menu">
+        <li :for={tab <- @menu_tabs} class={tab_class(tab, @current_tab)}>
+          <.link href={tab.route}>{tab.title}</.link>
+        </li>
+      </menu>
+      <menu :if={@menu_children !=[]} class="pebble-header-submenu">
+        <li :for={child <- @menu_children} class={child_class(child, @current_page)}>
+          <.link href={child.route}>{child.title}</.link>
+        </li>
+      </menu>
+    </nav>
+  </header>
 
-  <script>
-    function unselect() {
-      document.querySelectorAll(".pebble-header-menu-item").forEach(n => n.classList.remove("selected"));
-    }
-
-    document.querySelectorAll(".pebble-header-menu-item").forEach(n => n.querySelector("a").onclick = () => {
-      unselect(); n.classList.add("selected"); document.body.className = n.dataset.tab;
-    });
-  </script>
-</header>
-
-{@inner_content}
+  <main>
+    {@inner_content}
+  </main>
+</div>

@@ -8,17 +8,21 @@
 
     <!-- Google, please don't mess with my lovingly handcrafted HTML -->
     <meta name="googlebot" content="notranslate" />
-    <meta name="generator" content="Eleventy v3.0.0" />
 
     <.live_title default="pebble">
       {assigns[:page_title]}
     </.live_title>
 
     <link phx-track-static type="text/css" rel="stylesheet" href={~p"/assets/app.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
-    </script>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"} />
+
+    <script src="/app/modals.js" type="text/javascript" />
+    <script src="/app/sites.js" type="text/javascript" />
   </head>
-  <body>
+  <body data-instant-intensity="mousedown">
     {@inner_content}
+
+    <script src="/vendor/pubb-html.min.js" />
+    <script src="/vendor/instant-page.min.js" type="module" />
   </body>
 </html>

@@ -17,7 +17,7 @@ defmodule PebbleWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+  def static_paths, do: ~w(vendor app assets pebble2.png favicon.ico robots.txt)
 
   def router do
     quote do
@@ -43,6 +43,15 @@ defmodule PebbleWeb do
         layouts: [html: PebbleWeb.Layouts]
 
       import Plug.Conn
+
+      unquote(verified_routes())
+    end
+  end
+
+  def plug do
+    quote do
+      import Plug.Conn
+      import Phoenix.Controller
 
       unquote(verified_routes())
     end

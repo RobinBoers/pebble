@@ -21,7 +21,7 @@ a, a:visited {
 }
 
 .pebble-header-title {
-  margin: 0.1em 0.5em;
+  margin: 0.1em 0;
 }
 
 .pebble-header-lint-container {
@@ -38,7 +38,7 @@ a, a:visited {
 }
 
 .pebble-header-lint {
-  background: #f1f3f5;
+  background: #f0f0f2;
   padding: 0.7em 1em;
   border-radius: 100px;
 }
@@ -87,6 +87,21 @@ a, a:visited {
   color: var(--selected-color)
 }
 
+.pebble-header-menu-item.childless {
+  border-bottom-left-radius: var(--menu-radius);
+  border-bottom-right-radius: var(--menu-radius);
+}
+
+.pebble-header-menu-item a,
+.pebble-header-submenu-item a {
+  text-decoration: none;
+}
+
+.pebble-header-menu-item.selected a,
+.pebble-header-submenu-item.selected a {
+  font-weight: bold;
+}
+
 .pebble-header-menu-item a {
   border-radius: var(--menu-radius);
   padding: 0.7em 1em;
@@ -102,7 +117,6 @@ a, a:visited {
   position: relative;
   z-index: 2;
   background: transparent;
-  font-weight: bold;
 }
 
 .pebble-header-menu-item.selected::before,
@@ -113,6 +127,11 @@ a, a:visited {
   width: var(--menu-height);
   height: calc(var(--menu-height) / 2);
   pointer-events: none;
+}
+
+.pebble-header-menu-item.childless::before,
+.pebble-header-menu-item.childless::after {
+  display: none;
 }
 
 .pebble-header-menu-item.selected::before {
@@ -133,7 +152,7 @@ a, a:visited {
   --selected-color: white;
 }
 
-.writing {
+.records {
   --selected-background: #4c6ef5;
   --selected-accent: #364fc7;
   --selected-color: white;
@@ -155,4 +174,29 @@ a, a:visited {
   --selected-background: #fa5252;
   --selected-accent: #c92a2a;
   --selected-color: white;
+}
+/* Components */
+
+.modal {
+  display: none;
+}
+
+.modal::before {
+  content: "";
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: light-dark(#000000, #ffffff60);
+  opacity: 0.5;
+}
+
+.modal > :first-child {
+  position: relative;
+  z-index: 102;
+  background: white;
+  background: Canvas;
+  padding: 0.7em;
 }

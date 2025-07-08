@@ -13,7 +13,7 @@ config :pebble,
 
 # Configures the endpoint
 config :pebble, PebbleWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "pebble"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: PebbleWeb.ErrorHTML, json: PebbleWeb.ErrorJSON],

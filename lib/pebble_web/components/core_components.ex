@@ -148,9 +148,6 @@ defmodule PebbleWeb.CoreComponents do
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   attr :errors, :list, default: []
-  attr :class, :string, default: nil
-  attr :display, :string, default: "contents"
-  attr :title, :boolean, default: false, doc: "this is an editable title of the page"
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
@@ -186,7 +183,7 @@ defmodule PebbleWeb.CoreComponents do
       end)
 
     ~H"""
-    <div class={[@class, @display]}>
+    <div class="input-container">
       <label>
         <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
         <input
@@ -206,7 +203,7 @@ defmodule PebbleWeb.CoreComponents do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div class={[@class, @display]}>
+    <div class="input-container">
       <.label :if={@label} for={@id}>{@label}</.label>
       <select
         id={@id}
@@ -224,7 +221,7 @@ defmodule PebbleWeb.CoreComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class={[@class, @display]}>
+    <div class="input-container">
       <.label :if={@label} for={@id}>{@label}</.label>
       <textarea
         id={@id}
@@ -237,17 +234,29 @@ defmodule PebbleWeb.CoreComponents do
     """
   end
 
+  def input(%{type: "hidden"} = assigns) do
+    ~H"""
+    <input
+      type="hidden"
+      name={@name}
+      id={@id}
+      value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+      {@rest}
+    />
+    """
+  end
+
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div class={[@class, @display]}>
+    <div class="input-container">
       <.label :if={@label} for={@id}>{@label}</.label>
       <input
         type={@type}
         name={@name}
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-        class={[@rest[:class], @title && "title", @errors != [] && "has-error"]}
+        class={[@rest[:class], @errors != [] && "has-error"]}
         {@rest}
       />
       <.error :for={msg <- @errors}>{msg}</.error>

@@ -2,21 +2,60 @@
   --body-margin: 2em;
   --menu-height: 44px;
   --menu-radius: 25px;
+
+  box-sizing: border-box;
+  scrollbar-gutter: stable;
+}
+
+html {
+  min-height: 100vh;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  text-size-adjust: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+:after,
+:before {
+  box-sizing: inherit;
 }
 
 body {
   font-family: sans-serif;
   margin: var(--body-margin);
+  color-scheme: light;
 }
 
-a, a:visited {
+a,
+a:visited {
   color: var(--selected-accent);
+}
+
+button:hover {
+  background: var(--selected-hover);
+
+  /* These are browser resets because the browser removes appereance:button */
+  border: 1px solid ButtonBorder;
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.form-error {
+  color: #e03131;
+  margin: 0;
+}
+
+.pebble-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 36px;
 }
 
 .pebble-header {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.75em;
   margin-bottom: 2em;
 }
 
@@ -37,13 +76,17 @@ a, a:visited {
   align-items: center;
 }
 
+.pebble-header-site-form-dropdown {
+  padding: 5px;
+}
+
 .pebble-header-lint {
   background: #f0f0f2;
   padding: 0.7em 1em;
   border-radius: 100px;
 }
 
-.pebble-header-menu-container {  
+.pebble-header-menu-container {
   display: flex;
   flex-direction: column;
   margin-left: calc(-1 * var(--body-margin));
@@ -84,7 +127,7 @@ a, a:visited {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   background: var(--selected-background);
-  color: var(--selected-color)
+  color: var(--selected-color);
 }
 
 .pebble-header-menu-item.childless {
@@ -121,7 +164,7 @@ a, a:visited {
 
 .pebble-header-menu-item.selected::before,
 .pebble-header-menu-item.selected::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   width: var(--menu-height);
@@ -155,6 +198,7 @@ a, a:visited {
 .records {
   --selected-background: #4c6ef5;
   --selected-accent: #364fc7;
+  --selected-hover: #8ba1ff;
   --selected-color: white;
 }
 
@@ -175,6 +219,43 @@ a, a:visited {
   --selected-accent: #c92a2a;
   --selected-color: white;
 }
+
+/* Templates */
+
+.pebble-templates-listing-placeholder,
+.pebble-templates-listing-list {
+  flex-basis: 850px;
+}
+
+.pebble-templates-listing-placeholder {
+  opacity: 0.8;
+  text-align: center;
+  margin-top: 3em;
+}
+
+.pebble-templates-listing-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pebble-templates-listing-listitem:nth-child(2n-1) {
+  background-color: #f0f0f2;
+}
+
+.pebble-templates-listing-listitem a {
+  color: currentColor;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px;
+}
+
+.pebble-templates-listing-listitem a:hover {
+  background: var(--selected-hover);
+}
+
 /* Components */
 
 .modal {
@@ -199,4 +280,130 @@ a, a:visited {
   background: white;
   background: Canvas;
   padding: 0.7em;
+}
+
+.pebble-templates-new-form {
+  flex-basis: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-basis: 225px;
+}
+
+.pebble-templates-new-form .input-container,
+.pebble-templates-editor-sidebar .input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pebble-templates-new-form label,
+.pebble-templates-editor label {
+  font-weight: bold;
+}
+
+.pebble-templates-new-form input {
+  font-size: 1.2em;
+}
+
+.pebble-templates-new-form button {
+  height: 30px;
+  margin-top: 10px;
+}
+
+.pebble-templates-new-form-selects {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+}
+
+.pebble-templates-new-form-selects div {
+  flex-grow: 1;
+}
+
+.pebble-templates-editor {
+  margin-top: -70px; /* close the gap to the header */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5em;
+  width: 100%;
+}
+
+.pebble-templates-editor > .input-container {
+  display: none;
+}
+
+.pebble-templates-editor-main {
+  flex-basis: 850px;
+}
+
+.pebble-templates-editor-sidebar {
+  flex-basis: 270px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+  background: white;
+  background: Canvas;
+  padding: 0.5em;
+}
+
+.pebble-templates-editor-submit {
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+.pebble-templates-editor-delete {
+  margin-top: 15px;
+}
+
+.pebble-templates-editor-header {
+  --padding: 14px;
+  --height: 98px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
+  height: var(--height);
+  padding: var(--padding) 0;
+}
+
+.pebble-templates-editor-header::before {
+  content: '';
+  z-index: -1;
+  position: absolute;
+  background: var(--selected-background);
+  width: 100%;
+  left: 0;
+  height: var(--height);
+  transform: translateY(calc(-1 * var(--padding)));
+}
+
+.pebble-templates-editor-header .input-container {
+  display: contents;
+}
+
+.pebble-templates-editor-route {
+  flex-grow: 1;
+}
+
+.pebble-templates-editor-id {
+  font-family: monospace;
+  width: 70px;
+}
+
+.pebble-templates-editor-title {
+  font-size: 2em;
+  width: 100%;
+}
+
+.pebble-templates-editor textarea {
+  font-family: monospace;
+  font-size: 1.3em;
+  width: 100%;
+  padding: 0.4em;
+  margin-top: 1.2em;
+  height: 100%;
+  height: 650px;
+  resize: none;
 }

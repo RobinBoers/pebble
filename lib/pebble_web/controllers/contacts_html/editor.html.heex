@@ -11,7 +11,7 @@
   
   <.input field={f[:handle]} type="text" label="Handle" placeholder="@dreamwastaken" required />
   <.input field={f[:url]} type="url" label="Domain" placeholder="https://example.com" required />
-  <.input field={f[:email]} type="email" label="Email" placeholder="dream@example.com" required />
+  <.input field={f[:email]} type="email" label="Email" placeholder="coolguy69@gmail.com" required />
 
   <div class="pebble-contacts-editor-checkbox">
     <.input
@@ -22,10 +22,6 @@
   </div>
 
   <div class="pebble-contacts-editor-actions">
-    <button class="pebble-contacts-editor-submit" type="submit">
-      Save
-    </button>
-
     <button
       class="pebble-contacts-editor-delete"
       type="submit"
@@ -34,6 +30,10 @@
       data-confirm="Are you sure? This will permanently and irreversibly delete this contact. This action cannot be undone."
     >
       Delete
+    </button>
+
+    <button class="pebble-contacts-editor-submit" type="submit">
+      Save
     </button>
   </div>
 </.form>

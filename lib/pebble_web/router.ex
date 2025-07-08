@@ -32,9 +32,8 @@ defmodule PebbleWeb.Router do
     post "/templates", TemplatesController, :new
 
     # live "/fragments", FragmentsLive, :schemas
-    # live "/fragments/:schema", FragmentsLive, :listing
-    # live "/fragments/:schema/new", FragmentsLive, :new
-    # live "/fragments/:schema/:id", FragmentsLive, :edit
+    # live "/s/:schema/new", FragmentsLive, :new
+    # live "/s/:schema/:id", FragmentsLive, :edit
     # live "/templates", TemplatesLive, :templates
     # live "/templates/new", TemplatesLive, :new
     # live "/templates/:id", TemplatesLive, :edit

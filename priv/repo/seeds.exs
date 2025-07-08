@@ -86,56 +86,165 @@ end
 
 templates = [
   %{
-    label: "E",
-    type: :plain,
-    visibility: :draft,
+    label: "Start",
+    type: :md,
+    visibility: :public,
     content: """
-    Ergens, ver weg, werkt Bert. Bert werkt met netwerken. Bert zet steeds gekke tekens, trekt stekkers, test, en... erge stress!
+    <%= subtitle = "Hey, I'm Robin!!" %>
 
-    "'k Meen: werk met kernregels!" zegt Evert.
-    "Vergeet het!" zegt Bert, "Lekker rebels, 'k leef slechts met de E!"
+    <div class="container">
+      <noscript class="header">
+        <h1>{subtitle}</h1>
+      </noscript>
 
-    Evert leest Bert z'n werk. Eerst: 'grep', 'sed', 'perl'.
-    "Help! De hel zelf leest sneller!"
-    "Welnee," zegt Bert, "deze regels representeren perfect het net!"
+      <script>
+        const header = document.querySelector(".header");
+        const heading = document.createElement("h1");
 
-    Een week verder. Server gek.
-    Evert belt Bert. Bert rent. Server lekt.
-    Evert zet de zet: "Verzet werk!"
-    Bert keert, beseft het: "Echt, te veel pret met slechts de E..."
+        header.parentNode.insertBefore(heading, header.nextSibling);
+
+        function type(element, text) {
+          if(text == "") return;
+          heading.innerHTML += text.charAt(0);
+          window.setTimeout(() => type(element, text.slice(1)), 20);
+        }
+
+        type(heading, "<%= subtitle %>");
+      </script>
+
+      I'm a teenage developer. I write pretty decent software.
+    </div>
+
+    <picture>
+      <source srcset="{{ commitGraph.light_href }}" media="(prefers-color-scheme: light)"/>
+      <source srcset="{{ commitGraph.dark_href }}" media="(prefers-color-scheme: dark)"/>
+
+      <img eleventy:ignore src="{{ commitGraph.light_href }}" alt="" width="100%" style="margin: 1em auto">
+    </picture>
+
+    <div class="container">
+
+      [contact](/contact)  ·  [website stability note](/stability)
+
+    </div>
     """,
     linked_sites: [
-      %{route: "/e", site_id: site0.id, layout_id: nil},
-      %{route: "/e", site_id: site1.id, layout_id: nil}
+      %{route: "/", site_id: site0.id, layout_id: nil}
     ]
   },
   %{
-    label: "Robiño",
+    label: "RSS",
     type: :plain,
     visibility: :draft,
     content: """
-    Er was eens un chico llamado Robiño. Hij woonde in een klein pueblo net buiten Almere, waar de koeien zeggen "moo" y de mensen zeggen "waar is mijn fiets?"
+    Nearly every blog has a feature called <dfn>syndication</dfn>. This is a way to to easily subscribe to a site. It works like this: the site exposes a feed, which is a simple text file that contains the latest content in a form that a newsreader app can understand. Your newsreader then periodically checks the feed and shows updates of all sites that you follow in reverse-chronological order. 
 
-    Op een dag besloot Robiño: "Hoy ga ik mijn dromen volgen en word ik een tortilla-bakker."
-    Zijn moeder zei: "Pero Robiño, je kan niet eens een ei breken zonder huilen!"
-    Waarop Robiño zei: "Maar madre, huilen maakt de omelet extra salty."
+    The technology to make this work is called <abbr title="Really Simple Syndication">RSS</abbr>, and thus these feeds are often called RSS feeds. There's also another very similar format called Atom. Virtually all newsreaders work equally with both.
 
-    Hij begon zijn eigen zaakje: Tortillas y Bitterballen Robiño S.A.
-    Iedereen in het dorp was confused. Een klant vroeg: "Heeft u ook kroketten?"
-    En Robiño antwoordde trots: "No, maar ik heb tortilla met frikandel en een beetje olijf."
+    ## But why?
 
-    Op de opening kwam zelfs de burgemeester. Die nam een hap, keek drie seconden omhoog en zei:
-    "Dios mío... dit is... ongelofelijk verwarrend."
-    En Robiño riep: "Gracias! Wil je er ook satésaus bij?"
+    Basically, RSS is like your Facebook feed, but instead of an algorithm deciding what to show you, you choose what to subscribe too yourself. That means it is fully in your control: no ads, no data mining. It's a bit like an email newsletter, but without giving your email to some American company for them to sell to spammers.
 
-    Sindsdien is Robiño bekend als de eerste tortilla-chef die permanent is verbannen uit Tex-Mex restaurants, maar wel een Michelin-ster kreeg van zijn eigen oma, handgeschreven met een Bic-pen op een servetje.
+    ## Cool, how do I get started?
+
+    To subscribe to an RSS feed, you use a newsreader app. There's [lots of choices](//en.wikipedia.org/wiki/Comparison_of_feed_aggregators) out there.
+
+    RSS itself is free, but some apps provide additional features in a paid subscription. Most of these apps also allow you to sync your subscriptions between devices, but limit the amount of subscriptions you can have.
+
+    - [Inoreader](//inoreader.com). Free up to 150 subscriptions.  
+      Offers iOS, iPadOS, and Android apps, along with a Web app.
+
+    - [NewsBlur](//newsblur.com). Free up to 64 subscriptions.  
+      Offers iOS, iPadOS, and Android apps, along with a (very good!) Web app.
+
+    - [NetNewsWire](//netnewswire.com). Offers iOS, iPadOS, and MacOS apps.
+      The apps themselves are entirely free and don't put limits on the amount of feeds.
+      However, if you use an online service like Inoreader or NewsBlur to sync
+      your subscriptions , their limits still apply.
+
+    - [The Old Reader](//theoldreader.com). Free up to 100 subscriptions.
+      Offers iOS and Android apps, along with a Web app. Contains ads.
+
+    ## But how do I use RSS?
+
+    Most sites that offer an RSS will probably have a link saying "RSS/Atom" or an orage icon similar to this: <svg
+      xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+      style="vertical-align: text-bottom; width: 1.2em; height: 1.2em"
+      class="pr-1"
+      viewBox="0 0 256 256"
+    >
+      <defs>
+        <linearGradient x1="0.085" y1="0.085" x2="0.915" y2="0.915" id="RSSg">
+          <stop offset="0.0" stop-color="#E3702D" />
+          <stop offset="0.1071" stop-color="#EA7D31" />
+          <stop offset="0.3503" stop-color="#F69537" />
+          <stop offset="0.5" stop-color="#FB9E3A" />
+          <stop offset="0.7016" stop-color="#EA7C31" />
+          <stop offset="0.8866" stop-color="#DE642B" />
+          <stop offset="1.0" stop-color="#D95B29" />
+        </linearGradient>
+      </defs>
+      <rect
+        width="256"
+        height="256"
+        rx="55"
+        ry="55"
+        x="0"
+        y="0"
+        fill="#CC5D15"
+      />
+      <rect
+        width="246"
+        height="246"
+        rx="50"
+        ry="50"
+        x="5"
+        y="5"
+        fill="#F49C52"
+      />
+      <rect
+        width="236"
+        height="236"
+        rx="47"
+        ry="47"
+        x="10"
+        y="10"
+        fill="url(#RSSg)"
+      />
+      <circle cx="68" cy="189" r="24" fill="#FFF" />
+      <path
+        d="M160 213h-34a82 82 0 0 0 -82 -82v-34a116 116 0 0 1 116 116z"
+        fill="#FFF"
+      />
+      <path
+        d="M184 213A140 140 0 0 0 44 73 V 38a175 175 0 0 1 175 175z"
+        fill="#FFF"
+      />
+    </svg> somewhere on the page. If they do, you can subscribe to them.
+
+    Subscribing is dead simple to do: you subscribe to someone by entering the URL to their blog, website, channel, profile, whatever into your RSS reader app.
+
+    Then, the app will check the feed for updates every few hours, and show the posts in reverse-chronological order. Some apps also provide other filters for showing the content, but whatever you choose, it's always under your control.
+
+    ## Where can I find feeds to subscribe to?
+
+    The best way to discover blogs to follow is by simply browsing the web. Not with a search engine, but by following links from site to site. There's tons of interesting stuff out there. Often, blogs have a blogroll: a list of blogs that they like.
+
+    Here are some starting points:
+
+    - [ooh.directory](//ooh.directory)
+    - [blogroll.org](//blogroll.org)
+
+    In addition to most blogs, lots of other sites offer RSS feeds too. Forexample, every YouTube channel has an RSS feed (try it: simply enter the channel URL in your RSS reader!). And most news sites (like [NOS](//nos.nl/feeds)) offer RSS feeds too, as do [weather forecasts](//rss.buienradar.nl/radar.php). Additionally, RSS is often used for podcasts too.
     """,
     linked_sites: [
-      %{route: "/robino", site_id: site1.id, layout_id: nil}
+      %{route: "/rss", site_id: site0.id, layout_id: nil},
+      %{route: "/rss", site_id: site1.id, layout_id: nil}
     ]
   },
   %{
-    label: "Jongeren lezen niet meer -- so what?",
+    label: "Jongeren lezen niet meer--so what?",
     type: :plain,
     visibility: :draft,
     content: """
@@ -152,7 +261,7 @@ templates = [
     Dus: hoe minder jongeren lezen, hoe meer problemen er verholpen worden. Vergeet daarom het kleine meisje dat in de Tweede Wereldoorlog de boekrecensies van de buren als enige leesvoer had en ze opslurpte als honing voor haar ziel. Vergeet de boekenwijsheid die de ouderen van nu vroeger op hebben gedaan. In het boek Fahrenheit 451 is het de bevolking verboden om boeken te lezen en wordt men volgestopt met betaalbare vormen van amusement. Met de ontlezing werken we daarnaar toe. Want dit is de toekomst. Dit is pas echte progressie.
     """,
     linked_sites: [
-      %{route: "/lezen", site_id: site1.id, layout_id: nil}
+      %{route: "/iconic", site_id: site1.id, layout_id: nil}
     ]
   }
 ]

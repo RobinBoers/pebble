@@ -70,7 +70,7 @@ defmodule PebbleWeb.TemplatesController do
     changeset = Template.changeset(template, params)
 
     case Repo.update(changeset) do
-      {:ok, template} ->
+      {:ok, _template} ->
         send_resp(conn, 204, "")
 
       {:error, changeset} ->

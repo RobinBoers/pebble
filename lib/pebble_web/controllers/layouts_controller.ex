@@ -52,7 +52,7 @@ defmodule PebbleWeb.LayoutsController do
     changeset = Layout.changeset(layout, params)
 
     case Repo.update(changeset) do
-      {:ok, layout} ->
+      {:ok, _layout} ->
         send_resp(conn, 204, "")
 
       {:error, changeset} ->

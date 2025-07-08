@@ -1,0 +1,39 @@
+<.form
+  class="pebble-contacts-editor"
+  :let={f} for={@changeset}
+  action={~p"/#{@site}/contacts/#{@contact}"}
+  method="post"
+  data-autosave="true"
+>
+  <h2 class="pebble-contacts-editor-title">Edit contact</h2>
+
+  <.input type="hidden" name="_method" value="put" />
+  
+  <.input field={f[:handle]} type="text" label="Handle" placeholder="@dreamwastaken" required />
+  <.input field={f[:url]} type="url" label="Domain" placeholder="https://example.com" required />
+  <.input field={f[:email]} type="email" label="Email" placeholder="dream@example.com" required />
+
+  <div class="pebble-contacts-editor-checkbox">
+    <.input
+      field={f[:notify]}
+      type="checkbox"
+      label="Send an email when I @mention this contact"
+    />
+  </div>
+
+  <div class="pebble-contacts-editor-actions">
+    <button class="pebble-contacts-editor-submit" type="submit">
+      Save
+    </button>
+
+    <button
+      class="pebble-contacts-editor-delete"
+      type="submit"
+      name="_method"
+      value="delete"
+      data-confirm="Are you sure? This will permanently and irreversibly delete this contact. This action cannot be undone."
+    >
+      Delete
+    </button>
+  </div>
+</.form>

@@ -1,4 +1,9 @@
 :root {
+  --selected-background: #f06595;
+  --selected-accent: #a61e4d;
+  --selected-hover: #f896b8;
+  --selected-color: white;
+
   --body-margin: 2em;
   --menu-height: 44px;
   --menu-radius: 25px;
@@ -35,10 +40,6 @@ a:visited {
 
 button:hover {
   background: var(--selected-hover);
-
-  /* These are browser resets because the browser removes appereance:button */
-  border: 1px solid ButtonBorder;
-  padding: 2px;
   border-radius: 4px;
 }
 
@@ -190,12 +191,6 @@ button:hover {
   box-shadow: calc(var(--menu-height) / -2) 0 0 var(--selected-background);
 }
 
-.dashboard {
-  --selected-background: #f06595;
-  --selected-accent: #a61e4d;
-  --selected-color: white;
-}
-
 .records {
   --selected-background: #4c6ef5;
   --selected-accent: #364fc7;
@@ -213,12 +208,14 @@ button:hover {
 .console {
   --selected-background: #fbbf24;
   --selected-accent: #e67700;
+  --selected-hover: #fbca50;
   --selected-color: black;
 }
 
 .settings {
   --selected-background: #fa5252;
   --selected-accent: #c92a2a;
+  --selected-background: #f97a7a;
   --selected-color: white;
 }
 
@@ -226,32 +223,38 @@ button:hover {
 
 .pebble-templates-listing-placeholder,
 .pebble-layouts-listing-placeholder,
+.pebble-contacts-listing-placeholder,
 .pebble-templates-listing-list,
-.pebble-layouts-listing-list {
+.pebble-layouts-listing-list,
+.pebble-contacts-listing-list {
   flex-basis: 850px;
 }
 
 .pebble-templates-listing-placeholder,
-.pebble-layouts-listing-placeholder {
+.pebble-layouts-listing-placeholder,
+.pebble-contacts-listing-placeholder {
   opacity: 0.8;
   text-align: center;
   margin-top: 3em;
 }
 
 .pebble-templates-listing-list,
-.pebble-layouts-listing-list {
+.pebble-layouts-listing-list,
+.pebble-contacts-listing-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
 .pebble-templates-listing-listitem:nth-child(2n-1),
-.pebble-layouts-listing-listitem:nth-child(2n-1) {
+.pebble-layouts-listing-listitem:nth-child(2n-1),
+.pebble-contacts-listing-listitem:nth-child(2n-1) {
   background-color: #f0f0f2;
 }
 
 .pebble-templates-listing-listitem a,
-.pebble-layouts-listing-listitem a {
+.pebble-layouts-listing-listitem a,
+.pebble-contacts-listing-listitem a {
   color: currentColor;
   text-decoration: none;
   display: flex;
@@ -261,7 +264,8 @@ button:hover {
 }
 
 .pebble-templates-listing-listitem a:hover,
-.pebble-layouts-listing-listitem a:hover {
+.pebble-layouts-listing-listitem a:hover,
+.pebble-contacts-listing-listitem a:hover {
   background: var(--selected-hover);
 }
 
@@ -292,7 +296,9 @@ button:hover {
 }
 
 .pebble-templates-new-form,
-.pebble-layouts-new-form {
+.pebble-layouts-new-form,
+.pebble-contacts-new-form,
+.pebble-contacts-editor {
   flex-basis: 250px;
   display: flex;
   flex-direction: column;
@@ -302,7 +308,9 @@ button:hover {
 
 .pebble-templates-new-form .input-container,
 .pebble-layouts-new-form .input-container,
-.pebble-templates-editor-sidebar .input-container {
+.pebble-contacts-new-form .input-container,
+.pebble-templates-editor-sidebar .input-container,
+.pebble-contacts-editor .input-container {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -310,17 +318,21 @@ button:hover {
 
 .pebble-templates-new-form label,
 .pebble-layouts-new-form label,
-.pebble-templates-editor label {
+.pebble-contacts-new-form label,
+.pebble-templates-editor label,
+.pebble-contacts-editor label {
   font-weight: bold;
 }
 
 .pebble-templates-new-form input,
-.pebble-layouts-new-form input {
+.pebble-layouts-new-form input,
+.pebble-contacts-new-form input {
   font-size: 1.2em;
 }
 
 .pebble-templates-new-form button,
-.pebble-layouts-new-form button {
+.pebble-layouts-new-form button,
+.pebble-contacts-new-form button {
   height: 30px;
   margin-top: 10px;
 }
@@ -486,4 +498,29 @@ button:hover {
 
 .pebble-layouts-editor-actions button {
   padding: 0.5em 1em;
+}
+
+/* Contacts */
+
+.pebble-contacts-editor {
+  max-width: 600px;
+  width: 100%;
+}
+
+.pebble-contacts-editor-title {
+  margin: 0;
+}
+
+.pebble-contacts-new-form-checkbox label,
+.pebble-contacts-editor-checkbox label {
+  font-weight: normal;
+}
+
+.pebble-contacts-editor-actions {
+  display: flex;
+  gap: 0.3em;
+}
+
+.pebble-contacts-editor-actions button {
+  flex-grow: 1;
 }

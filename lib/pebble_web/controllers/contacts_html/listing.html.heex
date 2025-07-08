@@ -1,0 +1,34 @@
+<%= if @contacts == [] do %>
+  <p class="pebble-contacts-listing-placeholder">No contacts yet.</p>
+<% else %>
+  <ul class="pebble-contacts-listing-list">
+    <li :for={contact <- @contacts} class="pebble-contacts-listing-listitem">
+      <.link href={~p"/#{@site}/contacts/#{contact}"}>
+        @{contact.handle}
+
+        <code class="pebble-contacts-listing-id">{contact.id}</code>
+      </.link>
+    </li>
+  </ul>
+<% end %>
+
+<.form :let={f} for={@changeset}
+  action={~p"/#{@site}/contacts"}
+  method="post"
+  class="pebble-contacts-new-form"
+>
+  <.input field={f[:handle]} type="text" placeholder="@dreamwastaken" required />
+  <.input field={f[:url]} type="url" placeholder="https://example.com" required />
+  <.input field={f[:email]} type="email" placeholder="dream@example.com" required />
+
+  <div class="pebble-contacts-new-form-checkbox">
+    <.input
+      field={f[:notify]}
+      type="checkbox"
+      label="Send them an email when I @mention them."
+      class="pebble-contacts-new-form-notify"
+    />
+  </div>
+
+  <button type="submit">Create</button>
+</.form>

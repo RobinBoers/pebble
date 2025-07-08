@@ -1,0 +1,23 @@
+<%= if @schemas == [] do %>
+  <p class="pebble-schemas-listing-placeholder">No schemas yet.</p>
+<% else %>
+  <ul class="pebble-schemas-listing-list">
+    <li :for={schema <- @schemas} class="pebble-schemas-listing-listitem">
+      <.link href={~p"/#{@site}/schemas/#{schema}"}>
+        {schema.label}
+
+        <code class="pebble-schemas-listing-id">{schema.id}</code>
+      </.link>
+    </li>
+  </ul>
+<% end %>
+
+<.form :let={f} for={@changeset}
+  action={~p"/#{@site}/schemas"}
+  method="post"
+  class="pebble-schemas-new-form"
+>
+  <.input field={f[:label]} placeholder="Label" required />
+
+  <button type="submit">Create</button>
+</.form>

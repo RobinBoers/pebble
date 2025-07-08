@@ -1,0 +1,41 @@
+<.form
+  class="pebble-schemas-editor"
+  :let={f} for={@changeset}
+  action={~p"/#{@site}/schemas/#{@schema}"}
+  method="post"
+  data-autosave="true"
+>
+  <!-- TODO(robin): the autosave feature does not show form errors -->
+
+  <.input type="hidden" name="_method" value="put" />
+  <header class="pebble-schemas-editor-header">
+    <.input field={f[:label]} class="pebble-schemas-editor-title" placeholder="Label" />
+    <.input field={f[:id]} class="pebble-schemas-editor-id" readonly />
+  </header>
+
+  <.input field={f[:definition]} type="textarea" />
+
+  <div class="pebble-schemas-editor-actions">
+    <.input
+      field={f[:listing]}
+      class="pebble-schemas-editor-rendering"
+      type="select"
+      label="Rendering: "
+      options={@listings}
+    />
+
+    <button
+      class="pebble-schemas-editor-delete"
+      type="submit"
+      name="_method"
+      value="delete"
+      data-confirm="Are you sure? This will permanently and irreversibly delete this schema and all fragments using it. This action cannot be undone."
+    >
+      Delete
+    </button>
+
+    <button class="pebble-schemas-editor-submit" type="submit">
+      Save
+    </button>
+  </div>
+</.form>

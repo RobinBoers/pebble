@@ -222,7 +222,7 @@ textarea {
 .settings {
   --selected-background: #fa5252;
   --selected-accent: #c92a2a;
-  --selected-background: #f97a7a;
+  --selected-hover: #fca4a4;
   --selected-color: white;
 }
 
@@ -232,17 +232,20 @@ textarea {
 .pebble-layouts-listing-placeholder,
 .pebble-contacts-listing-placeholder,
 .pebble-fragments-listing-placeholder,
+.pebble-schemas-listing-placeholder,
 .pebble-templates-listing-list,
 .pebble-layouts-listing-list,
 .pebble-contacts-listing-list,
-.pebble-fragments-listing-list {
+.pebble-fragments-listing-list,
+.pebble-schemas-listing-list {
   flex-basis: 850px;
 }
 
 .pebble-templates-listing-placeholder,
 .pebble-layouts-listing-placeholder,
 .pebble-contacts-listing-placeholder,
-.pebble-fragments-listing-placeholder {
+.pebble-fragments-listing-placeholder,
+.pebble-schemas-listing-placeholder {
   opacity: 0.8;
   text-align: center;
   margin-top: 3em;
@@ -251,7 +254,8 @@ textarea {
 .pebble-templates-listing-list,
 .pebble-layouts-listing-list,
 .pebble-contacts-listing-list,
-.pebble-fragments-listing-list {
+.pebble-fragments-listing-list,
+.pebble-schemas-listing-list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -260,14 +264,16 @@ textarea {
 .pebble-templates-listing-listitem:nth-child(2n-1),
 .pebble-layouts-listing-listitem:nth-child(2n-1),
 .pebble-contacts-listing-listitem:nth-child(2n-1),
-.pebble-fragments-listing-listitem:nth-child(2n-1) {
+.pebble-fragments-listing-listitem:nth-child(2n-1),
+.pebble-schemas-listing-listitem:nth-child(2n-1) {
   background-color: #f0f0f2;
 }
 
 .pebble-templates-listing-listitem a,
 .pebble-layouts-listing-listitem a,
 .pebble-contacts-listing-listitem a,
-.pebble-fragments-listing-listitem a {
+.pebble-fragments-listing-listitem a,
+.pebble-schemas-listing-listitem a {
   color: currentColor;
   text-decoration: none;
   display: flex;
@@ -279,7 +285,8 @@ textarea {
 .pebble-templates-listing-listitem a:hover,
 .pebble-layouts-listing-listitem a:hover,
 .pebble-contacts-listing-listitem a:hover,
-.pebble-fragments-listing-listitem a:hover {
+.pebble-fragments-listing-listitem a:hover,
+.pebble-schemas-listing-listitem a:hover {
   background: var(--selected-hover);
 }
 
@@ -312,7 +319,8 @@ textarea {
 .pebble-templates-new-form,
 .pebble-layouts-new-form,
 .pebble-contacts-new-form,
-.pebble-fragments-new-form {
+.pebble-fragments-new-form,
+.pebble-schemas-new-form {
   flex-basis: 225px;
   display: flex;
   flex-direction: column;
@@ -323,6 +331,7 @@ textarea {
 .pebble-layouts-new-form .input-container,
 .pebble-contacts-new-form .input-container,
 .pebble-fragments-new-form .input-container,
+.pebble-schemas-new-form .input-container,
 .pebble-templates-editor-sidebar .input-container,
 .pebble-contacts-editor .input-container,
 .pebble-fragments-editor .input-container {
@@ -335,6 +344,7 @@ textarea {
 .pebble-layouts-new-form label,
 .pebble-contacts-new-form label,
 .pebble-fragments-new-form label,
+.pebble-schemas-new-form label,
 .pebble-templates-editor label,
 .pebble-contacts-editor label,
 .pebble-fragments-editor label {
@@ -344,14 +354,16 @@ textarea {
 .pebble-templates-new-form input,
 .pebble-layouts-new-form input,
 .pebble-contacts-new-form input,
-.pebble-fragments-new-form input {
+.pebble-fragments-new-form input,
+.pebble-schemas-new-form input {
   font-size: 1.2em;
 }
 
 .pebble-templates-new-form button,
 .pebble-layouts-new-form button,
 .pebble-contacts-new-form button,
-.pebble-fragments-new-form button {
+.pebble-fragments-new-form button,
+.pebble-schemas-new-form button {
   height: 30px;
   margin-top: 10px;
 }
@@ -433,7 +445,8 @@ textarea {
 }
 
 .pebble-templates-editor-id,
-.pebble-layouts-editor-id {
+.pebble-layouts-editor-id,
+.pebble-schemas-editor-id {
   font-family: monospace;
   width: 70px;
 }
@@ -444,7 +457,8 @@ textarea {
 }
 
 .pebble-templates-editor textarea,
-.pebble-layouts-editor textarea {
+.pebble-layouts-editor textarea,
+.pebble-schemas-editor textarea {
   margin-top: 1.2em;
   width: 100%;
   height: 650px;
@@ -452,7 +466,8 @@ textarea {
 
 /* Layouts */
 
-.pebble-layouts-editor {
+.pebble-layouts-editor,
+.pebble-schemas-editor {
   margin-top: var(--header-offset);
   display: flex;
   flex-direction: column;
@@ -461,7 +476,8 @@ textarea {
   width: 100%;
 }
 
-.pebble-layouts-editor-header {
+.pebble-layouts-editor-header,
+.pebble-schemas-editor-header {
   --padding: 10px;
   --height: 60px;
 
@@ -472,7 +488,8 @@ textarea {
   padding: var(--padding) 0;
 }
 
-.pebble-layouts-editor-header::before {
+.pebble-layouts-editor-header::before,
+.pebble-schemas-editor-header::before {
   content: '';
   z-index: -1;
   position: absolute;
@@ -483,34 +500,35 @@ textarea {
   transform: translateY(calc(-1 * var(--padding)));
 }
 
-.pebble-layouts-editor-header {
-  display: flex;
-  gap: 0.3em;
-}
-
-.pebble-layouts-editor .input-container {
+.pebble-layouts-editor .input-container,
+.pebble-schemas-editor .input-container {
   display: contents;
 }
 
-.pebble-layouts-editor-header input {
+.pebble-layouts-editor-header input,
+.pebble-schemas-editor-header input {
   font-size: 1.3em;
 }
 
-.pebble-layouts-editor-title {
+.pebble-layouts-editor-title,
+.pebble-schemas-editor-title {
   flex-grow: 1;
 }
 
-.pebble-layouts-editor-actions {
+.pebble-layouts-editor-actions,
+.pebble-schemas-editor-actions {
   display: flex;
   gap: 0.3em;
   align-items: center;
 }
 
-.pebble-layouts-editor-extends {
+.pebble-layouts-editor-extends,
+.pebble-schemas-editor-rendering {
   margin-right: auto;
 }
 
-.pebble-layouts-editor-actions button {
+.pebble-layouts-editor-actions button,
+.pebble-schemas-editor-actions button {
   padding: 0.5em 1em;
 }
 

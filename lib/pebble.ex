@@ -262,10 +262,8 @@ defmodule Pebble do
     %Template{linked_sites: linked} = template
 
     case Enum.find(linked, &(&1.site_id == site_id)) do
-      %Context{} = settings ->
-        settings
-        |> Map.take([:route, :layout])
-        |> Map.merge(template)
+      %Context{} = ctx ->
+        Map.merge(template, Map.take(ctx, [:route, :layout]))
 
       nil ->
         template

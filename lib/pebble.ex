@@ -188,7 +188,7 @@ defmodule Pebble do
   def get_layout(id, site_id) do
     Repo.one(from l in Layout,
       where: l.id == ^id and l.site_id == ^site_id,
-      preload: :sites)
+      preload: :site)
   end
 
   @doc """

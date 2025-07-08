@@ -1,0 +1,33 @@
+<%= if @layouts == [] do %>
+  <p class="pebble-layouts-listing-placeholder">No layouts yet.</p>
+<% else %>
+  <ul class="pebble-layouts-listing-list">
+    <li :for={layout <- @layouts} class="pebble-layouts-listing-listitem">
+      <.link href={~p"/#{@site}/layouts/#{layout}"}>
+        {layout.label}
+
+        <code class="pebble-layouts-listing-id">{layout.id}</code>
+      </.link>
+    </li>
+  </ul>
+<% end %>
+
+<.form :let={f} for={@changeset}
+  action={~p"/#{@site}/layouts"}
+  method="post"
+  class="pebble-layouts-new-form"
+>
+  <.input field={f[:label]} placeholder="Label" required />
+
+  <div class="pebble-layouts-new-form-selects">
+    <.input
+      field={f[:extends_id]}
+      type="select"
+      label="Extends"
+      prompt="(none)"
+      options={Enum.map(@layouts, &{&1.label, &1.id})}
+    />
+  </div>
+
+  <button type="submit">Create</button>
+</.form>

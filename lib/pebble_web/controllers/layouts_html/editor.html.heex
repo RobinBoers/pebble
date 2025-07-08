@@ -1,0 +1,40 @@
+<.form
+  class="pebble-layouts-editor"
+  :let={f} for={@changeset}
+  action={~p"/#{@site}/layouts/#{@slayout}"}
+  method="post"
+  data-autosave="true"
+>
+  <.input type="hidden" name="_method" value="put" />
+  <header class="pebble-layouts-editor-header">
+    <.input field={f[:label]} class="pebble-layouts-editor-title" placeholder="Label" />
+    <.input field={f[:id]} class="pebble-layouts-editor-id" readonly />
+  </header>
+
+  <.input field={f[:content]} type="textarea" />
+
+  <div class="pebble-layouts-editor-actions">
+    <.input
+      field={f[:extends_id]}
+      class="pebble-layouts-editor-extends"
+      type="select"
+      label="Extends: "
+      prompt="(nothing)"
+      options={Enum.map(@layouts, &{&1.label, &1.id})}
+    />
+
+    <button class="pebble-layouts-editor-submit" type="submit">
+      Save
+    </button>
+
+    <button
+      class="pebble-layouts-editor-delete"
+      type="submit"
+      name="_method"
+      value="delete"
+      data-confirm="Are you sure? This will permanently and irreversibly delete this layout and render all templates depending on it broken. This action cannot be undone."
+    >
+      Delete
+    </button>
+  </div>
+</.form>

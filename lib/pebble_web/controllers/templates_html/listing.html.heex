@@ -1,0 +1,45 @@
+<%= if @templates == [] do  %>
+  <p class="pebble-templates-listing-placeholder">No templates yet.</p>
+<% else %>
+  <ul class="pebble-templates-listing-list">
+    <li :for={template <- @templates} class="pebble-templates-listing-listitem">
+      <.link href={~p"/#{@site}/templates/#{template}"}>
+        {template.label}
+
+        <code class="pebble-templates-listing-id">{template.id}</code>
+      </.link>
+    </li>
+  </ul>
+<% end %>
+
+<.form :let={f} for={@changeset}
+  action={~p"/#{@site}/templates"}
+  method="post"
+  class="pebble-templates-new-form"
+>
+  <.inputs_for :let={s} field={f[:linked_sites]}>
+    <.input field={f[:label]} placeholder="Title" required />
+    <.input field={s[:route]} placeholder="Route" required />
+
+    <div class="pebble-templates-new-form-selects">
+      <.input
+        field={s[:layout_id]}
+        type="select"
+        label="Layout"
+        prompt="(none)"
+        options={Enum.map(@layouts, &{&1.label, &1.id})}
+      />
+
+      <.input
+        field={f[:type]}
+        label="Render as"
+        type="select"
+        options={@types}
+      />
+    </div>
+
+    <button type="submit">Create</button>
+
+    <.input field={s[:site_id]} type="hidden" />
+  </.inputs_for>
+</.form>

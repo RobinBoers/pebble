@@ -1,0 +1,73 @@
+<.form
+  class="pebble-templates-editor"
+  :let={f} for={@changeset}
+  action={~p"/#{@site}/templates/#{@template}"}
+  method="post"
+  data-autosave="true"
+>
+  <.inputs_for :let={s} field={f[:linked_sites]}>
+    <%= if current_site?(s, @site) do %>
+      <main class="pebble-templates-editor-main">
+        <.input type="hidden" name="_method" value="put" />
+        <header class="pebble-templates-editor-header">
+          <.input field={s[:route]} class="pebble-templates-editor-route" placeholder="Route" />
+          <.input field={f[:id]} class="pebble-templates-editor-id" readonly />
+
+          <.input field={f[:label]} class="pebble-templates-editor-title" placeholder="Title" />
+        </header>
+
+        <.input field={f[:content]} type="textarea" />
+        <.input field={s[:site_id]} type="hidden" />
+      </main>
+
+      <aside class="pebble-templates-editor-sidebar">
+        <button class="pebble-templates-editor-submit" type="submit">
+          Save & deploy
+        </button>
+
+        <.input
+          field={f[:visibility]}
+          type="select"
+          label="Visibility"
+          class="visibility"
+          options={@visibility}
+        />
+
+        <.input
+          field={s[:layout_id]}
+          type="select"
+          label="Extends layout"
+          prompt="(none)"
+          options={Enum.map(@layouts, &{&1.label, &1.id})}
+        />
+
+        <.input
+          field={f[:type]}
+          label="Render as"
+          type="select"
+          options={@types}
+        />
+
+        <button
+          class="pebble-templates-editor-delete"
+          type="submit"
+          name="_method"
+          value="delete"
+          data-confirm="Are you sure? This will permanently and irreversibly delete this template and deactivate its route, which will immediately break all URLs pointing to it. This action cannot be undone."
+        >
+          Delete
+        </button>
+      </aside>
+    <% else %>
+      <.input field={s[:site_id]} type="hidden" />
+      <.input field={s[:route]} type="hidden" />
+      <.input field={s[:layout_id]} type="hidden" />
+    <% end %>
+  </.inputs_for>
+</.form>
+
+<!-- hihi 
+<3
+<3
+<3
+-->

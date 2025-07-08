@@ -1,0 +1,38 @@
+<.form
+  class="pebble-fragments-editor"
+  :let={f} for={@changeset}
+  action={~p"/#{@site}/s/#{@schema}/#{@fragment}"}
+  method="post"
+  data-autosave="true"
+>
+  <.input type="hidden" name="_method" value="put" />
+
+  <header class="pebble-fragments-editor-header">
+    <h2 class="pebble-fragments-editor-title">Edit {String.downcase(@schema.label)}</h2>
+    <code class="pebble-fragments-editor-id">{@fragment.id}</code>
+  </header>
+
+  <.input
+    :for={{name, d} <- @schema.fields}
+    field={f[name]}
+    label={d[:label] || labelify(name)}
+    options={d[:options]}
+    class="pebble-fragments-editor-input"
+  />
+
+  <div class="pebble-fragments-editor-actions">
+    <button
+      class="pebble-fragments-editor-delete"
+      type="submit"
+      name="_method"
+      value="delete"
+      data-confirm="Are you sure? This will permanently and irreversibly delete this fragment. This action cannot be undone."
+    >
+      Delete
+    </button>
+
+    <button class="pebble-fragments-editor-submit" type="submit">
+      Save
+    </button>
+  </div>
+</.form>

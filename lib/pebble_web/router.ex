@@ -46,6 +46,12 @@ defmodule PebbleWeb.Router do
     put "/contacts/:id", ContactsController, :edit
     delete "/contacts/:id", ContactsController, :delete
 
+    get "/s/:schema", FragmentsController, :fragments
+    post "/s/:schema", FragmentsController, :new
+    get "/s/:schema/:id", FragmentsController, :fragment
+    put "/s/:schema/:id", FragmentsController, :edit
+    delete "/s/:schema/:id", FragmentsController, :delete
+
     # live "/fragments", FragmentsLive, :schemas
     # live "/s/:schema/new", FragmentsLive, :new
     # live "/s/:schema/:id", FragmentsLive, :edit

@@ -1,0 +1,30 @@
+<%= if @fragments == [] do %>
+  <p class="pebble-fragments-listing-placeholder">No fragments yet.</p>
+<% else %>
+  <ul class="pebble-fragments-listing-list">
+    <li :for={fragment <- @fragments} class="pebble-fragments-listing-listitem">
+      <.link href={~p"/#{@site}/s/#{@schema}/#{fragment}"}>
+        {fragment.id}
+
+        <code class="pebble-fragments-listing-id">{fragment.id}</code>
+      </.link>
+    </li>
+  </ul>
+<% end %>
+
+<.form :let={f} for={@changeset}
+  action={~p"/#{@site}/s/#{@schema}"}
+  method="post"
+  class="pebble-fragments-new-form"
+>
+  <.input
+    :for={{name, d} <- @schema.fields}
+    :if={d[:required]}
+    field={f[name]}
+    label={d[:label] || labelify(name)}
+    options={d[:options]}
+    class="pebble-fragments-new-form-input"
+  />
+
+  <button type="submit">Create</button>
+</.form>

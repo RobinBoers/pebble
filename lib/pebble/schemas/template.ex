@@ -10,7 +10,7 @@ defmodule Pebble.Template do
   import Ecto.Changeset
 
   @doc "Supported render types."
-  def types, do: [:heex, :md, :plain]
+  def types, do: [:html, :md, :plain]
 
   @doc "Supported visibilities."
   def visibility, do: [:draft, :hidden, :rss, :public]

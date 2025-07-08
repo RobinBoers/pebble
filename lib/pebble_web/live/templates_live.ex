@@ -18,7 +18,7 @@ defmodule PebbleWeb.TemplatesLive do
   ]
 
   @types [
-    {"HEEx", :heex},
+    {"HTML", :html},
     {"Markdown", :md},
     {"Plain text", :plain}
   ]
@@ -47,10 +47,6 @@ defmodule PebbleWeb.TemplatesLive do
     |> assign(:layouts, fetch_layouts(socket.assigns.site))
     |> assign(:changeset, Template.changeset_for(socket.assigns.site))
     |> assign(visibility: @visibility, types: @types)
-  end
-
-  defp other_sites(template, site) do
-    Enum.filter(template.sites, &(&1.id != site.id))
   end
 
   defp assign_add_changeset(socket, changeset) do

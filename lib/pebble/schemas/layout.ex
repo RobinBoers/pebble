@@ -32,5 +32,17 @@ defmodule Pebble.Layout do
     |> cast(params, [:label, :content, :extends_id])
     |> cast_assoc(:site, required: true)
     |> validate_required([:label])
+    |> validate_not_self_extending()
+  end
+
+  defp validate_not_self_extending(changeset) do
+    schema_id = get_field(changeset, :id)
+    extends_id = get_field(changeset, :extends_id)
+
+    if extends_id && extends_id == schema_id do
+      add_error(changeset, :extends_id, "cannot extend itself")
+    else
+      changeset
+    end
   end
 end

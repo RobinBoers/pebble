@@ -558,9 +558,9 @@ textarea {
   align-items: center;
 }
 
-.pebble-layouts-editor-extends,
-.pebble-schemas-editor-rendering {
-  margin-right: auto;
+.pebble-layouts-editor-delete,
+.pebble-schemas-editor-delete {
+  margin-left: auto;
 }
 
 .pebble-layouts-editor-actions button,

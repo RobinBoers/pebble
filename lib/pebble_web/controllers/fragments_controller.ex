@@ -13,8 +13,6 @@ defmodule PebbleWeb.FragmentsController do
     fetch_fragments: 2
   ]
 
-  import Structo
-
   def fragments(conn, %{"schema" => schema_id}) do
     case get_schema(schema_id, conn.assigns.site) do
       %Schema{} = schema ->
@@ -61,7 +59,7 @@ defmodule PebbleWeb.FragmentsController do
     changeset = fragment |> Changeset.new() |> Fragment.changeset_for(params)
 
     case Repo.update(changeset) do
-      {:ok, fragment} ->
+      {:ok, _fragment} ->
         send_resp(conn, 204, "")
 
       {:error, _changeset} ->

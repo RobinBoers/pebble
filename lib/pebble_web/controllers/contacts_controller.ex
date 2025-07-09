@@ -52,7 +52,7 @@ defmodule PebbleWeb.ContactsController do
     changeset = Contact.changeset(contact, params)
 
     case Repo.update(changeset) do
-      {:ok, contact} ->
+      {:ok, _contact} ->
         send_resp(conn, 204, "")
 
       {:error, changeset} ->

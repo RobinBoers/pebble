@@ -58,7 +58,7 @@ defmodule PebbleWeb.SchemasController do
     changeset = Schema.changeset(schema, params)
 
     case Repo.update(changeset) do
-      {:ok, schema} ->
+      {:ok, _schema} ->
         send_resp(conn, 204, "")
 
       {:error, changeset} ->

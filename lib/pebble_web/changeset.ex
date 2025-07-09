@@ -4,6 +4,7 @@ defmodule Pebble.Changeset do
 
   alias Pebble.Fragment
   alias Pebble.Schema
+  alias Pebble.Settings
   alias Pebble.Site
 
   typedstruct do
@@ -16,6 +17,7 @@ defmodule Pebble.Changeset do
 
   @spec new(Fragment.t(), %{String.t() => term()}) :: t()
   @spec new(Schema.t(), %{String.t() => term()}) :: t()
+  @spec new(Settings.t(), %{String.t() => term()}) :: t()
 
   def new(schema_or_fragment, params \\ %{})
 
@@ -36,6 +38,16 @@ defmodule Pebble.Changeset do
       params: params,
       schema: fragment.schema,
       sites: fragment.sites,
+    }
+  end
+
+  def new(%Settings{} = settings, params) do
+    %__MODULE__{
+      id: settings.id,
+      data: JSON.decode!(settings.data || "{}"),
+      params: params,
+      schema: %Schema{fields: settings.fields},
+      sites: [settings.site]
     }
   end
 end

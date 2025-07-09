@@ -12,12 +12,16 @@
   </ul>
 <% end %>
 
-<.form :let={f} for={@changeset}
-  action={~p"/#{@site}/schemas"}
-  method="post"
-  class="pebble-schemas-new-form"
->
-  <.input field={f[:label]} placeholder="Label" required />
+<div class="pebble-schemas-sidebar">
+  <.form :let={f} for={@changeset}
+    action={~p"/#{@site}/schemas"}
+    method="post"
+    class="pebble-schemas-new-form"
+  >
+    <.input field={f[:label]} placeholder="Label" required />
 
-  <button type="submit">Create</button>
-</.form>
+    <button type="submit">Create</button>
+  </.form>
+
+  <a class="button" href={~p"/#{@site}/schemas/identity"}>Identity schema</a>
+</div>

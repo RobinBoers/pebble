@@ -11,6 +11,7 @@ defmodule Pebble do
   alias Pebble.Template
   alias Pebble.Context
   alias Pebble.Contact
+  alias Pebble.Settings
 
   import Ecto.Query
 
@@ -175,6 +176,11 @@ defmodule Pebble do
     Map.put(s, :fields, sorted_fields(s.definition))
   end
 
+  defp maybe_populate_settings(nil), do: nil
+  defp maybe_populate_settings(%Settings{} = s) do
+    Map.put(s, :fields, sorted_fields(s.definition))
+  end
+
   @doc """
   Gets a `Pebble.Layout` for the given `Pebble.Site`.
   """
@@ -268,6 +274,23 @@ defmodule Pebble do
       nil ->
         template
     end
+  end
+
+  @doc """
+  Gets the `Pebble.Settings` for the given `Pebble.Site`.
+  """
+  @spec get_settings(Site.t()) :: Settings.t() | nil
+  @spec get_settings(integer()) :: Settings.t() | nil
+
+  def get_settings(%Site{id: site_id}) do
+    get_settings(site_id)
+  end
+
+  def get_settings(site_id) do
+    Repo.one(from s in Settings,
+      where: s.site_id == ^site_id,
+      preload: :site)
+    |> maybe_populate_settings()
   end
 
   @doc """

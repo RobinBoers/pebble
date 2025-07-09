@@ -1,0 +1,17 @@
+<.form
+  class="pebble-identity-schema-editor"
+  :let={f} for={@changeset}
+  action={~p"/#{@site}/schemas/identity"}
+  method="post"
+  data-autosave="true"
+>
+  <.input type="hidden" name="_method" value="put" />
+
+  <h2 class="pebble-identity-schema-editor-title">Edit identity schema</h2>
+
+  <.input field={f[:definition]} type="textarea" />
+
+  <button class="pebble-identity-schema-editor-submit" type="submit">
+    Save
+  </button>
+</.form>

@@ -63,6 +63,12 @@ defmodule PebbleWeb.Router do
     put "/s/:schema/:id", FragmentsController, :edit
     delete "/s/:schema/:id", FragmentsController, :delete
 
+    get "/endpoints", ConsoleController, :endpoints
+    get "/shell", ConsoleController, :shell
+    get "/logs", ConsoleController, :logs
+
+    get "/preferences", SettingsController, :settings
+
     # live "/fragments", FragmentsLive, :schemas
     # live "/s/:schema/new", FragmentsLive, :new
     # live "/s/:schema/:id", FragmentsLive, :edit

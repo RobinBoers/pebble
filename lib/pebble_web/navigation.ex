@@ -95,7 +95,6 @@ defmodule PebbleWeb.Navigation do
           | records_children(site)
       ]},
       %{title: "Design", children: [
-        %{title: "Identity", route: ~p"/#{site}/identity"},
         %{title: "Layouts", route: ~p"/#{site}/layouts"}
       ]},
       %{title: "Console", children: [
@@ -104,8 +103,9 @@ defmodule PebbleWeb.Navigation do
         %{title: "Logs", route: ~p"/#{site}/logs"}
       ]},
       %{title: "Settings", children: [
-        %{title: "Core", route: ~p"/#{site}/settings"},
-        %{title: "Schemas", route: ~p"/#{site}/schemas"}
+        %{title: "Identity", route: ~p"/#{site}/identity"},
+        %{title: "Schemas", route: ~p"/#{site}/schemas"},
+        %{title: "Preferences", route: ~p"/#{site}/preferences"}
       ]}
     ]
   end

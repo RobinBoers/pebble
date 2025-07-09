@@ -196,7 +196,7 @@ defmodule PebbleWeb.CoreComponents do
         />
         {@label}
       </label>
-      <.error :for={msg <- @errors}>{msg}</.error>
+      <.error :for={msg <- @errors} data-for={@id}>{msg}</.error>
     </div>
     """
   end
@@ -214,7 +214,7 @@ defmodule PebbleWeb.CoreComponents do
         <option :if={@prompt} value="">{@prompt}</option>
         {Phoenix.HTML.Form.options_for_select(@options, @value)}
       </select>
-      <.error :for={msg <- @errors}>{msg}</.error>
+      <.error :for={msg <- @errors} data-for={@id}>{msg}</.error>
     </div>
     """
   end
@@ -229,7 +229,7 @@ defmodule PebbleWeb.CoreComponents do
         class={[@rest[:class], @errors != [] && "has-error"]}
         {@rest}
       >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
-      <.error :for={msg <- @errors}>{msg}</.error>
+      <.error :for={msg <- @errors} data-for={@id}>{msg}</.error>
     </div>
     """
   end
@@ -283,11 +283,11 @@ defmodule PebbleWeb.CoreComponents do
   Generates a generic error message.
   """
   slot :inner_block, required: true
+  attr :rest, :global
 
   def error(assigns) do
     ~H"""
-    <p class="form-error">
-      <.icon name="hero-exclamation-circle-mini" />
+    <p class="form-error" {@rest}>
       {render_slot(@inner_block)}
     </p>
     """

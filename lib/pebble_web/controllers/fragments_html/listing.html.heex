@@ -21,7 +21,8 @@
     :for={{name, d} <- @schema.fields}
     :if={d[:required]}
     field={f[name]}
-    label={d[:label] || labelify(name)}
+    placeholder={d[:label] || labelify(name)}
+    label={if d[:type] == "checkbox", do: d[:label] || labelify(name)}
     options={d[:options]}
     class="pebble-fragments-new-form-input"
   />

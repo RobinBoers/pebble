@@ -23,11 +23,7 @@ config :pebble, PebbleWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "NQev8p6fyq5a4LjTROIJxL7OyHhSvIUz/90tHx+TcgftmXw9baEms/5sWVttI3Os",
-  watchers: [
-    esbuild: {Esbuild, :install_and_run, [:pebble, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:pebble, ~w(--watch)]}
-  ]
+  secret_key_base: "NQev8p6fyq5a4LjTROIJxL7OyHhSvIUz/90tHx+TcgftmXw9baEms/5sWVttI3Os"
 
 # ## SSL Support
 #

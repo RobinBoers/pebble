@@ -13,6 +13,9 @@ defmodule Pebble.Fragment do
   typed_schema "fragments" do
     field :data, :string
 
+    # Contains the parsed JSON data if populated.
+    field :values, {:array, :map}, virtual: true
+
     belongs_to :schema, Schema
     many_to_many :sites, Site, join_through: "fragments_sites"
 

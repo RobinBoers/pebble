@@ -1,15 +1,17 @@
 <%= if @fragments == [] do %>
   <p class="pebble-fragments-listing-placeholder">No fragments yet.</p>
 <% else %>
-  <ul class="pebble-fragments-listing-list">
-    <li :for={fragment <- @fragments} class="pebble-fragments-listing-listitem">
-      <.link href={~p"/#{@site}/s/#{@schema}/#{fragment}"}>
-        {fragment.id}
-
-        <code class="pebble-fragments-listing-id">{fragment.id}</code>
-      </.link>
-    </li>
-  </ul>
+  <.table_view
+    :if={@schema.listing == :table}
+    column_fields={get_visible_fields(@schema, ["column", "main", "meta"])}
+    {assigns}
+  />
+  <.inline_view
+    :if={@schema.listing == :inline}
+    main_field={get_main_field(@schema)}
+    meta_fields={get_visible_fields(@schema, ["meta", "column"])}
+    {assigns}
+  />
 <% end %>
 
 <.form :let={f} for={@changeset}

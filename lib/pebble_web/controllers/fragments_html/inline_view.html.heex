@@ -1,0 +1,18 @@
+<ul class="pebble-fragments-listing-list">
+  <li :for={fragment <- @fragments} class="pebble-fragments-listing-listitem">
+    <.link href={~p"/#{@site}/s/#{@schema}/#{fragment}"}>
+      <%= if @main_field do %>
+        <div class="pebble-fragments-listing-main">
+          {field_value(fragment, @main_field)}
+        </div>
+        <div :if={@meta_fields != []} class="pebble-fragments-listing-meta">
+          <span :for={field <- @meta_fields}>
+            <strong>{field_label(@schema, field)}:</strong> {field_value(fragment, field)}
+          </span>
+        </div>
+      <% else %>
+        <code class="pebble-fragments-listing-id">{fragment.id}</code>
+      <% end %>
+    </.link>
+  </li>
+</ul>

@@ -78,6 +78,7 @@ textarea {
   display: flex;
   flex-wrap: wrap;
   gap: 36px;
+  align-items: flex-start;
 }
 
 .pebble-header {
@@ -256,6 +257,7 @@ textarea {
 .pebble-layouts-listing-list,
 .pebble-contacts-listing-list,
 .pebble-fragments-listing-list,
+.pebble-fragments-listing-table,
 .pebble-schemas-listing-list,
 .pebble-menu-editor {
   flex-basis: 850px;
@@ -287,6 +289,7 @@ textarea {
 .pebble-layouts-listing-listitem:nth-child(2n-1),
 .pebble-contacts-listing-listitem:nth-child(2n-1),
 .pebble-fragments-listing-listitem:nth-child(2n-1),
+.pebble-fragments-listing-table-row:nth-child(2n-1),
 .pebble-schemas-listing-listitem:nth-child(2n-1),
 .pebble-menu-editor-listitem:nth-child(2n-1) {
   background-color: #f0f0f2;
@@ -296,6 +299,7 @@ textarea {
 .pebble-layouts-listing-listitem a,
 .pebble-contacts-listing-listitem a,
 .pebble-fragments-listing-listitem a,
+.pebble-fragments-listing-table-row a,
 .pebble-schemas-listing-listitem a,
 .pebble-menu-editor-listitem a {
   color: currentColor;
@@ -310,6 +314,7 @@ textarea {
 .pebble-layouts-listing-listitem a:hover,
 .pebble-contacts-listing-listitem a:hover,
 .pebble-fragments-listing-listitem a:hover,
+.pebble-fragments-listing-table-row a:hover,
 .pebble-schemas-listing-listitem a:hover,
 .pebble-menu-editor-listitem a:hover {
   background: var(--selected-hover);
@@ -676,6 +681,27 @@ textarea {
 }
 
 /* Fragments */
+
+.pebble-fragments-listing-table {
+  border-collapse: collapse;
+}
+
+.pebble-fragments-listing-table th {
+  padding-bottom: 0.5em;
+}
+
+.pebble-fragments-listing-table tr,
+.pebble-fragments-listing-table td {
+  padding: 0;
+}
+
+.pebble-fragments-listing-table th {
+  text-align: left;
+}
+
+.pebble-fragments-listing-table tr:has(a:hover) {
+  background: var(--selected-hover);
+}
 
 .pebble-fragments-editor textarea {
   min-height: 250px;

@@ -124,6 +124,7 @@ defmodule Pebble do
     |> fragment_query(site_id)
     |> Repo.all()
     |> Repo.preload([:schema])
+    |> maybe_populate_values()
     |> maybe_populate_schemas()
   end
 
@@ -134,7 +135,17 @@ defmodule Pebble do
       order_by: [desc: f.updated_at]
   end
 
-  defp maybe_populate_schemas(fragments) do
+  defp maybe_populate_values(nil), do: nil
+
+  defp maybe_populate_values(%Fragment{} = f) do
+    Map.put(f, :values, JSON.decode!(f.data))
+  end
+
+  defp maybe_populate_values(fragments) when is_list(fragments) do
+    Enum.map(fragments, &maybe_populate_values/1)
+  end
+
+  defp maybe_populate_schemas(fragments) when is_list(fragments) do
     Enum.map(fragments, &maybe_populate_schema/1)
   end
 
@@ -164,6 +175,7 @@ defmodule Pebble do
     |> where([f], f.id == ^id)
     |> Repo.one()
     |> Repo.preload([:schema])
+    |> maybe_populate_values()
     |> maybe_populate_schema()
   end
 

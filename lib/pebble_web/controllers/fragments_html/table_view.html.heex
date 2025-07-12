@@ -1,0 +1,26 @@
+<table class="pebble-fragments-listing-table">
+  <%= if @column_fields != [] do %>
+    <thead>
+      <tr>
+        <th :for={field <- @column_fields}>{field_label(@schema, field)}</th>
+      </tr>
+    </thead>
+  <% end %>
+  <tbody>
+    <tr class="pebble-fragments-listing-table-row" :for={fragment <- @fragments}>
+      <%= if @column_fields == [] do %>
+        <td>
+          <.link href={~p"/#{@site}/s/#{@schema}/#{fragment}"}>
+            <code class="pebble-fragments-listing-id">{fragment.id}</code>
+          </.link>
+        </td>
+      <% else %>
+        <td :for={field <- @column_fields}>
+          <.link href={~p"/#{@site}/s/#{@schema}/#{fragment}"}>
+            {field_value(fragment, field)}
+          </.link>
+        </td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>

@@ -124,7 +124,7 @@ defmodule Pebble.Schema do
 
   typed_schema "schemas" do
     field :label, :string
-    field :listing, Ecto.Atom, default: :table
+    field :listing, Ecto.Enum, values: [:table, :inline]
     field :definition, :string
 
     # Contains the parsed TOML data if populated.

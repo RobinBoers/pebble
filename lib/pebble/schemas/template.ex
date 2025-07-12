@@ -9,17 +9,20 @@ defmodule Pebble.Template do
 
   import Ecto.Changeset
 
+  @types [:html, :md, :plain]
+  @visibilities [:draft, :hidden, :rss, :public]
+
   @doc "Supported render types."
-  def types, do: [:html, :md, :plain]
+  def types, do: @types
 
   @doc "Supported visibilities."
-  def visibility, do: [:draft, :hidden, :rss, :public]
+  def visibility, do: @visibilities
 
   typed_schema "templates" do
     field :label, :string
     field :content, :string
-    field :type, Ecto.Atom
-    field :visibility, Ecto.Atom
+    field :type, Ecto.Enum, values: @types
+    field :visibility, Ecto.Enum, values: @visibilities
 
     # Will contain %Layout{} and route for the current site if populated.
     field :route, :string, virtual: true

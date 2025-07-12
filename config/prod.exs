@@ -9,6 +9,3 @@ config :pebble, PebbleWeb.Endpoint, cache_static_manifest: "priv/static/cache_ma
 
 # Do not print debug messages in production
 config :logger, level: :info
-
-# Runtime production configuration, including reading
-# of environment variables, is done on config/runtime.exs.

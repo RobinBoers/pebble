@@ -52,8 +52,6 @@ defmodule Pebble.MixProject do
     {:ex_doc, "~> 0.38", only: :dev, runtime: false},
     {:telemetry_metrics, "~> 1.0"},
     {:telemetry_poller, "~> 1.0"},
-    {:jason, "~> 1.2"},
-    {:dns_cluster, "~> 0.1.1"},
     {:bandit, "~> 1.5"},
     {:decorator, "~> 1.3"},
     {:typed_ecto_schema, "~> 0.4.2"},
@@ -75,7 +73,18 @@ defmodule Pebble.MixProject do
     authors: ["Robijntje"],
     formatters: ["html"],
     groups_for_modules: [
-      "Entities": [Pebble.Site, Pebble.Layout, Pebble.Asset, Pebble.Contact, Pebble.Context, Pebble.Fragment, ~r/Pebble.Menu/, Pebble.Schema, Pebble.Template, Pebble.Settings],
+      "Entities": [
+        Pebble.Site,
+        Pebble.Layout,
+        Pebble.Asset,
+        Pebble.Contact,
+        Pebble.Context,
+        Pebble.Fragment,
+        ~r/Pebble.Menu/,
+        Pebble.Schema,
+        Pebble.Template,
+        Pebble.Settings
+      ],
       "Web Layer": [~r/PebbleWeb/],
       Ecto: [~r/Ecto./]
     ]

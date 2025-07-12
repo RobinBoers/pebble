@@ -81,30 +81,5 @@ defmodule PebbleWeb.Router do
     post "/menu/categories", MenuController, :new_category
     put "/menu/categories/:id", MenuController, :edit_category
     delete "/menu/categories/:id", MenuController, :delete_category
-
-    # live "/fragments", FragmentsLive, :schemas
-    # live "/s/:schema/new", FragmentsLive, :new
-    # live "/s/:schema/:id", FragmentsLive, :edit
-    # live "/templates", TemplatesLive, :templates
-    # live "/templates/new", TemplatesLive, :new
-    # live "/templates/:id", TemplatesLive, :edit
-    # live "/templates/:id/add", TemplatesLive, :add
-    # live "/endpoints", EndpointsLive, :endpoints
-    # live "/console/shell", ShellLive, :shell
-    # live "/console/logs", LogsLive, :logs
-    # live "/layouts", LayoutsLive, :layouts
-    # live "/layouts/new", LayoutsLive, :new
-    # live "/layouts/:id", LayoutsLive, :edit
-    # live "/media", MediaLive, :media
-    # live "/media/upload", MediaLive, :upload
-    # live "/contacts", ContactsLive, :contacts
-    # live "/contacts/new", ContactsLive, :new
-    # live "/contacts/:id", ContactsLive, :edit
-    # live "/menu", MenuLive, :menu
-    # live "/stats", StatisticsLive, :statistics
-    # live "/settings", SettingsLive, :settings
-    # live "/schemas", SchemasLive, :schemas
-    # live "/schemas/new", SchemasLive, :new
-    # live "/schemas/:id", SchemasLive, :edit
   end
 end

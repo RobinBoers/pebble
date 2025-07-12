@@ -79,8 +79,8 @@ defmodule Pebble do
     Toml.decode!(definition, keys: :atoms)
   end
 
-  def field_order(nil), do: []
-  def field_order(definition) do
+  defp field_order(nil), do: []
+  defp field_order(definition) do
     definition
     |> String.split("\n")
     |> Enum.map(&String.trim/1)

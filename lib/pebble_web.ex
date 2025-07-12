@@ -1,5 +1,13 @@
 defmodule PebbleWeb do
-  @moduledoc false
+  @moduledoc """
+  Web Layer for the CMS backend.
+
+  This is not the endpoint serving the site defined by the CMS, but rather
+  the CMS interface itself. Pebble is a semi-headless CMS, in the sense that
+  you get validated templates but are free on how to render and serve them.
+
+  For more information, see `Pebble`.
+  """
 
   def static_paths, do: ~w(vendor app pebble2.png favicon.ico robots.txt)
 

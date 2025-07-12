@@ -8,7 +8,7 @@ defmodule Pebble.MixProject do
     [
       name: "pebble",
       app: :pebble,
-      version: "0.1.0",
+      version: "0.1.0-rc1",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,

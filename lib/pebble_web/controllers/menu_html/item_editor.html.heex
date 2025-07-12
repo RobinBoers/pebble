@@ -1,0 +1,34 @@
+<.form
+  :let={f}
+  class="pebble-menu-item-editor"
+  for={@changeset}
+  action={~p"/#{@site}/menu/items/#{@item}"}
+  method="post"
+  data-autosave="true"
+>
+  <header class="pebble-menu-item-editor-header">
+    <h2 class="pebble-menu-item-editor-title">Edit link</h2>
+    <code class="pebble-menu-item-editor-id">{@item.id}</code>
+  </header>
+
+  <.input type="hidden" name="_method" value="put" />
+
+  <.input field={f[:label]} type="text" label="Label" placeholder="Colophon" required />
+  <.input field={f[:route]} type="text" label="Route" placeholder="/colophon" required />
+
+  <div class="pebble-menu-item-editor-actions">
+    <button
+      class="pebble-menu-item-editor-delete"
+      type="submit"
+      name="_method"
+      value="delete"
+      data-confirm="Are you sure? This will remove this menu item from your site's menu."
+    >
+      Delete
+    </button>
+
+    <button class="pebble-menu-item-editor-submit" type="submit">
+      Save
+    </button>
+  </div>
+</.form>

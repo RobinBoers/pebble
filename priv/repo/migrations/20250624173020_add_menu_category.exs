@@ -5,6 +5,7 @@ defmodule Pebble.Repo.Migrations.AddMenuCategory do
     create table(:menu_categories, primary_key: false) do
       add :id, :string, primary_key: true
       add :label, :text
+      add :order, :integer
 
       timestamps()
     end

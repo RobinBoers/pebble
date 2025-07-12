@@ -95,7 +95,8 @@ defmodule PebbleWeb.Navigation do
           | records_children(site)
       ]},
       %{title: "Design", children: [
-        %{title: "Layouts", route: ~p"/#{site}/layouts"}
+        %{title: "Layouts", route: ~p"/#{site}/layouts"},
+        %{title: "Menu", route: ~p"/#{site}/menu"}
       ]},
       %{title: "Console", children: [
         %{title: "Endpoints", route: ~p"/#{site}/endpoints"},

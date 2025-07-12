@@ -34,7 +34,7 @@ defmodule Pebble.Schema do
     data rendered below.
 
   The `visibily` option can be one of the following, depending on the render type:
-  
+
   - `column` to declare that the field is a column in `table` view.
   - `main` to declare the field is the primary content in `inline` view.
   - `meta` to declare the field is additional metadata in `inline` view.
@@ -161,7 +161,7 @@ defmodule Pebble.Schema do
         data
         |> collect_errors()
         |> Enum.reduce(changeset, &add_error(&2, field, &1))
-      
+
       _ ->
         add_error(changeset, field, "invalid toml")
     end

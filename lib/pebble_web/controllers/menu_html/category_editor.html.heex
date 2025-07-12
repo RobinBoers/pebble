@@ -1,0 +1,33 @@
+<.form
+  :let={f}
+  class="pebble-menu-category-editor"
+  for={@changeset}
+  action={~p"/#{@site}/menu/categories/#{@category}"}
+  method="post"
+  data-autosave="true"
+>
+  <header class="pebble-menu-category-editor-header">
+    <h2 class="pebble-menu-category-editor-title">Edit category</h2>
+    <code class="pebble-menu-category-editor-id">{@category.id}</code>
+  </header>
+
+  <.input type="hidden" name="_method" value="put" />
+
+  <.input field={f[:label]} type="text" label="Label" placeholder="Navigation" required />
+
+  <div class="pebble-menu-category-editor-actions">
+    <button
+      class="pebble-menu-category-editor-delete"
+      type="submit"
+      name="_method"
+      value="delete"
+      data-confirm="Are you sure? This will remove this category and all items in it from your site's menu."
+    >
+      Delete
+    </button>
+
+    <button class="pebble-menu-category-editor-submit" type="submit">
+      Save
+    </button>
+  </div>
+</.form>

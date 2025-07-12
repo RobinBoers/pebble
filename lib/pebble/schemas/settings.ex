@@ -9,7 +9,7 @@ defmodule Pebble.Settings do
   alias Pebble.Schema
   alias Pebble.Site
   alias Pebble.Changeset
-  
+
   import Ecto.Changeset
 
   typed_schema "settings" do
@@ -48,7 +48,7 @@ defmodule Pebble.Settings do
     case Schema.validate(definition) do
       :ok ->
         changeset
-      
+
       {:error, errors} when is_list(errors) ->
         Enum.reduce(errors, changeset, &add_error(&2, field, &1))
 

@@ -310,4 +310,89 @@ defmodule Pebble do
   def fetch_contacts do
     Repo.all(Contact)
   end
+
+  @doc """
+  Lists all menu categories for the given `Pebble.Site`.
+  """
+  @spec fetch_menu_categories(Site.t()) :: [Pebble.Menu.Category.t()]
+  @spec fetch_menu_categories(integer()) :: [Pebble.Menu.Category.t()]
+
+  def fetch_menu_categories(%Site{id: site_id}) do
+    fetch_menu_categories(site_id)
+  end
+
+  def fetch_menu_categories(site_id) do
+    site_id
+    |> menu_category_query()
+    |> order_by([c], c.inserted_at)
+    |> Repo.all()
+  end
+
+  defp menu_category_query(site_id) do
+    from c in Pebble.Menu.Category,
+      join: cs in "categories_sites",
+      on: c.id == cs.category_id,
+      where: cs.site_id == ^site_id,
+      order_by: [asc: c.order]
+  end
+
+  @doc """
+  Gets a menu category for the given `Pebble.Site`.
+  """
+  @spec get_menu_category(integer(), Site.t()) :: Pebble.Menu.Category.t() | nil
+  @spec get_menu_category(integer(), integer()) :: Pebble.Menu.Category.t() | nil
+
+  def get_menu_category(id, %Site{id: site_id}) do
+    get_menu_category(id, site_id)
+  end
+
+  def get_menu_category(id, site_id) do
+    site_id
+    |> menu_category_query()
+    |> where([c], c.id == ^id)
+    |> Repo.one()
+  end
+
+  @doc """
+  Lists all menu items for the given `Pebble.Site`.
+  """
+  @spec fetch_menu_items(Site.t()) :: [Pebble.Menu.Item.t()]
+  @spec fetch_menu_items(integer()) :: [Pebble.Menu.Item.t()]
+
+  def fetch_menu_items(%Site{id: site_id}) do
+    fetch_menu_items(site_id)
+  end
+
+  def fetch_menu_items(site_id) do
+    site_id
+    |> menu_item_query()
+    |> order_by([i], [i.order, i.inserted_at])
+    |> Repo.all()
+  end
+
+  defp menu_item_query(site_id) do
+    from i in Pebble.Menu.Item,
+      join: is in "items_sites",
+      on: i.id == is.item_id,
+      where: is.site_id == ^site_id,
+      order_by: [asc: i.order],
+      preload: [:category]
+  end
+
+  @doc """
+  Gets a menu item for the given `Pebble.Site`.
+  """
+  @spec get_menu_item(integer(), Site.t()) :: Pebble.Menu.Item.t() | nil
+  @spec get_menu_item(integer(), integer()) :: Pebble.Menu.Item.t() | nil
+
+  def get_menu_item(id, %Site{id: site_id}) do
+    get_menu_item(id, site_id)
+  end
+
+  def get_menu_item(id, site_id) do
+    site_id
+    |> menu_item_query()
+    |> where([i], i.id == ^id)
+    |> Repo.one()
+  end
 end

@@ -69,6 +69,19 @@ defmodule PebbleWeb.Router do
 
     get "/preferences", SettingsController, :settings
 
+    get "/menu", MenuController, :menu
+    put "/menu", MenuController, :update
+
+    get "/menu/items/:id", MenuController, :item
+    post "/menu/items", MenuController, :new_item
+    put "/menu/items/:id", MenuController, :edit_item
+    delete "/menu/items/:id", MenuController, :delete_item
+
+    get "/menu/categories/:id", MenuController, :category
+    post "/menu/categories", MenuController, :new_category
+    put "/menu/categories/:id", MenuController, :edit_category
+    delete "/menu/categories/:id", MenuController, :delete_category
+
     # live "/fragments", FragmentsLive, :schemas
     # live "/s/:schema/new", FragmentsLive, :new
     # live "/s/:schema/:id", FragmentsLive, :edit

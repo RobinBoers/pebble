@@ -1,0 +1,88 @@
+<.form
+  :let={f}
+  class="pebble-menu-editor"
+  for={@changeset}
+  action={~p"/#{@site}/menu"}
+  method="post"
+  data-autosave="true"
+>
+  <.input type="hidden" name="_method" value="put" />
+
+  <h2 class="pebble-menu-editor-title">Menu</h2>
+
+  <h3 class="pebble-menu-editor-subtitle">Items</h3>
+
+  <%= if @menu.items == [] do %>
+    <p class="pebble-menu-editor-placeholder">No menu items yet.</p>
+  <% else %>
+    <ul class="pebble-menu-editor-list">
+      <.inputs_for :let={f} field={f[:items]}>
+        <% item = Enum.at(@menu.items, f.index) %>
+        <li class="pebble-menu-editor-listitem">
+          <.link href={~p"/#{@site}/menu/items/#{item}"}>
+            {item.label}
+          </.link>
+
+          <span class="pebble-menu-editor-actions">
+            <.input
+              field={f[:category_id]}
+              class="pebble-menu-editor-category"
+              type="select"
+              prompt="Top level"
+              options={Enum.map(@menu.categories, &{&1.label, &1.id})}
+            />
+            <.input field={f[:order]} class="pebble-menu-editor-order" type="number" />
+          </span>
+        </li>
+      </.inputs_for>
+    </ul>
+  <% end %>
+
+  <h3 class="pebble-menu-editor-subtitle">Categories</h3>
+
+  <%= if @menu.categories == [] do %>
+    <p class="pebble-menu-editor-placeholder">No categories yet.</p>
+  <% else %>
+    <ul class="pebble-menu-editor-list">
+      <.inputs_for :let={category_form} field={f[:categories]}>
+        <% category = Enum.at(@menu.categories, category_form.index) %>
+        <li class="pebble-menu-editor-listitem">
+          <.link href={~p"/#{@site}/menu/categories/#{category}"}>
+            {category.label}
+
+            <code class="pebble-menu-editor-id">{category.id}</code>
+          </.link>
+
+          <span class="pebble-menu-editor-actions">
+            <.input field={category_form[:order]} class="pebble-menu-editor-order" type="number" />
+          </span>
+        </li>
+      </.inputs_for>
+    </ul>
+  <% end %>
+
+  <button type="submit">Save</button>
+</.form>
+
+<aside class="pebble-menu-editor-sidebar">
+  <.form :let={f} for={@item_changeset}
+    action={~p"/#{@site}/menu/items"}
+    method="post"
+    class="pebble-menu-item-new-form"
+  >
+    <.input field={f[:label]} type="text" placeholder="Label" required />
+    <.input field={f[:route]} type="text" placeholder="Route" required />
+
+    <button type="submit">Add item</button>
+  </.form>
+
+  <.form :let={f} for={@category_changeset}
+    action={~p"/#{@site}/menu/categories"}
+    method="post"
+    class="pebble-menu-category-new-form"
+  >
+    <.input field={f[:label]} type="text" placeholder="Label" required />
+
+    <button type="submit">Add category</button>
+  </.form>
+</aside>

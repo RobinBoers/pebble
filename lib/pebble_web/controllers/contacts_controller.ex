@@ -53,7 +53,7 @@ defmodule PebbleWeb.ContactsController do
 
     case Repo.update(changeset) do
       {:ok, _contact} ->
-        send_resp(conn, 204, "")
+        redirect(conn, to: ~p"/#{conn.assigns.site}/contacts")
 
       {:error, changeset} ->
         conn

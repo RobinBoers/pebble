@@ -113,7 +113,7 @@ defmodule PebbleWeb.MenuController do
 
     case Repo.update(changeset) do
       {:ok, _item} ->
-        send_resp(conn, 204, "")
+        redirect(conn, to: ~p"/#{conn.assigns.site}/menu")
 
       {:error, changeset} ->
         categories =
@@ -180,7 +180,7 @@ defmodule PebbleWeb.MenuController do
 
     case Repo.update(changeset) do
       {:ok, _category} ->
-        send_resp(conn, 204, "")
+        redirect(conn, to: ~p"/#{conn.assigns.site}/menu")
 
       {:error, changeset} ->
         conn

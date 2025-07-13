@@ -1,7 +1,7 @@
 document.querySelectorAll("[data-autosave]").forEach(form => {
   form.addEventListener('input', () => {
     const data = new URLSearchParams(new FormData(form));
-    fetch(form.action, { method: form.method, body: data })
+    fetch(form.action, { method: form.method, body: data, redirect: 'manual' })
       .then(response => {
         if (response.status === 204) return clearErrors(form);
         return response.text().then(html => putErrors(form, html));

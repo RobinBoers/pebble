@@ -60,7 +60,7 @@ defmodule PebbleWeb.FragmentsController do
 
     case Repo.update(changeset) do
       {:ok, _fragment} ->
-        send_resp(conn, 204, "")
+        redirect(conn, to: ~p"/#{conn.assigns.site}/s/#{schema_id}")
 
       {:error, _changeset} ->
         conn

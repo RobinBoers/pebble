@@ -1,8 +1,14 @@
 :root {
   --selected-background: #f06595;
-  --selected-accent: #a61e4d;
-  --selected-hover: #f896b8;
+  --selected-accent: light-dark(#a61e4d, #f896b8);
+  --selected-hover: light-dark(#f896b8, #a61e4d);
   --selected-color: white;
+
+  --lint-color: light-dark(#f0f0f2, #00000055);
+  --header-color: light-dark(#e9e9ed, #00000077);
+  --header-hover: light-dark(#d0d0d7, #000000);
+  --alt-color: light-dark(#f0f0f2, #00000077);
+  --border-color: light-dark(#e9ecef, #53506178);
 
   --body-margin: 2em;
   --menu-height: 44px;
@@ -11,6 +17,7 @@
 
   box-sizing: border-box;
   scrollbar-gutter: stable;
+  color-scheme: light dark;
 }
 
 html {
@@ -30,7 +37,6 @@ html {
 body {
   font-family: sans-serif;
   margin: var(--body-margin);
-  color-scheme: light;
 }
 
 a,
@@ -41,7 +47,7 @@ a:visited {
 .button,
 .button:visited {
   border: 1px solid currentColor;
-  border-color: ButtonBorder;
+  border-color: light-dark(ButtonBorder, var(--border-color));
   background: transparent;
   color: currentColor;
   color: ButtonText;
@@ -55,11 +61,20 @@ a:visited {
 
 .button:hover {
   background: var(--selected-hover);
+  color: black;
 }
 
 button:hover {
   background: var(--selected-hover);
+  color: black;
   border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  input, button, select, textarea {
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+  }
 }
 
 textarea {
@@ -110,7 +125,7 @@ textarea {
 }
 
 .pebble-header-lint {
-  background: #f0f0f2;
+  background: var(--lint-color);
   padding: 0.7em 1em;
   border-radius: 100px;
 }
@@ -141,7 +156,7 @@ textarea {
 }
 
 .pebble-header-menu {
-  background: #e9e9ed;
+  background: var(--header-color);
   height: var(--menu-height);
   padding: 0 var(--body-margin);
 }
@@ -177,11 +192,10 @@ textarea {
 .pebble-header-menu-item a {
   border-radius: var(--menu-radius);
   padding: 0.7em 1em;
-  background: #e9e9ed;
 }
 
 .pebble-header-menu-item a:hover {
-  background: #d0d0d7;
+  background: var(--header-hover);
   cursor: pointer;
 }
 
@@ -219,29 +233,29 @@ textarea {
 }
 
 .records {
-  --selected-background: #4c6ef5;
-  --selected-accent: #364fc7;
-  --selected-hover: #8ba1ff;
+  --selected-background: light-dark(#4c6ef5, #2b2a33);
+  --selected-accent: light-dark(#364fc7, #8ba1ff);
+  --selected-hover: light-dark(#8ba1ff, #5e75d2);
   --selected-color: white;
 }
 
 .design {
-  --selected-background: #1daa9e;
-  --selected-accent: #115e59;
-  --selected-hover: #68d7c7;
+  --selected-background: light-dark(#1daa9e, #2b2a33);
+  --selected-accent: light-dark(#115e59, #68d7c7);
+  --selected-hover: light-dark(#68d7c7, #1d8079);
   --selected-color: white;
 }
 
 .console {
-  --selected-background: #fbbf24;
-  --selected-accent: #e67700;
+  --selected-background: light-dark(#fbbf24, #2b2a33);
+  --selected-accent: light-dark(#e67700, #fbca50);
   --selected-hover: #fbca50;
-  --selected-color: black;
+  --selected-color: light-dark(black, white);
 }
 
 .settings {
-  --selected-background: #fa5252;
-  --selected-accent: #c92a2a;
+  --selected-background: light-dark(#fa5252, #2b2a33);
+  --selected-accent: light-dark(#c92a2a, #fca4a4);
   --selected-hover: #fca4a4;
   --selected-color: white;
 }
@@ -292,7 +306,7 @@ textarea {
 .pebble-fragments-listing-table-row:nth-child(2n-1),
 .pebble-schemas-listing-listitem:nth-child(2n-1),
 .pebble-menu-editor-listitem:nth-child(2n-1) {
-  background-color: #f0f0f2;
+  background-color: var(--alt-color);
 }
 
 .pebble-templates-listing-listitem a,
@@ -318,6 +332,7 @@ textarea {
 .pebble-schemas-listing-listitem a:hover,
 .pebble-menu-editor-listitem a:hover {
   background: var(--selected-hover);
+  color: black;
 }
 
 /* Components */
@@ -573,6 +588,14 @@ textarea {
   font-size: 1.3em;
 }
 
+@media (prefers-color-scheme: dark) {
+  .pebble-layouts-editor-header input,
+  .pebble-schemas-editor-header input,
+  .pebble-templates-editor-header input {
+    background: #1c1b22;
+  }
+}
+
 .pebble-layouts-editor-title,
 .pebble-schemas-editor-title {
   flex-grow: 1;
@@ -600,7 +623,7 @@ textarea {
 
 .pebble-schemas-new-form {
   padding-bottom: 1.5em;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--border-color);
   margin-bottom: 1.5em;
 }
 
@@ -701,6 +724,7 @@ textarea {
 
 .pebble-fragments-listing-table tr:has(a:hover) {
   background: var(--selected-hover);
+  color: black;
 }
 
 .pebble-fragments-editor textarea {
@@ -740,6 +764,7 @@ textarea {
 
 .pebble-menu-editor-listitem:has(a:hover) {
   background: var(--selected-hover);
+  color: black;
 }
 
 .pebble-menu-editor-listitem a {

@@ -35,12 +35,12 @@ defmodule Pebble.Context do
     changeset(%__MODULE__{template_id: template_id}, params)
   end
 
-  def changeset(settings \\ %__MODULE__{}, params \\ %{}) do
+  def changeset(context \\ %__MODULE__{}, params \\ %{}) do
     # The `template_id` is of course required in every row, but since
     # these rows are inserted as part of the `Pebble.Template` changeset,
     # we cannot mark it as required here, as that would break inserts.
 
-    settings
+    context
     |> cast(params, [:route, :site_id, :layout_id])
     |> validate_required([:route, :site_id])
     |> validate_format(:route, ~r|^/|, message: "must start with '/'")

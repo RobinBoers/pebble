@@ -83,7 +83,7 @@ defmodule Pebble.MixProject do
         ~r/Pebble.Menu/,
         Pebble.Schema,
         Pebble.Template,
-        Pebble.Settings
+        Pebble.Identity
       ],
       "Web Layer": [~r/PebbleWeb/],
       Ecto: [~r/Ecto./]

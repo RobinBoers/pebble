@@ -1,6 +1,6 @@
-defmodule Pebble.Settings do
+defmodule Pebble.Identity do
   @moduledoc """
-  The settings are a object of globally available variables
+  The identity defines an object of globally available variables
   within all templating in a `Pebble.Site`, along with a schema
   well-defining it.
   """
@@ -12,7 +12,7 @@ defmodule Pebble.Settings do
 
   import Ecto.Changeset
 
-  typed_schema "settings" do
+  typed_schema "identity" do
     field :data, :string
     field :definition, :string
     belongs_to :site, Site
@@ -28,8 +28,8 @@ defmodule Pebble.Settings do
     |> changeset(%{"data" => JSON.encode!(params)})
   end
 
-  def changeset(settings \\ %__MODULE__{}, params \\ %{}) do
-    settings
+  def changeset(identity \\ %__MODULE__{}, params \\ %{}) do
+    identity
     |> cast(params, [:data, :definition])
     |> cast_assoc(:site, required: true)
     |> validate_required([:definition])

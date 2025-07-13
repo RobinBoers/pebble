@@ -3,62 +3,62 @@ defmodule PebbleWeb.IdentityController do
   use PebbleWeb, :controller
 
   alias Pebble.Repo
-  alias Pebble.Settings
+  alias Pebble.Identity
   alias Pebble.Changeset
 
-  import Pebble, only: [get_settings: 1]
+  import Pebble, only: [get_identity: 1]
 
   def identity(conn, _params) do
-    settings = get_settings(conn.assigns.site) || %Settings{site: conn.assigns.site}
+    identity = get_identity(conn.assigns.site) || %Identity{site: conn.assigns.site}
     
     conn
-    |> assign(:settings, settings)
-    |> assign(:changeset, Changeset.new(settings))
+    |> assign(:identity, identity)
+    |> assign(:changeset, Changeset.new(identity))
     |> render(:editor)
   end
 
-  def edit(conn, %{"settings" => params}) do
-    settings = get_settings(conn.assigns.site) || %Settings{site: conn.assigns.site}
-    changeset = settings |> Changeset.new() |> Settings.changeset_for(params)
+  def edit(conn, %{"identity" => params}) do
+    identity = get_identity(conn.assigns.site) || %Identity{site: conn.assigns.site}
+    changeset = identity |> Changeset.new() |> Identity.changeset_for(params)
 
-    case upsert_settings(changeset) do
-      {:ok, _settings} ->
+    case upsert_identity(changeset) do
+      {:ok, _identity} ->
         send_resp(conn, 204, "")
 
       {:error, changeset} ->
         conn
-        |> assign(:settings, settings)
+        |> assign(:identity, identity)
         |> assign(:changeset, changeset)
         |> render(:editor)
     end
   end
 
   def schema(conn, _params) do
-    settings = get_settings(conn.assigns.site) || %Settings{site: conn.assigns.site}
+    identity = get_identity(conn.assigns.site) || %Identity{site: conn.assigns.site}
     
     conn
-    |> assign(:settings, settings)
-    |> assign(:changeset, Settings.changeset(settings))
+    |> assign(:identity, identity)
+    |> assign(:changeset, Identity.changeset(identity))
     |> render(:schema_editor)
   end
 
-  def edit_schema(conn, %{"settings" => params}) do
-    settings = get_settings(conn.assigns.site) || %Settings{site: conn.assigns.site}
-    changeset = Settings.changeset(settings, params)
+  def edit_schema(conn, %{"identity" => params}) do
+    identity = get_identity(conn.assigns.site) || %Identity{site: conn.assigns.site}
+    changeset = Identity.changeset(identity, params)
 
-    case upsert_settings(changeset) do
-      {:ok, _settings} ->
+    case upsert_identity(changeset) do
+      {:ok, _identity} ->
         send_resp(conn, 204, "")
 
       {:error, changeset} ->
         conn
-        |> assign(:settings, settings)
+        |> assign(:identity, identity)
         |> assign(:changeset, changeset)
         |> render(:schema_editor)
     end
   end
 
-  defp upsert_settings(changeset) do
+  defp upsert_identity(changeset) do
     case changeset.data.id do
       nil -> Repo.insert(changeset)
       _id -> Repo.update(changeset)

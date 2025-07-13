@@ -11,7 +11,7 @@ defmodule Pebble do
   alias Pebble.Template
   alias Pebble.Context
   alias Pebble.Contact
-  alias Pebble.Settings
+  alias Pebble.Identity
 
   import Ecto.Query
 
@@ -188,8 +188,8 @@ defmodule Pebble do
     Map.put(s, :fields, sorted_fields(s.definition))
   end
 
-  defp maybe_populate_settings(nil), do: nil
-  defp maybe_populate_settings(%Settings{} = s) do
+  defp maybe_populate_identity(nil), do: nil
+  defp maybe_populate_identity(%Identity{} = s) do
     Map.put(s, :fields, sorted_fields(s.definition))
   end
 
@@ -289,20 +289,20 @@ defmodule Pebble do
   end
 
   @doc """
-  Gets the `Pebble.Settings` for the given `Pebble.Site`.
+  Gets the `Pebble.identity` for the given `Pebble.Site`.
   """
-  @spec get_settings(Site.t()) :: Settings.t() | nil
-  @spec get_settings(integer()) :: Settings.t() | nil
+  @spec get_identity(Site.t()) :: Identity.t() | nil
+  @spec get_identity(integer()) :: Identity.t() | nil
 
-  def get_settings(%Site{id: site_id}) do
-    get_settings(site_id)
+  def get_identity(%Site{id: site_id}) do
+    get_identity(site_id)
   end
 
-  def get_settings(site_id) do
-    Repo.one(from s in Settings,
+  def get_identity(site_id) do
+    Repo.one(from s in Identity,
       where: s.site_id == ^site_id,
       preload: :site)
-    |> maybe_populate_settings()
+    |> maybe_populate_identity()
   end
 
   @doc """

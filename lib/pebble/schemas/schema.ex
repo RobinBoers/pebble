@@ -3,7 +3,7 @@ defmodule Pebble.Schema do
   TOML definitions for well-defined data.
 
   Schemas express the keys present in JSON data stored by
-  both `Pebble.Fragment` and `Pebble.Settings` instances.
+  both `Pebble.Fragment` and `Pebble.Identity` instances.
 
   Field definitions consist of a table for each field with
   at least the following keys:

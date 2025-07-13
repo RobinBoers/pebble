@@ -8,7 +8,7 @@
   <.input type="hidden" name="_method" value="put" />
 
   <.input
-    :for={{name, d} <- @settings.fields || []}
+    :for={{name, d} <- @identity.fields || []}
     field={f[name]}
     label={d[:label] || labelify(name)}
     options={d[:options]}

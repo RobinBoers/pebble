@@ -476,9 +476,19 @@ textarea {
   padding: 0.5em;
 }
 
+.pebble-templates-editor-sidebar label {
+  margin-bottom: 3px;
+}
+
+.pebble-templates-editor-sidebar select,
+.pebble-templates-editor-sidebar button {
+  height: 2.2em;
+}
+
 .pebble-templates-editor-submit {
-  height: 30px;
+  height: 40px !important;
   margin-bottom: 10px;
+  font-size: 1.1em;
 }
 
 .pebble-templates-editor-delete {

@@ -57,7 +57,8 @@ defmodule Pebble.MixProject do
     {:typed_ecto_schema, "~> 0.4.2"},
     {:typedstruct, "~> 0.5.3"},
     {:toml, "~> 0.7"},
-    {:structo, "~> 0.1.4"}
+    {:structo, "~> 0.1.4"},
+    {:pythonx, "~> 0.4.5"}
   ]
 
   defp aliases, do: [

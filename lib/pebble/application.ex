@@ -5,6 +5,7 @@ defmodule Pebble.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      Jinja,
       PebbleWeb.Telemetry,
       Pebble.Repo,
       {Phoenix.PubSub, name: Pebble.PubSub},

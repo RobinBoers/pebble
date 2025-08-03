@@ -20,4 +20,15 @@ config :logger, :console,
 
 config :phoenix, :json_library, JSON
 
+config :pythonx, :uv_init,
+  pyproject_toml: """
+  [project]
+  name = "pebble"
+  version = "#{Mix.Project.config()[:version]}"
+  requires-python = "==3.13.*"
+  dependencies = [
+    "Jinja2==3.1.6"
+  ]
+  """
+
 import_config "#{config_env()}.exs"

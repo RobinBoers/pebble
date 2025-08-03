@@ -1,38 +1,43 @@
-<div class={["pebble-app", @current_tab.key]}>
-  <header class="pebble-header">
-    <div class="pebble-header-lint-container">
-      <aside class="pebble-header-lint">
-        Hello, <b>Robin</b> / <a href="#">Log out</a> / <a href={"https://#{@site}"} target="_blank">View site →</a>
-      </aside>
+<header>
+  <h1><a href={~p"/#{@site}"}>pebble</a></h1>
 
-      <div class="pebble-header-title-container">
-        <img src="/pebble2.png" width="45">
-        <h1 class="pebble-header-title">pebble</h1>
+  <div class="group">
+    <select onchange="switch_site(this.value)">
+      <option :for={site <- @sites} selected={site == @site}>{site}</option>
+    </select>
 
-        <select
-          class="pebble-header-site-form-dropdown"
-          onchange="switch_site(this.value)"
-        >
-          <option :for={site <- @sites} selected={site == @site}>{site}</option>
-        </select>
-      </div>
-    </div>
+    <.link href={"https://#{@site}"} target="_blank">View site →</.link>
+    <.link href={"/#{@site}/identity"}>Settings</.link>
+  </div>
+</header>
 
-    <nav class="pebble-header-menu-container">
-      <menu class="pebble-header-menu">
-        <li :for={tab <- @menu_tabs} class={tab_class(tab, @current_tab)}>
-          <.link href={tab.route}>{tab.title}</.link>
-        </li>
-      </menu>
-      <menu :if={@menu_children !=[]} class="pebble-header-submenu">
-        <li :for={child <- @menu_children} class={child_class(child, @current_page)}>
-          <.link href={child.route}>{child.title}</.link>
-        </li>
-      </menu>
-    </nav>
-  </header>
+<main>
+  <%= if dbg(@conn.path_info) == [@site.hostname] do %>
+    <header class="bar">
+      <h2>Your home on the Web.</h2>
+    </header>
 
-  <main class="pebble-main">
+    <p>Welcome to pebble, a simple but powerful tool to publish words on the Web.</p>
+
+    <p><br></p>
+
+    <h3>Quick actions</h3>
+
+    <ul>
+      <li>
+        <.link href={~p"/#{@site}/templates"}>Pages</.link>
+      </li>
+      <li :for={schema <- Pebble.fetch_schemas(@site)}>
+        <.link href={~p"/#{@site}/s/#{schema}"}>{schema.label}s</.link>
+      </li>
+      <li>
+        <.link href={~p"/#{@site}/contacts"}>Contacts</.link>
+      </li>
+      <li>
+        <.link href={~p"/#{@site}/menu"}>Menu</.link>
+      </li>
+    </ul>
+  <% else %>
     {@inner_content}
-  </main>
-</div>
+  <% end %>
+</main>

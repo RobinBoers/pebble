@@ -1,0 +1,38 @@
+<div class={["pebble-app", @current_tab.key]}>
+  <header class="pebble-header">
+    <div class="pebble-header-lint-container">
+      <aside class="pebble-header-lint">
+        Hello, <b>Robin</b> / <a href="#">Log out</a> / <a href={"https://#{@site}"} target="_blank">View site →</a>
+      </aside>
+
+      <div class="pebble-header-title-container">
+        <img src="/pebble2.png" width="45">
+        <h1 class="pebble-header-title">pebble</h1>
+
+        <select
+          class="pebble-header-site-form-dropdown"
+          onchange="switch_site(this.value)"
+        >
+          <option :for={site <- @sites} selected={site == @site}>{site}</option>
+        </select>
+      </div>
+    </div>
+
+    <nav class="pebble-header-menu-container">
+      <menu class="pebble-header-menu">
+        <li :for={tab <- @menu_tabs} class={tab_class(tab, @current_tab)}>
+          <.link href={tab.route}>{tab.title}</.link>
+        </li>
+      </menu>
+      <menu :if={@menu_children !=[]} class="pebble-header-submenu">
+        <li :for={child <- @menu_children} class={child_class(child, @current_page)}>
+          <.link href={child.route}>{child.title}</.link>
+        </li>
+      </menu>
+    </nav>
+  </header>
+
+  <main class="pebble-main">
+    {@inner_content}
+  </main>
+</div>

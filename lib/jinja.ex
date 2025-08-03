@@ -2,7 +2,7 @@ defmodule Jinja do
   @moduledoc """
   Jinja is a fast, expressive, extensible templating engine written in Python.
 
-  This module provides a public API for working with Jinja templates in Elixir.
+  This library provides a public API for working with Jinja templates in Elixir.
   This is not a port of Jinja, but rather a wrapper that runs using `Pythonx`.
 
   ## Usage
@@ -14,10 +14,13 @@ defmodule Jinja do
         ...
       ]
 
+  Templates can then be loaded and rendered as such:
+
+      Jinja.load_template("hello", "hewwo {{ name }}") # => :ok
+      Jinja.render_template("hello", %{name: "Robin"}) # => {:ok, "hewwo Robin"}
+
   """
   use GenServer
-
-  import Structo
 
   @doc false
   def start_link(opts) do
@@ -34,45 +37,65 @@ defmodule Jinja do
   def render_string(template, assigns \\ %{}) do
     GenServer.call(__MODULE__, {:render_string, template, assigns})
   end
-  
+
   @doc """
-  Renders a template file with given assigns.
+  Loads a template with the given name and source.
   
-      iex> Jinja.render_file("welcome.html", %{"user" => "Alice"})
-      {:ok, "<h1>Welcome, Alice.</h1>"}
+      iex> Jinja.load_template("page", \"""
+      <html><body>{% block body %}{% endblock %}</body></html>
+      \""")
+      :ok
+
+      iex> Jinja.load_template("post", \"""
+      {% extends "page" %}
+      {% block body %}
+        {{ title }}
+      {% endblock %}
+      \""")
+      :ok
 
   """
-  def render_file(filename, assigns \\ %{}) do
-    GenServer.call(__MODULE__, {:render_file, filename, assigns})
+  def load_template(name, source) do
+    GenServer.call(__MODULE__, {:load_template, name, source})
+  end
+  
+  @doc """
+  Renders a previously loaded template with given assigns.
+  
+      iex> Jinja.render_template("post", %{title: "hewwo world"})
+      {:ok, "<html><body>hewwo world</body></html>"}
+
+  """
+  def render_template(name, assigns \\ %{}) do
+    GenServer.call(__MODULE__, {:render_template, name, assigns})
   end
 
-  def init(opts) do
-    search_path = Keyword.get(opts, :path, search_path())
-    autoescape = Keyword.get(opts, :autoescape, true)
-    
-    globals =
+  def init(_opts) do
+    state =
       initialise("""
-      from jinja2 import Environment, FileSystemLoader, select_autoescape
+      from jinja2 import Environment, DictLoader, select_autoescape
+      
+      templates = {}
+      loader = DictLoader(templates)
       
       env = Environment(
-        loader=FileSystemLoader('#{search_path}'),
-        autoescape=select_autoescape(['html', 'htm', 'xml']) if "#{autoescape}" == "true" else False
+        loader=loader,
+        autoescape=select_autoescape(['html', 'htm', 'xml'])
       )
       """)
     
-    {:ok, ~m{globals, search_path}}
+    {:ok, state}
   end
 
   def handle_call({:render_string, template, assigns}, _from, state) do
     globals =
-      state.globals
+      state
       |> assign(:source, template)
       |> assign(:assigns, assigns)
 
     rendered =
       execute(globals, """
-      template = env.from_string(source)
-      template.render(assigns)
+      env.from_string(source).render(assigns)
       """)
       
     {:reply, {:ok, rendered}, state}
@@ -80,25 +103,34 @@ defmodule Jinja do
     error -> {:reply, {:error, error}, state}
   end
 
-  def handle_call({:render_file, filename, assigns}, _from, state) do
+  def handle_call({:load_template, name, source}, _from, state) do
     globals =
-      state.globals
-      |> assign(:filename, filename)
-      |> assign(:assigns, assigns)
+      state
+      |> assign(:name, name)
+      |> assign(:source, source)
 
-    rendered =
-      execute(globals, """
-      template = env.get_template(filename)
-      template.render(assigns)
-      """)
-    
-    {:reply, {:ok, rendered}, state}
+    execute(globals, """
+    templates[name] = source
+    env.loader = DictLoader(templates)
+    True
+    """)
+      
+    {:reply, :ok, state}
   rescue
     error -> {:reply, {:error, error}, state}
   end
 
-  defp search_path do
-    Path.join(:code.priv_dir(:pebble), "templates")
+  def handle_call({:render_template, name, assigns}, _from, state) do
+    globals =
+      state
+      |> assign(:name, name)
+      |> assign(:assigns, assigns)
+
+    rendered = execute(globals, "env.get_template(name).render(assigns)")
+
+    {:reply, {:ok, rendered}, state}
+  rescue
+    error -> {:reply, {:error, error}, state}
   end
 
   defp initialise(source) do

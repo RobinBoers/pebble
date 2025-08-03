@@ -14,13 +14,35 @@ defmodule Jinja do
         ...
       ]
 
-  Templates can then be loaded and rendered as such:
+  ## Loaders
+
+  The default loader is `:dict`. This allows you to register templates at runtime,
+  for the lifetime of your application. Templates can be loaded and rendered as such:
 
       Jinja.load_template("hello", "hewwo {{ name }}") # => :ok
       Jinja.render_template("hello", %{name: "Robin"}) # => {:ok, "hewwo Robin"}
 
+  The `:path` loader allows you to specify a directory on disk to load templates
+  from. When configured, the `load_template/2` function will be unavailable.
+
+      children = [
+        {Jinjq,
+          loader: :path,
+          from: Application.app_dir(:your_app, ~w(lib your_app_web templates))
+        }
+      ]
+
+      # Loads template from lib/your_app_web/templates/hello.html
+      Jinja.render_template("hello.html", %{name: "Robin"}) # => {:ok, "hewwo Robin"}
+
+      Jinja.load_template("bye", "...") # => 
+
   """
   use GenServer
+  
+  defstruct [:loader, :globals]
+
+  import Structo
 
   @doc false
   def start_link(opts) do
@@ -70,28 +92,51 @@ defmodule Jinja do
     GenServer.call(__MODULE__, {:render_template, name, assigns})
   end
 
-  def init(_opts) do
-    state =
-      initialise("""
-      from jinja2 import Environment, DictLoader, select_autoescape
-      
-      templates = {}
-      loader = DictLoader(templates)
-      
-      env = Environment(
-        loader=loader,
-        autoescape=select_autoescape(['html', 'htm', 'xml'])
-      )
-      """)
+  def init(opts) do
+    {loader, globals} = init_state(opts)
+    {:ok, ~m{:__MODULE__, loader, globals}}
+  end
+
+  defp init_state(opts) do
+    case Keyword.get(opts, :loader, :dict) do
+      :dict -> {:dict, init_dict_loader()}
+      :path -> {:path, init_path_loader(opts)}
+    end
+  end
+
+  defp init_dict_loader do
+    initialise("""
+    from jinja2 import Environment, DictLoader, select_autoescape
     
-    {:ok, state}
+    templates = {}
+    loader = DictLoader(templates)
+    
+    env = Environment(
+      loader=loader,
+      autoescape=select_autoescape(['html', 'htm', 'xml'])
+    )
+    """)
+  end
+
+  defp init_path_loader(opts) do
+    search_path = Keyword.get(opts, :from)
+      || raise "when using loader: :path, please provide the search path via the :from option"
+
+    initialise("""
+    from jinja2 import Environment, FileSystemLoader, select_autoescape
+    
+    env = Environment(
+      loader=FileSystemLoader('#{search_path}'),
+      autoescape=select_autoescape(['html', 'htm', 'xml'])
+    )
+    """)
   end
 
   def handle_call({:render_string, template, assigns}, _from, state) do
     globals =
-      state
-      |> assign(:source, template)
-      |> assign(:assigns, assigns)
+      state.globals
+      |> put_glob(:source, template)
+      |> put_glob(:assigns, assigns)
 
     rendered =
       execute(globals, """
@@ -103,11 +148,11 @@ defmodule Jinja do
     error -> {:reply, {:error, error}, state}
   end
 
-  def handle_call({:load_template, name, source}, _from, state) do
+  def handle_call({:load_template, name, source}, _from, %{loader: :dict} = state) do
     globals =
-      state
-      |> assign(:name, name)
-      |> assign(:source, source)
+      state.globals
+      |> put_glob(:name, name)
+      |> put_glob(:source, source)
 
     execute(globals, """
     templates[name] = source
@@ -120,11 +165,15 @@ defmodule Jinja do
     error -> {:reply, {:error, error}, state}
   end
 
+  def handle_call({:load_template, _name, _source}, _from, %{loader: :path} = state) do
+    {:reply, {:error, "loading templates at runtime is only supported for loader: :dict"}, state}
+  end
+
   def handle_call({:render_template, name, assigns}, _from, state) do
     globals =
-      state
-      |> assign(:name, name)
-      |> assign(:assigns, assigns)
+      state.globals
+      |> put_glob(:name, name)
+      |> put_glob(:assigns, assigns)
 
     rendered = execute(globals, "env.get_template(name).render(assigns)")
 
@@ -150,7 +199,7 @@ defmodule Jinja do
   defp encode(obj) when is_map(obj), do: encode(Enum.map(obj, fn {k, v} -> {k, encode(v)} end))
   defp encode(obj), do: Pythonx.encode!(obj)
 
-  defp assign(globals, name, value) do
+  defp put_glob(globals, name, value) do
     Map.put(globals, to_string(name), encode(value))
   end
 end

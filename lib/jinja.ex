@@ -35,7 +35,8 @@ defmodule Jinja do
       # Loads template from lib/your_app_web/templates/hello.html
       Jinja.render_template("hello.html", %{name: "Robin"}) # => {:ok, "hewwo Robin"}
 
-      Jinja.load_template("bye", "...") # => 
+      # `load_template/2` is unavailable for loader: :path
+      Jinja.load_template("bye", "...") # => {:error, "loading templates at runtime is only supported for loader: :dict"}
 
   """
   use GenServer
@@ -56,7 +57,8 @@ defmodule Jinja do
       {:ok, "<h1>hewwo world</h1>"}
 
   """
-  def render_string(template, assigns \\ %{}) do
+  @spec render_string(String.t(), map()) :: {:ok, String.t()} | {:error, term()}
+  def render_string(template, assigns \\ %{}) when is_binary(template) and is_map(assigns) do
     GenServer.call(__MODULE__, {:render_string, template, assigns})
   end
 
@@ -77,7 +79,8 @@ defmodule Jinja do
       :ok
 
   """
-  def load_template(name, source) do
+  @spec load_template(String.t(), String.t()) :: :ok | {:error, term()}
+  def load_template(name, source) when is_binary(name) and is_binary(source) do
     GenServer.call(__MODULE__, {:load_template, name, source})
   end
   
@@ -88,10 +91,12 @@ defmodule Jinja do
       {:ok, "<html><body>hewwo world</body></html>"}
 
   """
-  def render_template(name, assigns \\ %{}) do
+  @spec load_template(String.t(), map()) :: {:ok, String.t()} | {:error, term()}
+  def render_template(name, assigns \\ %{}) when is_binary(name) and is_map(assigns) do
     GenServer.call(__MODULE__, {:render_template, name, assigns})
   end
 
+  @doc false
   def init(opts) do
     {loader, globals} = init_state(opts)
     {:ok, ~m{:__MODULE__, loader, globals}}

@@ -3,3 +3,16 @@
 serve() {
   mix phx.server
 }
+
+docs() {
+  mix docs --open
+}
+
+publish() {
+  mix docs
+  lift deploy
+}
+
+release() {
+  mix hex.publish
+}
